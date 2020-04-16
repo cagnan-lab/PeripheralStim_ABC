@@ -67,10 +67,10 @@ for C = 1:2
     
     ftdata_pp = ft_appenddata([],ftdata_pp,emgfix);
    
-    
-    for tr = 1:numel(ftdata_pp.trial)
-        ftdata_pp.trial{tr} = ft_preproc_standardize(ftdata_pp.trial{tr});
-    end   
-    
+%     
+%     for tr = 1:numel(ftdata_pp.trial)
+%         ftdata_pp.trial{tr} = ft_preproc_standardize(ftdata_pp.trial{tr});
+%     end   
+%     
     dataOut(C) = ftdata_pp;
 end
