@@ -61,6 +61,12 @@ p.A_s{1}(2,3) = 1/2;
 p.A_s{1}(4,3) = 1/2;
 p.A_s{1}(2,4) = 1/2; 
 
+% Modulatory
+p.B{1} = p.A{1};
+p.B_s{1} = repmat(1/2,size(p.A_s{1})).*(p.A_s{1}>0);
+
+
+
 % Inhibtory
 p.A{2} =  repmat(-32,m.m,m.m);
 p.A_s{2} = repmat(0,m.m,m.m);
@@ -73,7 +79,7 @@ p.C_s = repmat(1/8,size(p.C));
 p.obs.LF = [0 0];
 p.obs.LF_s = repmat(2,size(p.obs.LF));
 
-p.obs.Cnoise = [0 0];
+p.obs.Cnoise = [0 0 0 0];
 p.obs.Cnoise_s = repmat(1/2,size(p.obs.Cnoise));
 
 p.obs.mixing = [1]; %zeros(size(R.obs.mixing));

@@ -12,7 +12,7 @@ R.data.datatype = 'CSD'; %%'NPD'
 R.frqz = [3:.2:32];
 R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
-R.frqzfull = [1:.2:200]; % used for filters
+R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
 R.nmsim_name = {'Musc1','MMC','SpinCrd','THAL'}; %modules (fx) to use.
 R.chloc_name = {'EP','ctx','amn','Thal'}; % observed channels
@@ -46,7 +46,7 @@ disp(sprintf('The actual simulation df is %.2f Hz',dfact));
 %% OBSERVATION
 % observation function
 R.obs.obsFx = @observe_data;
-R.obs.gainmeth = {'unitvar'}; %,'submixing'}; %,'lowpass'}; ,'leadfield' %unitvar'mixing'
+R.obs.gainmeth = {'obsnoise','unitvar'}; %,'submixing'}; %,'lowpass'}; ,'leadfield' %unitvar'mixing'
 R.obs.glist =0; %linspace(-5,5,12);  % gain sweep optimization range [min max listn] (log scaling)
 R.obs.brn =2; % 2; % burn in time
 LF = [1 1 1 1]*10; % Fit visually and for normalised data
