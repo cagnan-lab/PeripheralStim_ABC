@@ -17,8 +17,9 @@ for C = 1:2
         accPCA = [];
         for lr = 1:2
             accAx = XD(acc{lr},:);
+%              [Zica, W, T, mu] = fastICA(accAx,3)
             [U,S] = svd(accAx);
-            accPCA(:,lr) = U(:,1)'*accAx;
+            accPCA(:,lr) = mean(U(:,1:2)'*accAx);
         end
         
         ftdata_pp.trial{tr} = [XD; accPCA'];
@@ -38,7 +39,7 @@ for C = 1:2
     cfg = [];
     % Low Pass Filter at 1 Hz:
     cfg.hpfilter    = 'yes';
-    cfg.hpfreq      = 2.5;
+    cfg.hpfreq      = 3;
     % Low Pass Filter at 75 Hz:
     cfg.lpfilter    = 'yes';
     cfg.lpfreq      = 98;
@@ -66,5 +67,10 @@ for C = 1:2
     
     ftdata_pp = ft_appenddata([],ftdata_pp,emgfix);
    
+    
+    for tr = 1:numel(ftdata_pp.trial)
+        ftdata_pp.trial{tr} = ft_preproc_standardize(ftdata_pp.trial{tr});
+    end   
+    
     dataOut(C) = ftdata_pp;
 end
