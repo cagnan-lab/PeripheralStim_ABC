@@ -1,10 +1,10 @@
 clear; close all
 addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 
-R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R.root = 'C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC\';
+R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+
 R = simannealsetup_periphStim(R);
 
 % Bi condition Settings!
@@ -35,7 +35,8 @@ for C = 1:2
     dataStore{C} = data{C}';
 end
 
-R.obs.trans.norm = 1;
+% R.obs.trans.norm = 1;
+R.obs.trans.normcat = 1;
 R.obs.trans.logdetrend = 0;
 R.obs.trans.gauss3 = 0;
 R.obs.trans.gausSm = 1; % 10 hz smooth window
@@ -54,7 +55,7 @@ R.obs.trans.logdetrend = 0;
 % Model Inversion
 R.out.dag = 'DH_model1'; %
 R.out.tag = '011019';
-R.SimAn.rep = 512;
+R.SimAn.rep = 32;
 R.Bcond = 0;
 R.plot.flag = 1;
 [p] = SimAn_ABC_250320(R,pc,m);

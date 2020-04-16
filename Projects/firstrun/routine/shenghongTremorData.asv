@@ -6,8 +6,8 @@ ftdata = FT2SMR(SMR_data,fsample);
 % load([R.path.datapath '\ET_1Jun_Posture_NoStim_BiLFP.mat'])
 
 for C = 1:2
-    acc{1} = strncmp(ftdata(C).label,'Acl',3);
-    acc{2} = strncmp(ftdata(C).label,'Acr',3);
+        acc{1} = strncmp(ftdata(C).label,'Acl',3);
+        acc{2} = strncmp(ftdata(C).label,'Acr',3);
     ftdata_pp = ftdata(C);
     for tr = 1:numel(ftdata(C).trial)
         XD = ft_preproc_standardize(ftdata(C).trial{tr});
@@ -17,7 +17,7 @@ for C = 1:2
         accPCA = [];
         for lr = 1:2
             accAx = XD(acc{lr},:);
-            %              [Zica, W, T, mu] = fastICA(accAx,3)
+%              [Zica, W, T, mu] = fastICA(accAx,3)
             [U,S] = svd(accAx);
             accPCA(:,lr) = mean(U(:,1:2)'*accAx);
         end
@@ -51,12 +51,12 @@ for C = 1:2
     
     %% Rectify EMG
     emgSel = strncmp(ftdata_pp.label,'Ha',2);
-    
+      
     cfg = [];
     cfg.channel         = ftdata_pp.label(emgSel);
     % Low Pass Filter at 4 Hz:
-    %     cfg.hpfilter    = 'yes';
-    %     cfg.hpfreq      = 2.5;
+%     cfg.hpfilter    = 'yes';
+%     cfg.hpfreq      = 2.5;
     % Remove line noise frequencies (is this meant to do now or later?):
     cfg.rectify = 'yes';
     emgfix = ft_preprocessing(cfg,ftdata_pp);
@@ -66,12 +66,12 @@ for C = 1:2
     ftdata_pp = ft_selectdata(cfg,ftdata_pp);
     
     ftdata_pp = ft_appenddata([],ftdata_pp,emgfix);
-    
-    %
-    %     for tr = 1:numel(ftdata_pp.trial)
-    %         ftdata_pp.trial{tr} = ft_preproc_standardize(ftdata_pp.trial{tr});
-    %     end
-    %
+   
+%     
+%     for tr = 1:numel(ftdata_pp.trial)
+%         ftdata_pp.trial{tr} = ft_preproc_standardize(ftdata_pp.trial{tr});
+%     end   
+%     
     dataOut(C) = ftdata_pp;
 end
 
@@ -80,12 +80,3 @@ a = 1;
 
 XM = mean([[dataOut(1).trial{:}] [dataOut(2).trial{:}]],2);
 XV = std([[dataOut(1).trial{:}] [dataOut(2).trial{:}]],[],2);
-
-for C = 1:2
-    for tr = 1:numel(dataOut(C).trial)
-        XD = dataOut(C).trial{tr};
-        XD = (XD-XM)./XV;
-        dataOut(C).trial{tr} = XD;
-    end
-end
-
