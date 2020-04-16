@@ -9,7 +9,7 @@
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
 R.data.datatype = 'CSD'; %%'NPD'
-R.frqz = [2:.2:32];
+R.frqz = [3:.2:32];
 R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:200]; % used for filters
@@ -79,9 +79,9 @@ R.SimAn.convIt.dEps = 1e-3;
 R.SimAn.convIt.eqN = 5;
 R.analysis.modEvi.N  = 500;
 R.SimAn.scoreweight = [1 1/1e5];
-R.SimAn.rep = 256; %512; % Repeats per temperature
+R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
-R.SimAn.jitter = 2; % Global precision
+R.SimAn.jitter = 1; % Global precision
 %% PLOTTING
 R.plot.outFeatFx = @npdplotter_110717; %%@;csdplotter_220517
 R.plot.save = 'False';
