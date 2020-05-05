@@ -113,7 +113,7 @@ for condsel = 1:numel(R.condnames)
         if cs ~= R.Bcond
             p.int{i}.T = p.int{i}.T;
         else
-            p.int{i}.T = p.int{i}.T + p.int{i}.BT;
+            p.int{i}.T = p.int{i}.T;% + p.int{i}.BT;
         end
     end
     

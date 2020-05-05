@@ -78,17 +78,17 @@ ftdata_pp.hdr.chantype = [repmat({'EEG'},1,8) repmat({'LFP'},1,4) repmat({'Acc'}
     dataOut(C) = ftdata_pp;
 end
 
-% Standarize by the concatanated data
-a = 1;
-
-XM = mean([[dataOut(1).trial{:}] [dataOut(2).trial{:}]],2);
-XV = std([[dataOut(1).trial{:}] [dataOut(2).trial{:}]],[],2);
-
-for C = 1:2
-    for tr = 1:numel(dataOut(C).trial)
-        XD = dataOut(C).trial{tr};
-        XD = (XD-XM)./XV;
-        dataOut(C).trial{tr} = XD;
-    end
-end
+% % Standarize by the concatanated data
+% a = 1;
+% 
+% XM = mean([[dataOut(1).trial{:}] [dataOut(2).trial{:}]],2);
+% XV = std([[dataOut(1).trial{:}] [dataOut(2).trial{:}]],[],2);
+% 
+% for C = 1:2
+%     for tr = 1:numel(dataOut(C).trial)
+%         XD = dataOut(C).trial{tr};
+%         XD = (XD-XM)./XV;
+%         dataOut(C).trial{tr} = XD;
+%     end
+% end
 

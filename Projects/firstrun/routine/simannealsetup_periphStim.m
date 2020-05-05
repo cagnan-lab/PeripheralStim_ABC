@@ -9,7 +9,7 @@
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
 R.data.datatype = 'CSD'; %%'NPD'
-R.frqz = [3:.2:32];
+R.frqz = [2:.2:32];
 R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending

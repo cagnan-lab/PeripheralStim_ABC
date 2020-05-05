@@ -44,38 +44,38 @@ uc = innovate_timeseries(R,m);
 p.A{1} =  repmat(-32,m.m,m.m);
 p.A_s{1} = repmat(0,m.m,m.m);
 
-
-p.A{1}(3,1) = 0; % EP to SC
+p.A{1}(4,1) = 0; % Spin to Thal
 p.A{1}(3,2) = 0; % MMC to SC
 p.A{1}(4,2) = 0; % MMC to Thal
-p.A{1}(1,3) = 0; % SC to EP
-p.A{1}(2,3) = 0; % SC to MMC
-p.A{1}(4,3) = 0; % SC to Thal
+p.A{1}(1,3) = 0; % SC to Spin
 p.A{1}(2,4) = 0; % Thal to CTX
 
-p.A_s{1}(3,1) = 1/2; 
-p.A_s{1}(3,2) = 1/2;
-p.A_s{1}(4,2) = 1/2; 
-p.A_s{1}(1,3) = 1/2;
-p.A_s{1}(2,3) = 1/2; 
-p.A_s{1}(4,3) = 1/2;
-p.A_s{1}(2,4) = 1/2; 
-
+p.A_s{1}(4,1) = 1/2;
+p.A_s{1}(3,2) = 1/2; 
+p.A_s{1}(4,2) = 1/2;
+p.A_s{1}(1,3) = 1/2; 
+p.A_s{1}(2,3) = 1/2;
+p.A_s{1}(2,4) = 1/2; % Thal to CTX
 % Modulatory
+p.B{1} =  repmat(-32,m.m,m.m);
+p.B{1}(4,1) = 0; % Spin to Thal
 p.B{1}(4,2) = 0; % MMC to Thal
-p.B{1}(2,3) = 0; % SC to Thal
-p.B{1}(4,3) = 0; % SC to Thal
-p.B{1}(2,4) = 0; % SC to Thal
+p.B{1}(3,2) = 0; % MMC to SC
+p.B{1}(2,4) = 0; % Thal to CTx
 
-p.B_s{1} = repmat(1/2,size(p.A_s{1})).*(p.B{1}==0);
-
-
+p.B_s{1} = repmat(1/8,size(p.A_s{1})).*(p.B{1}==0);
 
 % Inhibtory
 p.A{2} =  repmat(-32,m.m,m.m);
+p.A{2}(3,1) = 0; % Spin to SC (spinal reflex)
 p.A_s{2} = repmat(0,m.m,m.m);
+p.A_s{2}(3,1) = 1/2; 
 
-% Connection strengths
+p.B{2} =  repmat(-32,m.m,m.m);
+p.B{2}(3,1) = 0; % Spin to SC
+p.B_s{2} = repmat(1/8,size(p.A_s{2})).*(p.B{2}==0);
+
+% Input strengths
 p.C = zeros(m.m,1);
 p.C_s = repmat(1/8,size(p.C));
 
