@@ -30,25 +30,18 @@ for condsel = 1:numel(R.condnames)
     
     % indices of extrinsically coupled hidden states
     %--------------------------------------------------------------------------
-    efferent(1,:) = [3 3 3 3];               % sources of Musc connections
-    afferent(1,:) = [2 2 2 2];               % targets of Musc connections
-    
+    efferent(1,:) = [3 3 3 3];               % sources of Musc connections (spindle voltage)
     efferent(2,:) = [1 1 1 1];               % sources of spinCord connections
-    afferent(2,:) = [2 2 4 4];               % targets of spinCord connections
-    
     efferent(3,:) = [3 3 6 7];               % ORIG sources of MMC connections
-    afferent(3,:) = [2 4 8 0];               % targets of MMC connections   
-    
     efferent(4,:) = [1 1 1 1];               % sources of THAL connections
-    afferent(4,:) = [2 2 2 2];               % targets of THAL connections
     
     
     % scaling of afferent extrinsic connectivity (Hz)
     %--------------------------------------------------------------------------
-    E(1,:) = [.2 .2 -.2 -.2]*4000;             % Muscle connections
-    E(2,:) = [.2 .2 -.2 -.2]*4000;             % spinCord connections
-    E(3,:) = [.2 .2 -.2 -.2]*10000;            % MMC connections
-    E(4,:) = [.2 .2 -.2 -.2]*5000;  %500       % THAL connections    
+    E(1,:) = [.2 .2 -.2 -.2]*2000;             % Muscle connections
+    E(2,:) = [.2 .2 -.2 -.2]*2000;             % spinCord connections
+    E(3,:) = [.2 .2 -.2 -.2]*8000;            % MMC connections
+    E(4,:) = [.2 .2 -.2 -.2]*2000;  %500       % THAL connections    
     
     % get the neural mass models {'ERP','CMC'}
     %--------------------------------------------------------------------------
@@ -101,8 +94,6 @@ for condsel = 1:numel(R.condnames)
             if D(i,j)>0
                 Ds(i,j) = efferent(nmm(j),1); % input sources
                 Ds(i,j) = (m.xinds(j,1)-1)+Ds(i,j);
-                Dt(i,j) = afferent(nmm(i),1); % input targets
-                Dt(i,j) = (m.xinds(j,1)-1)+Dt(i,j);
             end
         end
     end
@@ -120,8 +111,9 @@ for condsel = 1:numel(R.condnames)
     % Rescale background Input
     for i = 1:m.m
         C    = exp(p.C(i));
-        us(:,i) = C*us(:,i)*0.01;
+        us(:,i) = C*us(:,i); %*0.01;
     end
+    
     % Extrinsic connections
     %--------------------------------------------------------------------------
     %
@@ -135,15 +127,7 @@ for condsel = 1:numel(R.condnames)
         end
         %     A{alist(i,2)} = exp(p.A{i});
     end
-    
-    % detect and reduce the strength of reciprocal (lateral) connections
-    %--------------------------------------------------------------------------
-    % TOL   = exp(2);
-    % for i = 1:numel(A)
-    %     L    = (A{i} > TOL) & (A{i}' > TOL);
-    %     A{i} = A{i}./(1 + 4*L);
-    % end
-    
+        
     % and scale of extrinsic connectivity (Hz)
     %--------------------------------------------------------------------------
     for j = 1:n
@@ -171,7 +155,6 @@ for condsel = 1:numel(R.condnames)
         Q.G = decon*pQ(i).G.*exp(Q.G);
         Q.Rz = Rz_base.*exp(Q.S);
         Rz(i) = Q.Rz(1);
-%         Q.C  = pQ(i).C.*exp(p.C(i));
         qbank{i} = Q;
     end
     
@@ -182,10 +165,7 @@ for condsel = 1:numel(R.condnames)
     else
         xstore = x;
     end
-    % pad out the rest of xstore with zeros
-    %     xstore =    [xstore zeros(m.xinds(end),(R.IntP.nt+1)-size(xstore,2))];
     
-    %     xstore = [xstore nan(size(xstore,1),R.IntP.nt-R.IntP.buffer)];
     xint = zeros(m.n,1);
     TOL = exp(-4);
     for tstep = R.IntP.buffer:R.IntP.nt
@@ -199,11 +179,7 @@ for condsel = 1:numel(R.condnames)
             for j = 1:n % sources
                 for k = 1:numel(p.A) % connection type
                     if abs(A{k}(i,j)) > TOL
-                        %                 ik       = afferent(nmm(i),k);
-                        %                 jk       = efferent(nmm(j),k);
-                        %                 xd = spm_unvec(xback(:,end-D(i,j)),M.x);
                         xD = xstore(Ds(i,j),tstep-D(i,j));
-                        %                     fA(Dt(i,j)) = A{k}(i,j)*S(xD,Rz,B);
                         fA = [fA  A{k}(i,j)*sigmoidin(xD,Rz(j),B)]; % 1st Rz is slope!
                     end
                 end
@@ -211,33 +187,31 @@ for condsel = 1:numel(R.condnames)
             % intrinsic flow at target
             %----------------------------------------------------------------------
             ue   = us(tstep,i); % exogenous input (noise or structured inputs)
-            ui = us(tstep,i) + sum(fA); % within model connectivity
+            ui = sum(fA); % within model connectivity
             xi = xstore(m.xinds(i,1):m.xinds(i,2),tstep)';
             f(m.xinds(i,1):m.xinds(i,2)) = fx{nmm(i)}(xi,ui,ue,qbank{i});
             %             f(Dt(1,i))  = f(Dt(1,i)) + sum(fA) ;
         end
         xint = xint + (f.*dt);
         xstore = [xstore xint]; % This is done for speed reasons! Faster than indexing (!!)
-        if any(isnan(xint))
-            a = 1;
-        end
+
         if tstep >R.IntP.buffer*10
             if any(xint>1e4) || any(isnan(xint))
                 wflag= 1;
                 break
             end
-            pp1 = 1;
         end
-        % disp(tstep/R.IntP.nt)
-        % xint= spm_unvec(x,M.x);
     end
+    
+    
     if wflag == 1
         xstore_cond{condsel} = NaN;
     end
     xstore_cond{condsel} = xstore;
+    
+    
     if nargout>3
         [J{condsel},Es{condsel}] = findJacobian(R,xstore(:,end-R.IntP.buffer:end),uc,p,m);
-    end    % tvec = linspace(R.IntP.buffer*R.IntP.dt,R.IntP.nt*R.IntP.dt,R.IntP.nt);
-    a = 1;
+    end 
 end
 

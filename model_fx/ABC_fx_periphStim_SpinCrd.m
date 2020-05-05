@@ -24,7 +24,7 @@ function f = ABC_fx_periphStim_SpinCrd(x,ui,ue,P)
 % pre-synaptic inputs: s(V)
 %--------------------------------------------------------------------------
 R    = P.Rz(2:end);              % gain of activation function (1st is extrinsic- so remove)
-S = sigmoidin(x,R,0);
+S = sigmoidin(x(1:2:end),R,0);
 S = S';
 % R    = (2/3);     %0.5.*                  % slope of sigmoid activation function
 % B    = 0;                        % bias or background (sigmoid)
@@ -53,7 +53,8 @@ G = P.G;
 % free parameters on time constants and intrinsic connections
 %--------------------------------------------------------------------------
 % G(:,1)  inhibitory input from interneuron
-
+% G(:,2)  IIN self inhibition
+% G(:,3)  AMN to IIN
 %--------------------------------------------------------------------------
 % Neuronal states (deviations from baseline firing)
 %--------------------------------------------------------------------------
@@ -71,13 +72,13 @@ G = P.G;
 % Alpha Motor Neuron
 %--------------------------------------------------------------------------
 u      =  ui + ue; %A{1}*S(:,3)+ ;
-u      = - G(:,1).*S(:,3) - G(:,2).*S(:,1) + u;
+u      =  -G(:,1).*S(:,2) + u; % IIN to AMN + input
 f(:,2) =  (u - 2*x(:,2) - x(:,1)./T(:,1))./T(:,1);
 
 % Inhibitory Interneuron
 %--------------------------------------------------------------------------
-u      = 0;%
-% u      = u;
+u      = ui;%
+u      = -G(:,2).*S(:,2) + G(:,3).*S(:,1) + u; % Self inh + AMN to IIN + input
 f(:,4) =  (u - 2*x(:,4) - x(:,3)./T(:,2))./T(:,2);
 
 % Gamma Motor Neuron

@@ -14,8 +14,8 @@ R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.D','.o
 R.SimAn.scoreweight = [1 1/1e8];
 
 R.obs.gainmeth{1} = 'obsnoise';
-R.obs.gainmeth{2} = 'unitvar';
-R.obs.gainmeth{3} = 'boring';
+% R.obs.gainmeth{2} = 'unitvar';
+R.obs.gainmeth{2} = 'boring';
 R.obs.condchecker = 0; %1;
 mkdir([R.path.rootn 'outputs\' R.path.projectn '\data\Shenghong\'])
 if ~exist([R.path.rootn 'outputs\' R.path.projectn '\data\Shenghong\data.mat'])
@@ -34,12 +34,13 @@ for C = 1:2
 
     data{C} = [dataOut(C).trial{:}]';
     data{C} = data{C}(:,dataInd);
-    data{C} = (data{C}-mean(data{C}))./std(data{C});
+%     data{C} = (data{C}-mean(data{C}))./std(data{C});
     dataStore{C} = data{C}';
 end
 
-R.obs.trans.norm = 1;
-R.obs.trans.normcat = 0;
+R.obs.trans.norm = 0;
+R.obs.trans.zerobase = 1;
+R.obs.trans.normcat = 1;
 R.obs.trans.logdetrend = 0;
 R.obs.trans.gauss3 = 0;
 R.obs.trans.gausSm = 1; % 10 hz smooth window
@@ -58,7 +59,7 @@ R.obs.trans.logdetrend = 0;
 % Model Inversion
 R.out.dag = 'DH_model1'; %
 R.out.tag = '011019';
-R.SimAn.rep = 512;
+R.SimAn.rep = 128;
 R.plot.flag = 1;
 [p] = SimAn_ABC_250320(R,pc,m);
 

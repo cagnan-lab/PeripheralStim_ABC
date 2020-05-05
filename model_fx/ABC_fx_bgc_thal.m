@@ -4,14 +4,16 @@ function f = ABC_fx_bgc_thal(x,ui,ue,P)
 % single source (no extrinsic connections)
 %
 % order           cells     states
-% 1 = thalamus  - pyr       x(1,1:2)
+% 1 = thalamus  - pyr       x(1,1:4)
 
-% G(1,9) = gpi -> tha (-ve ext)
+% G(1,9) = RET Self -ve
+% G(2,9) = REL -> RET +ve
+% G(3,9) = RET -> REL -ve
 
 % pre-synaptic inputs: s(V)
 %--------------------------------------------------------------------------
 R    = P.Rz(2:end);              % gain of activation function (1st is extrinsic- so remove)
-S = sigmoidin(x,R,0);
+S = sigmoidin(x(1:2:end),R,0);
 S = S';
 
 % R    = R.*exp(P.S);              % gain of activation function
@@ -32,16 +34,21 @@ G = P.G;
 % Motion of states: f(x)
 %--------------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 1 - Thalamus: pyr
-% pyramidal cells: Hidden causes - error
+% 1 - Thalamus: inhibitory reticular cells - recieve input
 %--------------------------------------------------------------------------
-u      =  ui + ue; 
-u      =  -G(:,1)*S(:,1) + u;
+u      =  ue; 
+u      =  -G(:,1)*S(:,1) + G(:,2)*S(:,2) +  u; % Self inh + Rel + noise
 f(:,2) =  (u - 2*x(:,2) - x(:,1)./T(1,1))./T(1,1);
 
-% G(1,1) = gpi -> tha (-ve ext
+% 2 - Thalamus: excitatory relay cells - send output
+%--------------------------------------------------------------------------
+u      =  ui; 
+u      =  -G(:,3)*S(:,1) + u; % RET inh + endogenous input
+f(:,4) =  (u - 2*x(:,4) - x(:,3)./T(1,2))./T(1,2);
+
 
 % Voltage
 %==========================================================================
 f(:,1) = x(:,2);
+f(:,3) = x(:,4);
 f      = f'; %spm_vec(f);

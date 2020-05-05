@@ -9,7 +9,7 @@ function [f] = ABC_fx_periphStim_Musc(x,ui,ue,P)
 % [default] fixed parameters
 %--------------------------------------------------------------------------
 R    = P.Rz(2:end);              % gain of activation function (1st is extrinsic- so remove)
-S = sigmoidin(x,R,0);
+S = sigmoidin(x(1:2:end),R,0);
 S = S';
 % G  = [2]*200;   % synaptic connection strengths
 % T  = [4];               % synaptic time constants [str,gpe,stn,gpi,tha];
@@ -32,7 +32,7 @@ G = P.G; % FOR SELF CONNECTIONS
 %--------------------------------------------------------------------------
 % MEP:
 
-% Muscle Endplate
+% Motor Endplate
 %--------------------------------------------------------------------------
 u      =  ui;
 % u      =  u; 

@@ -34,7 +34,7 @@ function f = ABC_fx_bgc_mmc(x,ui,ue,P)
 % pre-synaptic inputs: s(V)
 %--------------------------------------------------------------------------
 R    = P.Rz(2:end);              % gain of activation function (1st is extrinsic- so remove)
-S = sigmoidin(x,R,0);
+S = sigmoidin(x(1:2:end),R,0);
 S = S';
 % R    = (2/3);     %0.5.*                  % slope of sigmoid activation function
 % B    = 0;                        % bias or background (sigmoid)
@@ -97,25 +97,25 @@ G = P.G;
 % Middle layer (middle pyramidal cells): Hidden causes
 %--------------------------------------------------------------------------
 u      =   ui + ue; %
-u      = - G(:,1).*S(:,1) - G(:,3).*S(:,5) + G(:,8).*S(:,3) + u;
+u      = - G(:,1).*S(:,1) - G(:,3).*S(:,3) + G(:,8).*S(:,2) + u;
 f(:,2) =  (u - 2*x(:,2) - x(:,1)./T(:,1))./T(:,1);
  
 % Supra-granular layer (superficial pyramidal cells): Hidden causes - error
 %--------------------------------------------------------------------------
 u      = 0;% 
-u      =  - G(:,7).*S(:,3) + G(:,2).*S(:,1) - G(:,12).*S(:,5) + G(:,14).*S(:,7) + u;
+u      =  - G(:,7).*S(:,2) + G(:,2).*S(:,1) - G(:,12).*S(:,3) + G(:,14).*S(:,4) + u;
 f(:,4) =  (u - 2*x(:,4) - x(:,3)./T(:,2))./T(:,2);
  
 % Supra-granular layer (inhibitory interneurons): Hidden states - error
 %--------------------------------------------------------------------------
 u      = 0;%
-u      =  - G(  :,4).*S(:,5) + G(:,5).*S(:,1) + G(:,6).*S(:,7) + G(:,13).*S(:,3) + u;
+u      =  - G(  :,4).*S(:,3) + G(:,5).*S(:,1) + G(:,6).*S(:,4) + G(:,13).*S(:,2) + u;
 f(:,6) =  (u - 2*x(:,6) - x(:,5)./T(:,3))./T(:,3);
  
 % Infra-granular layer (deep pyramidal cells): Hidden states
 %--------------------------------------------------------------------------
 u      =  ui;%
-u      = - G(:,10).*S(:,7) - G(:,9).*S(:,5) + G(:,11).*S(:,3) + u;
+u      = - G(:,10).*S(:,4) - G(:,9).*S(:,3) + G(:,11).*S(:,2) + u;
 f(:,8) =  (u - 2*x(:,8) - x(:,7)./T(:,4))./T(:,4);
  
 % Voltage

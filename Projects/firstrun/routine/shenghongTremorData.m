@@ -25,7 +25,7 @@ for C = 1:2
         ftdata_pp.trial{tr} = [XD; accPCA'];
     end
     
-    ftdata_pp.label(end+1:end+2) = {'ACCL','ACCR'}
+    ftdata_pp.label(end+1:end+2) = {'ACCL','ACCR'};
     
     
     cfg = [];

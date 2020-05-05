@@ -28,7 +28,7 @@ R.IntP.intFx = @spm_fx_compile_periphStim; %@spm_fx_compile_120319;
 R.IntP.compFx= @compareData_100717;
 
 R.IntP.dt = .001;
-R.IntP.Utype = 'white+beta'; %'white_covar'; % DCM_Str_Innov
+R.IntP.Utype = 'white_covar'; % DCM_Str_Innov
 R.IntP.buffer = ceil(0.050*(1/R.IntP.dt)); % buffer for delays
 R.IntP.getNoise = 0;
 N = R.obs.csd.reps; % Number of epochs of desired frequency res

@@ -1,17 +1,16 @@
-function [R p m uc] = MS_periphStim_Model2(R)
-% THIS IS THE STN/GPE
-% stn only!
+function [R p m uc] = MS_periphStim_Model_2(R)
 m.m = 4; % # of sources
-m.x = {[0 0 0 0] [0 0 0 0 0 0 0 0] [0 0 0 0]  [0 0]}; % Initial states
-m.Gint = [2 14 2 1];
-m.Tint = [2 4 2 1];
-m.Sint = [2 9 2 2];
+% Muscle MMC SpinCrd THAL
+m.x = {[0 0 0 0] [0 0 0 0 0 0 0 0] [0 0 0 0]  [0 0 0 0]}; % Initial states
+m.Gint = [1 14 3 3];
+m.Tint = [2 4 2 2];
+m.Sint = [3 5 3 3];
 m.n =  size([m.x{:}],2); % Number of states
 % These outline the models to be used in compile function
 for i = 1:numel(R.nmsim_name)
     m.dipfit.model(i).source = R.nmsim_name{i};
 end
-m.outstates = {[0 0 1 0] [0 0 1 0 0 0 0 0] [1 0 0 0]   [1 0]}; % SPINDLE TO MODEL ACC!
+m.outstates = {[0 0 1 0] [0 0 1 0 0 0 0 0] [1 0 0 0]   [0 0 1 0]}; % SPINDLE TO MODEL ACC!
 R.obs.outstates = find([m.outstates{:}]);
 for i=1:numel(R.chloc_name)
     R.obs.obsstates(i) = find(strcmp(R.chloc_name{i},R.chsim_name));
@@ -34,7 +33,7 @@ m.xinds = xinds;
 % setup exogenous noise
 % m.uset.p = DCM.Ep;
 m.uset.p.covar = eye(m.m);
-m.uset.p.scale = 1e1; %.*R.InstP.dt;
+m.uset.p.scale = 1e-3; %.*R.InstP.dt;
 uc = innovate_timeseries(R,m);
 
 %% Prepare Priors
@@ -77,7 +76,7 @@ p.B_s{2} = repmat(1/8,size(p.A_s{2})).*(p.B{2}==0);
 
 % Input strengths
 p.C = zeros(m.m,1);
-p.C_s = repmat(1/8,size(p.C));
+p.C_s = repmat(1,size(p.C));
 
 % Leadfield
 p.obs.LF = [0 0];
