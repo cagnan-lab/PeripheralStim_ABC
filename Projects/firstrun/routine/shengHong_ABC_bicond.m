@@ -35,13 +35,13 @@ for C = 1:2
     dataStore{C} = data{C}';
 end
 
-% R.obs.trans.norm = 1;
-R.obs.trans.normcat = 1;
+R.obs.trans.norm = 0;
+R.obs.trans.normcat = 0;
 R.obs.trans.logdetrend = 0;
 R.obs.trans.gauss3 = 0;
 R.obs.trans.gausSm = 1; % 10 hz smooth window
 [R.data.feat_xscale, R.data.feat_emp] = R.obs.transFx(dataStore,R.chloc_name,R.chsim_name,1000,R.obs.SimOrd,R);
-npdplotter_110717({R.data.feat_emp},[],R.data.feat_xscale,R,[],[]);
+R.plot.outFeatFx({R.data.feat_emp},[],R.data.feat_xscale,R,[],[]);
 clear data dat
 
 % Peripheral Stim

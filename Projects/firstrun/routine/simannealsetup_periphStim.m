@@ -83,7 +83,7 @@ R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
 R.SimAn.jitter = 1; % Global precision
 %% PLOTTING
-R.plot.outFeatFx = @npdplotter_110717; %%@;csdplotter_220517
+R.plot.outFeatFx = @genplotter_200420; %%@;csdplotter_220517
 R.plot.save = 'False';
 R.plot.distchangeFunc = @plotDistChange_KS;
 % R.plot.gif.delay = 0.3;

@@ -66,7 +66,10 @@ for C = 1:2
     ftdata_pp = ft_selectdata(cfg,ftdata_pp);
     
     ftdata_pp = ft_appenddata([],ftdata_pp,emgfix);
-    
+    % Make Header
+    ftdata_pp.hdr.label = ftdata_pp.label ;
+ftdata_pp.hdr.chantype = [repmat({'EEG'},1,8) repmat({'LFP'},1,4) repmat({'Acc'},1,6) repmat({'Force'},1,2) repmat({'ACCcomp'},1,2) repmat({'EMG'},1,2)]';
+
     %
     %     for tr = 1:numel(ftdata_pp.trial)
     %         ftdata_pp.trial{tr} = ft_preproc_standardize(ftdata_pp.trial{tr});

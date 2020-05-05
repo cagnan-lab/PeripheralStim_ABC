@@ -44,6 +44,10 @@ ft_data.fsample         = fsample;
 ft_data.trial{1}        = X';
 ft_data.time{1}         = timeVec;
 
+ft_data.hdr.label = ft_data.label ;
+ft_data.hdr.chantype = [repmat({'EEG'},1,8) repmat({'EMG'},1,2) repmat({'LFP'},1,4) repmat({'Acc'},1,6) repmat({'Force'},1,2)]';
+% plotDataTypes(ft_data)
+
 % Reference EEG Channels
 ft_data.trial{1}(2:10,:) = ft_data.trial{1}(2:10,:)- ft_data.trial{1}(1,:);
 
