@@ -12,6 +12,9 @@ end
 % trialdef = [XT(find(XT(:,1)==0),2) XT(find(XT(:,1)==1),2) repmat(1,numel(find(XT(:,1)==1)),1);
 %     XT(find(XT(:,1)==2),2) XT(find(XT(:,1)==3),2) repmat(2,numel(find(XT(:,1)==3)),1)];
 
+% Standardize
+X = (X-mean(X,1))./std(X);
+
 %% Make Trial Definition
 XT = [
     69790 117900 0;

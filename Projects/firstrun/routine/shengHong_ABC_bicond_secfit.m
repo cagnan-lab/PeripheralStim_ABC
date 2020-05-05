@@ -8,10 +8,10 @@ R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun')
 R = simannealsetup_periphStim(R);
 
 % Bi condition Settings!
-R.condnames = {'Tremor'}; %,'Rest'};
-R.Bcond = 0; % 2Which condition is the modulating?
-R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.D','.obs.Cnoise'}; %,'.B'}; %
-R.SimAn.scoreweight = [1 1/1e8];
+R.condnames = {'Tremor','Rest'};
+R.Bcond = 2; % 2Which condition is the modulating?
+R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.D','.obs.Cnoise','.B'}; %
+R.SimAn.scoreweight = [1/16 1/1e8];
 
 R.obs.gainmeth{1} = 'obsnoise';
 R.obs.gainmeth{2} = 'unitvar';
@@ -34,17 +34,17 @@ for C = 1:2
     
     data{C} = [dataOut(C).trial{:}]';
     data{C} = data{C}(:,dataInd);  
-    data{C} = (data{C}-mean(data{C}))./std(data{C});
+%     data{C} = (data{C}-mean(data{C}))./std(data{C});
     dataStore{C} = data{C}';
 end
 
-R.obs.trans.norm = 1;
-R.obs.trans.normcat = 0;
+R.obs.trans.norm = 0;
+R.obs.trans.normcat = 1;
 R.obs.trans.logdetrend = 0;
 R.obs.trans.gauss3 = 0;
 R.obs.trans.gausSm = 1; % 10 hz smooth window
 [R.data.feat_xscale, R.data.feat_emp] = R.obs.transFx(dataStore,R.chloc_name,R.chsim_name,1000,R.obs.SimOrd,R);
-npdplotter_110717({R.data.feat_emp},[],R.data.feat_xscale,R,[],[]);
+R.plot.outFeatFx({R.data.feat_emp},[],R.data.feat_xscale,R,[],[]);
 clear data dat
 
 % Peripheral Stim
@@ -56,10 +56,15 @@ R.obs.trans.gausSm = 0;
 R.obs.trans.logdetrend = 0;
 
 % Model Inversion
-R.out.dag = 'DH_model1'; %
-R.out.tag = '011019';
+R.out.dag = 'SH_model_secfit'; %
+R.out.tag = '200420';
 R.SimAn.rep = 512;
 R.plot.flag = 1;
+
+% Load previous fit
+load([R.path.rootn 'outputs\' R.path.projectn '\'  R.out.tag  '\' R.out.dag '\initfit.mat'])
+pc = initfit.BPfit;
+
 [p] = SimAn_ABC_250320(R,pc,m);
 
 % Do posthoc analysis

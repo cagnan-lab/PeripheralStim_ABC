@@ -9,7 +9,7 @@
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
 R.data.datatype = 'CSD'; %%'NPD'
-R.frqz = [3:.2:32];
+R.frqz = [2:.2:32];
 R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
@@ -83,7 +83,7 @@ R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
 R.SimAn.jitter = 1; % Global precision
 %% PLOTTING
-R.plot.outFeatFx = @npdplotter_110717; %%@;csdplotter_220517
+R.plot.outFeatFx = @genplotter_200420; %%@;csdplotter_220517
 R.plot.save = 'False';
 R.plot.distchangeFunc = @plotDistChange_KS;
 % R.plot.gif.delay = 0.3;
