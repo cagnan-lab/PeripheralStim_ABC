@@ -20,7 +20,13 @@ for i = 1:m.m
             % Thalamus
             pQ(i).G  = [2 2 2]*200;   % synaptic connection strengths
             pQ(i).T  = [8 12];               % synaptic time constants [str,gpe,stn,gpi,tha];
-            pQ(i).S  = [0 0 0];     % 1st extrinsic; 2nd intrinsic(s)        
+            pQ(i).S  = [0 0 0];     % 1st extrinsic; 2nd intrinsic(s)   
+        case 'Cereb'
+            % Cerebellum
+            pQ(i).G  = [2 2 2 2 2 2 2 2]*200;   % synaptic connection strengths
+            pQ(i).T  = [8 8 8 8 12];               % synaptic time constants;
+            pQ(i).S  = [0 0 0 0 0];     % 1st extrinsic; 2nd intrinsic(s)   
+            
     end
     % Convert to seconds
     pQ(i).T = pQ(i).T./1000;

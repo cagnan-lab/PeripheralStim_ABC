@@ -27,6 +27,7 @@ for condsel = 1:numel(R.condnames)
     fx{2} = @ABC_fx_periphStim_SpinCrd;                                 % Spinal Cord
     fx{3} = @ABC_fx_bgc_mmc; % Motor Cortex
     fx{4} = @ABC_fx_bgc_thal;
+    fx{5} = @ABC_fx_bgc_cerebellum;
     
     % indices of extrinsically coupled hidden states
     %--------------------------------------------------------------------------
@@ -34,7 +35,7 @@ for condsel = 1:numel(R.condnames)
     efferent(2,:) = [1 1 1 1];               % sources of spinCord connections
     efferent(3,:) = [3 3 6 7];               % ORIG sources of MMC connections
     efferent(4,:) = [1 1 1 1];               % sources of THAL connections
-    
+    efferent(5,:) = [1 1 1 1];               % sources of THAL connections
     
     % scaling of afferent extrinsic connectivity (Hz)
     %--------------------------------------------------------------------------
@@ -42,6 +43,7 @@ for condsel = 1:numel(R.condnames)
     E(2,:) = [.2 .2 -.2 -.2]*2000;             % spinCord connections
     E(3,:) = [.2 .2 -.2 -.2]*8000;            % MMC connections
     E(4,:) = [.2 .2 -.2 -.2]*2000;  %500       % THAL connections    
+    E(5,:) = [.2 .2 -.2 -.2]*2000;  %500       % THAL connections    
     
     % get the neural mass models {'ERP','CMC'}
     %--------------------------------------------------------------------------
@@ -56,6 +58,8 @@ for condsel = 1:numel(R.condnames)
             nmm(i) = 3;
         elseif strcmp(model(i).source,'THAL')
             nmm(i) = 4;
+        elseif strcmp(model(i).source,'Cereb')
+            nmm(i) = 5;
         end
     end
     

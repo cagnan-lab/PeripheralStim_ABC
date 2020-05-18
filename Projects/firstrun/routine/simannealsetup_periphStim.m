@@ -14,9 +14,11 @@ R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
-R.nmsim_name = {'Musc1','MMC','SpinCrd','THAL'}; %modules (fx) to use.
+R.nmsim_name = {'Musc1','MMC','SpinCrd','THAL','Cereb'}; %modules (fx) to use.
 R.chloc_name = {'EP','ctx','amn','Thal'}; % observed channels
-R.chsim_name = {'EP','ctx','amn','Thal'}; % simulated channel names (names must match between these two!)
+R.datinds = 1:4;
+R.chsim_name = {'EP','ctx','amn','Thal','Cereb'}; % simulated channel names (names must match between these two!)
+R.siminds = 1:5;
 R.condnames = {'OFF'}; % VERIFY!!!
 % Spectral characteristics
 R.obs.csd.df = 0.5;
@@ -25,7 +27,7 @@ R.obs.csd.reps = 32; %96;
 %% INTEGRATION
 % Main dynamics function
 R.IntP.intFx = @spm_fx_compile_periphStim; %@spm_fx_compile_120319;
-R.IntP.compFx= @compareData_100717;
+R.IntP.compFx= @compareData_180520;
 
 R.IntP.dt = .001;
 R.IntP.Utype = 'white_covar'; % DCM_Str_Innov
@@ -49,9 +51,9 @@ R.obs.obsFx = @observe_data;
 R.obs.gainmeth = {'obsnoise','unitvar'}; %,'submixing'}; %,'lowpass'}; ,'leadfield' %unitvar'mixing'
 R.obs.glist =0; %linspace(-5,5,12);  % gain sweep optimization range [min max listn] (log scaling)
 R.obs.brn =2; % 2; % burn in time
-LF = [1 1 1 1]*10; % Fit visually and for normalised data
+LF = [1 1 1 1 1]*10; % Fit visually and for normalised data
 R.obs.LF = LF;
-R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation function
+R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation function
 % % (precompute filter)
 % % fsamp = 1/R.IntP.dt;
 % % nyq = fsamp/2;
