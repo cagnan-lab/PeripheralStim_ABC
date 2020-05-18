@@ -37,7 +37,7 @@ for C = 1:2
 %     data{C} = (data{C}-mean(data{C}))./std(data{C});
     dataStore{C} = data{C}';
 end
-R.obs.trans.zerobase = 1;
+
 R.obs.trans.norm = 0;
 R.obs.trans.normcat = 1;
 R.obs.trans.logdetrend = 0;
@@ -56,14 +56,16 @@ R.obs.trans.gausSm = 0;
 R.obs.trans.logdetrend = 0;
 
 % Model Inversion
-R.out.dag = 'SH_model_secfit'; %
-R.out.tag = '200420';
+% Model Inversion
+R.out.dag = 'DH_model1'; %
+R.out.tag = '011019';
+
 R.SimAn.rep = 512;
 R.plot.flag = 1;
 
 % Load previous fit
 load([R.path.rootn 'outputs\' R.path.projectn '\'  R.out.tag  '\' R.out.dag '\initfit.mat'])
-R.out.tag = '200420duel';
+pc = initfit.BPfit;
 
 [p] = SimAn_ABC_250320(R,pc,m);
 
