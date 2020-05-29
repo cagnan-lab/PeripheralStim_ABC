@@ -96,7 +96,7 @@ for modID = 1:7
         %% Run ABC Optimization
         R = setSimTime(R,32);
         R.Bcond = 0;
-        R.SimAn.rep = 64;
+        R.SimAn.rep = 256;
         SimAn_ABC_250320(R,p,m);
         closeMessageBoxes
     end
