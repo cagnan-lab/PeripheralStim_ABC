@@ -1,2 +1,7 @@
 .mat
 outputs/periphModel_MSET1_v1/WorkingModList.mat
+*.mat
+*.fig
+*.mat
+*.asv
+outputs/periphModel_MSET1_v1/periphModel_MSET1_v1_M2/bankSave_periphModel_MSET1_v1_periphModel_MSET1_v1_M2.mat

@@ -1,9 +1,9 @@
 clear; close all
-addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-% addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 R = simannealsetup_periphStim(R);
 
@@ -67,8 +67,8 @@ R.obs.trans.logdetrend = 0;
 
 for modID = 1:7
     if modID == 7
-        R.obs.Cnoise = R.obs.Cnoise;
-        R.obs.LF = R.obs.LF ; % Fit visually and for normalised data
+        R.obs.Cnoise =[1 1 1 1 1]*1e-8;
+        R.obs.LF = [1 1 1 1 1]*10; ; % Fit visually and for normalised data
         R.nmsim_name = {'Musc1','MMC','SpinCrd','THAL','Cereb'}; %modules (fx) to use.
         R.chsim_name = {'EP','ctx','amn','Thal','Cereb'}; % simulated channel names (names must match between these two!)
         R.siminds = 1:5;
@@ -101,3 +101,19 @@ for modID = 1:7
         closeMessageBoxes
     end
 end
+R.comptype = 1;
+modID = modelCompMaster_V2(R,1:7,[]);
+
+R.modcomp.modN = [1:7];
+R.modcompplot.NPDsel = [4 5 2]; %[6 9 10];
+R.plot.confint = 'yes';
+cmap = linspecer(numel(R.modcomp.modN));
+cmap = cmap(end:-1:1,:);
+plotModComp_310520(R,cmap)
+figure(2)
+subplot(3,1,1); ylim([-2 1])
+
+
+uc = innovate_timeseries(R,m);
+uc{1} = uc{1}.*sqrt(R.IntP.dt);
+[~,~,feat_sim{1},~,xsim_ip{1}] = computeSimData(R,m,uc_ip{1},Pbase,0);
