@@ -1,5 +1,5 @@
 clear; close all; closeMessageBoxes
-
+addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %
 % %
