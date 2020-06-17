@@ -1,9 +1,9 @@
 clear; close all
-addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-% addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 R = simannealsetup_periphStim(R);
 

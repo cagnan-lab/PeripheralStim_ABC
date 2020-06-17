@@ -1,2 +1,10 @@
 .mat
 outputs/periphModel_MSET1_v1/WorkingModList.mat
+*.mat
+*.fig
+*.mat
+*.asv
+outputs/periphModel_MSET1_v1/periphModel_MSET1_v1_M2/bankSave_periphModel_MSET1_v1_periphModel_MSET1_v1_M2.mat
+*.mat
+outputs/firstRun/data/DP/thalamomuscular/dp_thalamomuscular_subj1r_pp.mat
+outputs/dptest_sub/WorkingModList.mat

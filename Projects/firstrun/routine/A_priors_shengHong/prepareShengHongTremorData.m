@@ -1,4 +1,4 @@
-function dataOut = shenghongTremorData(R)
+function dataOut = prepareShengHongTremorData(R)
 
 SMR_data = ImportSMR([R.path.datapath '\ET_1Jun_Posture_NoStim_BiLFP.smr']);
 fsample = 2048; %mean(SMR_data(1).imp.adc(1));

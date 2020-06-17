@@ -122,7 +122,7 @@ for condsel = 1:numel(R.condnames)
     %--------------------------------------------------------------------------
     %
     % alist = [1 2; 3 4];
-    alist = [1; 3];
+    alist = [1; 3]; A = [];
     for i = 1:numel(p.A)
         if cs ~= R.Bcond
             A{i} = decon*exp(p.A{i});
