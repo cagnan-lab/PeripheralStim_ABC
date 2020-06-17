@@ -44,7 +44,8 @@ R.obs.trans.normcat = 1;
 R.obs.trans.logdetrend = 0;
 R.obs.trans.gauss3 = 0;
 R.obs.trans.gausSm = 1; % 10 hz smooth window
-[R.data.feat_xscale, R.data.feat_emp] = R.obs.transFx(dataStore,R.datinds,1000,R.obs.SimOrd,R);
+R.obs.trans.interptype = 'pchip';
+[R.data.feat_xscale, R.data.feat_emp] = R.obs.transFx(dataStore,R.datinds,256,R.obs.SimOrd,R);
 R.plot.outFeatFx({R.data.feat_emp},[],R.data.feat_xscale,R,[],[]);
 clear data dat
 

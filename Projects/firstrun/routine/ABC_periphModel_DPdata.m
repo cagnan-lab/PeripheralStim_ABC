@@ -1,7 +1,7 @@
 clear; close all
 closeMessageBoxes
-addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-% addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 
 % R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
 R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
@@ -95,14 +95,13 @@ for cursub = [1 6 8 11] %1:numel(R.sublist)
         p.B{1}(3,2) = 0; % MMC to SC
         p.B{1}(4,2) = 0; % MMC to Thal
         p.B{1}(2,4) = 0; % Thal to CTX
-        p.B_s{1} = repmat(1/2,size(p.A_s{1})).*(p.B{1}==0);
+        p.B_s{1} = repmat(1/4,size(p.A_s{1})).*(p.B{1}==0);
         
         pause(5)
         R.out.dag = sprintf([R.out.tag '_BMOD_MSET%.0f_' R.sublist{cursub}],modID); % 'All Cross'
         
         %% Run ABC Optimization
         R = setSimTime(R,32);
-        R.Bcond = 2;
         R.SimAn.rep = 256;
         SimAn_ABC_250320(R,p,m);
         closeMessageBoxes
