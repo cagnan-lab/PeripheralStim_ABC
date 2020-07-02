@@ -1,4 +1,5 @@
 function ABC_periphModel_ModComp_fitting(R)
+        closeMessageBoxes
 
 %% Start Loop (for parallel sessions)
 % WML is a remote accessible for coordinating parallel sessions
