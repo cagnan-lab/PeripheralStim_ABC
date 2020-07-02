@@ -2,7 +2,7 @@ function plotTremorTimeSeries(data,fsample,legname,condname)
 i = 0;
 step = 6;
 
-for cond = 1:2
+for cond = 1:numel(condname)
     for rep = 1:2
         i = i+1;
         subplot(2,2,i)

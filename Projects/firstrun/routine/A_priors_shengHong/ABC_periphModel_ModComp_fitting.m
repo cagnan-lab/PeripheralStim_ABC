@@ -17,14 +17,14 @@ for modID = 1:7
     if modID == 7
         R.obs.Cnoise =[1 1 1 1 1]*1e-8;
         R.obs.LF = [1 1 1 1 1]*10; % Fit visually and for normalised data
-        R.nmsim_name = {'Musc1','MMC','SpinCrd','THAL','Cereb'}; %modules (fx) to use.
-        R.chsim_name = {'EP','ctx','amn','Thal','Cereb'}; % simulated channel names (names must match between these two!)
+        R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC','Cereb'}; %modules (fx) to use.
+        R.chsim_name = {'amn','Thal','EP','ctx','Cereb'}; % simulated channel names (names must match between these two!)
         R.siminds = 1:5;
     else
        R.obs.Cnoise = R.obs.Cnoise(1:4);
         R.obs.LF = R.obs.LF(1:4); % Fit visually and for normalised data
-        R.nmsim_name = {'Musc1','MMC','SpinCrd','THAL'}; %modules (fx) to use.
-        R.chsim_name = {'EP','ctx','amn','Thal'}; % simulated channel names (names must match between these two!)
+        R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
+        R.chsim_name = {'amn','Thal','EP','ctx'}; % simulated channel names (names must match between these two!)
         R.siminds = 1:4;
     end
     load([R.path.rootn '\outputs\' R.out.tag '\WorkingModList'],'WML')

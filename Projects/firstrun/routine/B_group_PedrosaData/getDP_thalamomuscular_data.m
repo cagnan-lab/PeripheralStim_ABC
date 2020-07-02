@@ -7,8 +7,10 @@ datapath = 'D:\Data\DP_Tremor_ThalamoMuscular\'; %R.path.datapath_pedrosa;
 % (3) How were EMG and MUA synced? Same amplifier?
 % thalsrc = 'BUA';
 thalsrc = 'LFP';
-load([datapath subsel '_micro_mua.mat']);
+% load([datapath subsel '_micro_mua.mat']);
+load([datapath sublist{sub} '_preproc_micro.mat']);
 load([datapath subsel '_preproc_macro.mat']);
+microlist = {'central' 'anterior' 'medial' 'posterior' 'lateral'};
 
 %     micro_ind = find(strncmp(data_macro.label,'lateral',4));
 switch thalsrc

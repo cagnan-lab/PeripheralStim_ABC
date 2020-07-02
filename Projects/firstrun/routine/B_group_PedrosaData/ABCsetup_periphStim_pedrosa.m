@@ -3,12 +3,13 @@
 R.filepathn = [R.path.rootn 'data\storage'];
 R.data.datatype = 'CSD'; %%'NPD'
 R.sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10l','subj10r','subj12l','subj13l','subj14r'};
+
 R.frqz = [2:.2:32];
 R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
-R.nmsim_name = {'Musc1','MMC','SpinCrd','THAL'}; %modules (fx) to use.
+R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
 R.chloc_name = {'amn','Thal'}; % observed channels
 R.datinds = 1:2;
 R.chsim_name = {'amn','Thal','EP','ctx',}; % simulated channel names (names must match between these two!)
@@ -22,7 +23,7 @@ R.obs.csd.reps = 32; %96;
 
 %% INTEGRATION
 % Main dynamics function
-R.IntP.intFx = @spm_fx_compile_periphStim; %@spm_fx_compile_120319;
+R.IntP.intFx = @spm_fx_compile_periphStim_dp; %@spm_fx_compile_120319;
 R.IntP.compFx= @compareData_180520;
 
 R.IntP.dt = .001;

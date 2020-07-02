@@ -1,5 +1,5 @@
 function dataOut = getDP_thalamomuscular_data(R,subsel)
-datapath = 'D:\Data\DP_Tremor_ThalamoMuscular\'; %R.path.datapath_pedrosa;
+% datapath = 'D:\Data\DP_Tremor_ThalamoMuscular\'; %R.path.datapath_pedrosa;
 %% QUESTIONS FOR DP
 % (1) Are the micro trials_nospike derived from trials? doesnt look like
 % MUA
@@ -7,14 +7,15 @@ datapath = 'D:\Data\DP_Tremor_ThalamoMuscular\'; %R.path.datapath_pedrosa;
 % (3) How were EMG and MUA synced? Same amplifier?
 % thalsrc = 'BUA';
 thalsrc = 'LFP';
-load([datapath subsel '_micro_mua.mat']);
-load([datapath subsel '_preproc_macro.mat']);
+% load([datapath subsel '_preproc_micro.mat']);
+load([R.path.datapath_pedrosa subsel '_preproc_macro.mat']);
+    microlist = {'central' 'anterior' 'medial' 'posterior' 'lateral'};
 
 %     micro_ind = find(strncmp(data_macro.label,'lateral',4));
 switch thalsrc
     case 'LFP'
         thaldat = data_macro;
-        thaldat.label = intersect(thaldat.label,data_micro.label);
+        thaldat.label = intersect(thaldat.label,microlist);
     case 'BUA'
         thaldat = data_micro;
         thaldat.trial = data_micro.trial;
@@ -145,7 +146,7 @@ for cond = 1:2
 %     end
 
     dataOut(cond) = data;
-    codes{cond} = {data_macro.label{emgsel} data_micro.label{jsel} data_macro.height(heightlist(isel)) data_macro.trialinfo(heightlist)}
+    codes{cond} = {data_macro.label{emgsel} data_macro.label{jsel} data_macro.height(heightlist(isel)) data_macro.trialinfo(heightlist)}
 
 end
 

@@ -25,7 +25,6 @@ for cursub = subsel%1:numel(R.sublist)
         load([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\' R.out.dag '\modelfit_' R.out.tag '_' R.out.dag '.mat'])
         mfit = varo;
         R.Mfit = mfit;
-        
         p = mfit.BPfit;
         
         % load parbank?

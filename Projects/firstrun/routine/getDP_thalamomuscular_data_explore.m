@@ -1,6 +1,6 @@
 % function getDP_thalamomuscular_data(R)
 clear
-sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10l','subj10r','subj12l','subj13l','subj14r'};
+sublist = {'subj1r','subj3l','subj6l','subj6r','subj9r'}; %,'subj4l','subj8l','subj10l','subj10r','subj12l','subj13l','subj14r'
 datapath = 'C:\DATA\DP_Tremor_ThalamoMuscular\';
 close all
 %% QUESTIONS FOR DP
@@ -10,7 +10,7 @@ close all
 % (3) How were EMG and MUA synced? Same amplifier?
 thalsrc = 'LFP';
 for sub =1:numel(sublist)
-    load([datapath sublist{sub} '_micro_mua.mat']);
+    load([datapath sublist{sub} '_preproc_micro.mat']);
     load([datapath sublist{sub} '_preproc_macro.mat']);
     
     %     micro_ind = find(strncmp(data_macro.label,'lateral',4));
@@ -99,8 +99,6 @@ for sub =1:numel(sublist)
             
             % Get the thalamic MUA + spectra
             Y = thaldat.trial{heightlist(isel)}(:,j);
-%             Y = makemua_hayriye3(Y,1/1000,3/1000,fsamp,fsamp,4);
-%             Y = (Y-mean(Y,1))./std(Y,[],1); % standardize
             [fz hz] = pwelch(Y,fsamp,[],fsamp,fsamp);
             Yfs{isel,jsel} = [hz';fz'];
             Ys{isel,jsel} = [thaldat.time{heightlist(isel)}; Y'];
@@ -128,12 +126,15 @@ for sub =1:numel(sublist)
         xlabel('Hz'); ylabel('Power'); xlim([0 40]);set(gca,'YScale','log')
         subplot(3,2,6)
         plot(squeeze(chz(:,isel,jsel)),squeeze(cz(:,isel,jsel))); hold on
-        xlabel('Hz'); ylabel('Coherence'); xlim([0 40]); ylim([0 0.1])
+        xlabel('Hz'); ylabel('Coherence'); xlim([0 40]); ylim([0 0.9])
         legend({'Posture','Rest'})
         
         codes{sub,cond} = {data_macro.label{emgsel} data_micro.label{jsel} data_macro.height(heightlist(isel)) data_macro.trialinfo(heightlist)}
         
     end
+    
+end
+% SCRIPT GRAVE:
     %
     %     % 1st EMG choose best tremor by power
     %     % best data between -2 and 2mm
@@ -186,8 +187,5 @@ for sub =1:numel(sublist)
     %     data = ft_rejectvisual(cfg,data);
     %     mkdir([R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular'])
     %     save([R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular\dp_thalamomuscular_' sublist{sub} '_pp.mat'],'data')
-    
-end
-
 
 

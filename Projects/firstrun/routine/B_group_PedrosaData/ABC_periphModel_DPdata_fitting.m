@@ -1,4 +1,5 @@
 function ABC_periphModel_DPdata_fitting(R)
+closeMessageBoxes
 %% Start Loop (for parallel sessions)
 try
     load([R.path.rootn '\outputs\' R.out.tag '\WorkingModList'])
@@ -11,14 +12,14 @@ catch
 end
 
 % Pretend the current sub is 1
-for cursub = [1 6 8 11] %1:numel(R.sublist)
+for cursub = 1:numel(R.sublist)
     load([R.path.rootn '\outputs\' R.out.tag '\WorkingModList'],'WML')
     if ~any(intersect(WML,cursub))
         WML = [WML cursub];
         save([R.path.rootn '\outputs\' R.out.tag '\WorkingModList'],'WML')
         disp('Writing to Sub List!!')
         fprintf('Now Fitting Subject %.0f',cursub)
-        f = msgbox(sprintf('Fitting Subject %.0f',cursub));
+%         f = msgbox(sprintf('Fitting Subject %.0f',cursub));
         
         %% Load in time series data from DPs set
         mkdir([R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular'])
@@ -66,7 +67,6 @@ for cursub = [1 6 8 11] %1:numel(R.sublist)
         p = A.Pfit;
         % Modify so B matrix is available
         p.B{1}(4,1) = 0; % Spin to Thal
-        p.B{1}(3,2) = 0; % MMC to SC
         p.B{1}(4,2) = 0; % MMC to Thal
         p.B{1}(2,4) = 0; % Thal to CTX
         p.B_s{1} = repmat(1/2,size(p.A_s{1})).*(p.B{1}==0);

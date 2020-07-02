@@ -68,13 +68,13 @@ for condsel = 1:numel(R.condnames)
     % Compute value of delays from lognormal mean
     D = zeros(m.m);
     D(p.D>-30) = 4/1000; % set all delay priors to 4ms.
-    
-    D(3,1) = 15/1000;   % spindle to cord (afferent)
-    D(1,3) = 8/1000;  % cord to MEP (efferent)
-    D(2,4) = 10/1000;  % Thal to Cord (efferent)
-    D(4,2) = 10/1000;  % Cord to Thal (afferent)
-    D(2,4) = 3/1000;   % Thal to M1 (Lumer, Edelman, Tononi; 1997)
-    D(4,2) = 8/1000;   % M1 to Thal (Lumer, Edelman, Tononi; 1997)
+    % The indices are in same 
+    D(3,1) = 8/1000;  % cord to MotorUnit (efferent)
+    D(4,2) = 3/1000;   % Thal to M1 (Lumer, Edelman, Tononi; 1997)
+    D(1,3) = 15/1000;   % spindle to cord (afferent)
+    D(2,3) = 10/1000;  % spindle to Thal (afferent)
+    D(2,4) = 8/1000;   % M1 to Thal (Lumer, Edelman, Tononi; 1997)
+    D(1,4) = 8/1000;   % M1 to cord 
     
     D = D(1:m.m,1:m.m);
     D = ceil(D.*exp(p.D).*(1/R.IntP.dt)); % As expectation of priors and convert units to steps

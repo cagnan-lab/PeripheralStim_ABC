@@ -1,6 +1,6 @@
 % function getDP_thalamomuscular_data(R)
 clear
-sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10l','subj10r','subj12l','subj13l','subj14r'};
+sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10r','subj12l','subj13l','subj14r'}; %,'subj10l','subj12l','subj13l','subj14r'};
 datapath = 'C:\DATA\DP_Tremor_ThalamoMuscular\';
 close all
 %% QUESTIONS FOR DP
@@ -8,22 +8,36 @@ close all
 % MUA
 % (2) Why is macrodata one sample less than micro in length?
 % (3) How were EMG and MUA synced? Same amplifier?
+% thalsrc = 'LFP';
 thalsrc = 'LFP';
+
 for sub =1:numel(sublist)
-    load([datapath sublist{sub} '_micro_mua.mat']);
+%     load([datapath sublist{sub} '_micro_mua.mat']);
+%     load([datapath sublist{sub} '_preproc_micro.mat']);
     load([datapath sublist{sub} '_preproc_macro.mat']);
     
+    microlist = {'central' 'anterior' 'medial' 'posterior' 'lateral'};
     %     micro_ind = find(strncmp(data_macro.label,'lateral',4));
     switch thalsrc
         case 'LFP'
             thaldat = data_macro;
-            thaldat.label = intersect(thaldat.label,data_micro.label);
+            thaldat.label = intersect(thaldat.label,microlist); %data_micro.label);
+            
+        % ensure format is ch x N
+        if size(thaldat.trial{1},1)>size(thaldat.trial{1},2)
+         thaldat.trial = arrayfun(@(q) thaldat.trial{q}.',1:numel(thaldat.trial),  'UniformOutput',false); %transpose
+        end
+        
+        if size(thaldat.time{1},1)>size(thaldat.time{1},2)
+         thaldat.time = arrayfun(@(q) thaldat.time{q}',1:numel(thaldat.trial),  'UniformOutput',false); %transpose
+        end
+                    
+            
         case 'BUA'
             thaldat = data_micro;
             thaldat.trial = data_micro.trial;
     end
-    
-    
+        
     emgnames = {'EDC','FDL','FDI'};
     treminf = [12 22];
     restinf = [11 21];
@@ -57,15 +71,15 @@ for sub =1:numel(sublist)
             tremcoh = []; Xs = []; Ys = []; cz = []; chz = [];
             for i = 1:numel(heightlist)
                 X = data_macro.trial{heightlist(i)}(:,emgsel);
-%                 X = (X-mean(X,1))./std(X,[],1); % standardize
+                X = (X-mean(X,1));%./std(X,[],1); % standardize
                 %         X = abs(X); % rectify
                 [fz hz] = pwelch(X,fsamp,[],fsamp,fsamp);
                 Xs{i} = [data_macro.time{heightlist(i)}; X'];
                 Xfs{i} = [hz';fz'];
                 for j = 1:numel(thaldat.label)
-                    Y = thaldat.trial{heightlist(i)}(:,j);
+                    Y = thaldat.trial{heightlist(i)}(j,:)';
 %                     Y = makemua_hayriye3(Y,1/1000,3/1000,fsamp,fsamp,4);
-%                     Y = (Y-mean(Y,1))./std(Y,[],1); % standardize
+                    Y = (Y-mean(Y,1)); %./std(Y,[],1); % standardize
                     [fz hz] = pwelch(Y,fsamp,[],fsamp,fsamp);
                     Yfs{i,j} = [hz';fz'];
                     Ys{i,j} = [thaldat.time{heightlist(i)}; Y'];
@@ -81,7 +95,7 @@ for sub =1:numel(sublist)
             postheight = data_macro.height(heightlist(isel));
         elseif cond == 2 %rest
             % redefine list of trials using posture selected height
-            heightlist = find(data_macro.height==postheight); % find heights that are less than 2mm from target
+            heightlist = find(data_macro.height==postheight); % find heights that are the selected height
             % find overlap with rest trials
             heightlist = heightlist((data_macro.trialinfo(heightlist)==restinf(1)) | (data_macro.trialinfo(heightlist)==restinf(2))); % then select only the tremor data
             isel = 1; % only one should exist
@@ -91,23 +105,23 @@ for sub =1:numel(sublist)
             
             % Get the EMG data + spectra
             X = data_macro.trial{heightlist(isel)}(:,emgsel);
-%             X = (X-mean(X,1))./std(X,[],1); % standardize
+            X = (X-mean(X));%./std(X,[],1); % standardize
             %         X = abs(X); % rectify
             [fz hz] = pwelch(X,fsamp,[],fsamp,fsamp);
             Xs{isel} = [data_macro.time{heightlist(isel)}; X'];
             Xfs{isel} = [hz';fz'];
             
             % Get the thalamic MUA + spectra
-            Y = thaldat.trial{heightlist(isel)}(:,j);
+            Y = thaldat.trial{heightlist(isel)}(j,:);
 %             Y = makemua_hayriye3(Y,1/1000,3/1000,fsamp,fsamp,4);
-%             Y = (Y-mean(Y,1))./std(Y,[],1); % standardize
+            Y = (Y-mean(Y)); %./std(Y,[],1); % standardize
             [fz hz] = pwelch(Y,fsamp,[],fsamp,fsamp);
             Yfs{isel,jsel} = [hz';fz'];
-            Ys{isel,jsel} = [thaldat.time{heightlist(isel)}; Y'];
+            Ys{isel,jsel} = [thaldat.time{heightlist(isel)}'; Y'];
             % Ensure samples match (HACK for now)
-            ds = min([size(X,1) size(Y,1)]);
+            ds = min([size(X,1) size(Y,2)]);
             % Get the coherence
-            [cz(:,isel,jsel) chz(:,isel,jsel)] = mscohere(X(1:ds),Y(1:ds),fsamp,[],fsamp,fsamp);
+            [cz(:,isel,jsel) chz(:,isel,jsel)] = mscohere(X(1:ds),Y(1,1:ds),fsamp,[],fsamp,fsamp);
         end
         
         
@@ -122,16 +136,16 @@ for sub =1:numel(sublist)
         xlabel('Hz'); ylabel('Power'); xlim([0 40]); set(gca,'YScale','log')
         subplot(3,2,3)
         plot(Ys{isel,jsel}(1,:),Ys{isel,jsel}(2,:)); hold on
-        xlabel('Time (s)'); ylabel(['Thal ' num2str(data_macro.height(heightlist(isel))) ' ' data_micro.label{jsel}]); xlim([5 7])
+        xlabel('Time (s)'); ylabel(['Thal ' num2str(data_macro.height(heightlist(isel))) ' ' data_macro.label{jsel}]); xlim([5 7])
         subplot(3,2,4)
         plot(Yfs{isel,jsel}(1,:),Yfs{isel,jsel}(2,:)); hold on
         xlabel('Hz'); ylabel('Power'); xlim([0 40]);set(gca,'YScale','log')
         subplot(3,2,6)
         plot(squeeze(chz(:,isel,jsel)),squeeze(cz(:,isel,jsel))); hold on
-        xlabel('Hz'); ylabel('Coherence'); xlim([0 40]); ylim([0 0.1])
+        xlabel('Hz'); ylabel('Coherence'); xlim([0 40]); %ylim([0 0.1])
         legend({'Posture','Rest'})
         
-        codes{sub,cond} = {data_macro.label{emgsel} data_micro.label{jsel} data_macro.height(heightlist(isel)) data_macro.trialinfo(heightlist)}
+        codes{sub,cond} = {data_macro.label{emgsel} data_macro.label{jsel} data_macro.height(heightlist(isel)) data_macro.trialinfo(heightlist)}
         
     end
     %
