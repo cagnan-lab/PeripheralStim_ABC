@@ -4,7 +4,7 @@ for i = 1:m.m
         case 'Musc1'
             % Muscle
             pQ(i).G  = [2]*200;   % synaptic connection strengths (coupling from unit to spindle (mechanical))
-            pQ(i).T  = [80 80];       % synaptic time constants [motor unit,spindle]; (see: Rall 1957; McMahon 1984)
+            pQ(i).T  = [12 12];       % synaptic time constants [motor unit,spindle]; (see: Rall 1957; McMahon 1984)
             pQ(i).S  = [0 0 0];     % 1st extrinsic; remainder intrinsic(s)
         case 'SpinCrd'
             % Spinal Cord
