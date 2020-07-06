@@ -48,7 +48,7 @@ p.C_s = repmat(1,size(p.C));
 p.obs.LF = [0 0];
 p.obs.LF_s = repmat(2,size(p.obs.LF));
 
-p.obs.Cnoise = [0 0 0 0];
+p.obs.Cnoise = zeros(1,m.m);
 p.obs.Cnoise_s = repmat(1/2,size(p.obs.Cnoise));
 
 p.obs.mixing = [1]; %zeros(size(R.obs.mixing));

@@ -28,7 +28,7 @@ end
 figure(2)
 subplot(3,1,1); ylim([-8 1])
 
-% Get sample Data
-uc = innovate_timeseries(R,m);
-uc{1} = uc{1}.*sqrt(R.IntP.dt);
-[~,~,feat_sim{1},~,xsim_ip{1}] = computeSimData(R,m,uc_ip{1},Pbase,0);
+% % Get sample Data
+% uc = innovate_timeseries(R,m);
+% uc{1} = uc{1}.*sqrt(R.IntP.dt);
+% [~,~,feat_sim{1},~,xsim_ip{1}] = computeSimData(R,m,uc_ip{1},Pbase,0);

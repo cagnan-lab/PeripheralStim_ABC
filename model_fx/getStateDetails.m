@@ -28,6 +28,13 @@ switch R.nmsim_name{nm}
         m.Tint(nm) = 4;
         m.Sint(nm) = 5;        
         m.outstates{nm} = [0 0 1 0 0 0 0 0];
+    case 'Cereb'
+        m.x{nm} = [0 0 0 0 0 0 0 0 0 0];
+        m.Gint(nm) = 8;
+        m.Tint(nm) = 5;
+        m.Sint(nm) = 6;        
+        m.outstates{nm} = [0 0 0 0 0 0 1 0];
+        
 end
 end
 

@@ -1,5 +1,5 @@
 clear; close all; 
-addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %
 % %
@@ -9,7 +9,7 @@ addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 % (2) Change output folder to be within the project folder!
 %   %   %   %   %   %   %   %   %
 % Get Paths
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
@@ -23,7 +23,7 @@ R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitti
 fresh = 0;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
 ABC_periphModel_ModComp_fitting(R) % Does the individual model fits
-fresh = 0;
+fresh = 1;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
 analysis_ShengHongInactivation(R)
