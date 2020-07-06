@@ -1,5 +1,5 @@
 clear; close all; 
-addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %
 % %
@@ -9,7 +9,7 @@ addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 % (2) Change output folder to be within the project folder!
 %   %   %   %   %   %   %   %   %
 % Get Paths
-R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
@@ -18,13 +18,27 @@ R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun')
 %% First we parameterise models using a example data set including Thalamic LFP,
 % EMG, EEG, and Accelorometer from an Essential Tremor Patient
 R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
-
 R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
-fresh = 0;
+
+% First do single condition
+fresh = 1;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
+R.modelspec = 'MS_periphStim_MSET1';
 ABC_periphModel_ModComp_fitting(R) % Does the individual model fits
 fresh = 1;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
+
+% Now look at modulation condition
+R.modelspec = 'periphStim_BMOD_MSET2';
+R.condnames = {'Tremor','Rest'};
+R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
+fresh = 0;
+R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
+fresh = 1;
+ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
+fresh = 1;
+ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
+
 
 analysis_ShengHongInactivation(R)
 %% Now we use a larger (but more incomplete) data set from David Pedrosa

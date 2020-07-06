@@ -1,5 +1,5 @@
-function [R p m uc] = MS_periphStim_BMOD_MSET2_M4(R)
-% FULL MODEL
+function [R p m uc] = MS_periphStim_BMOD_MSET2_M5(R)
+% FULL MODEL - Postural Reflex Modulation
 [R,m] = getStateDetails(R);
 
 % setup exogenous noise
@@ -26,7 +26,7 @@ p.A_s{1}(find(p.A{1}==0)) = 1/2;
 
 % Modulatory
 p.B{1} =  repmat(-32,m.m,m.m);
-p.B{1}(2,4) = 0; % MMC to Thal
+p.B{1}(1,3) = 0; % Spinal Reflex
 
 p.B_s{1} = repmat(1/8,size(p.A_s{1})).*(p.B{1}==0);
 

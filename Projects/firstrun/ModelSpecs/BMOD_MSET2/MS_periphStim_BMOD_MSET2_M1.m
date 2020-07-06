@@ -1,5 +1,5 @@
 function [R p m uc] = MS_periphStim_BMOD_MSET2_M1(R)
-% FULL MODEL
+% FULL MODEL - No modulation
 [R,m] = getStateDetails(R);
 
 % setup exogenous noise
@@ -26,7 +26,7 @@ p.A_s{1}(find(p.A{1}==0)) = 1/2;
 
 % Modulatory
 p.B{1} =  repmat(-32,m.m,m.m);
-p.B{1}(2,3) = 0; % Spin to Thal
+% p.B{1}(2,3) = 0; % Spin to Thal
 % p.B{1}(4,2) = 0; % MMC to Thal
 % p.B{1}(2,4) = 0; % Thal to CTX
 

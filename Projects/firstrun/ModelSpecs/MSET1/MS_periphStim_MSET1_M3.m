@@ -1,4 +1,4 @@
-function [R p m uc] = MS_periphStim_MSET1_M3(R)
+ function [R p m uc] = MS_periphStim_MSET1_M3(R)
 % No thalamocortical
 % FULL MODEL
 [R,m] = getStateDetails(R);
