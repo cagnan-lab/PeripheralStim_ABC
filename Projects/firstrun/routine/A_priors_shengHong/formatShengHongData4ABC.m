@@ -20,7 +20,7 @@ for C = 1:2
     %     data{C} = (data{C}-mean(data{C}))./std(data{C});
     dataStore{C} = data{C}';
 end
-
+R.datinds = [3 4 1 2]; % maps from data inds to that of the simulated modules
 figure
 plotTremorTimeSeries(dataStore,dataOut(1).fsample,{'Acc.','EEG (C3)','EMG (R)','Thal. LFP (L23)'},R.condnames)
 

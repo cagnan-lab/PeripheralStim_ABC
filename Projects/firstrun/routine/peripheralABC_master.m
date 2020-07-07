@@ -21,10 +21,10 @@ R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular in
 R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
 
 % First do single condition
-fresh = 1;
+fresh = 0;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-R.modelspec = 'MS_periphStim_MSET1';
-ABC_periphModel_ModComp_fitting(R) % Does the individual model fits
+R.modelspec = 'periphStim_MSET1';
+ABC_periphModel_ModComp_fitting(R,1) % Does the individual model fits
 fresh = 1;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
