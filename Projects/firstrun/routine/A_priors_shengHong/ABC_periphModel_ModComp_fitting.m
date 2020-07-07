@@ -14,11 +14,8 @@ catch
     disp('Making Mod List!!')
 end
 
-
-
-
 %% This is the main loop
-for modID = 1:7
+for modID = 1; %:7
     switch R.modelspec
         case 'periphStim_MSET1'
             if modID == 7

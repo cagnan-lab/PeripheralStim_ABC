@@ -8,11 +8,11 @@ R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
-R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC','Cereb'}; %modules (fx) to use.
-R.chloc_name = {'EP','ctx','amn','Thal'}; % observed channels
-R.datinds = 1:4;
-R.chsim_name = {'amn','Thal','EP','ctx','Cereb'}; % simulated channel names (names must match between these two!)
-R.siminds = 1:5;
+R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC','Cereb'}; %modules (fx) to use. These must match those listed in the fx_compile function
+R.chloc_name = {'amn','Thal','EP','ctx'}; % observed channels (redundant)
+% R.datinds = 1:4; % Specify this when you deal with the data - ensure its not the wrong order!
+R.chsim_name = {'amn','Thal','EP','ctx','Cereb'}; % simulated channel names
+R.siminds = 1:5; % Maps from simulation to data
 R.condnames = {'Tremor'}; %,'Rest'};
 % Spectral characteristics
 R.obs.csd.df = 0.5;
