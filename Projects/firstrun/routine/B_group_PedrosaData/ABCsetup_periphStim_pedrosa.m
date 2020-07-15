@@ -13,7 +13,7 @@ R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
 R.chloc_name = {'amn','Thal'}; % observed channels
 R.datinds = 1:2;
 R.chsim_name = {'amn','Thal','EP','ctx',}; % simulated channel names (names must match between these two!)
-R.siminds = 1:4;
+R.siminds = 1:4; 
 R.condnames = {'Tremor','Rest'};
 R.Bcond = 2; % 2Which condition is the modulating?
 
@@ -23,7 +23,7 @@ R.obs.csd.reps = 32; %96;
 
 %% INTEGRATION
 % Main dynamics function
-R.IntP.intFx = @spm_fx_compile_periphStim_dp; %@spm_fx_compile_120319;
+R.IntP.intFx = @spm_fx_compile_periphStim; %@spm_fx_compile_120319;
 R.IntP.compFx= @compareData_180520;
 
 R.IntP.dt = .001;
@@ -52,7 +52,7 @@ R.obs.brn =2; % 2; % burn in time
 R.obs.condchecker = 0; %1;
 LF = [1 1 1 1]*10; % Fit visually and for normalised data
 R.obs.LF = LF;
-R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8 ]; % Noise gain on the observation function
+R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation function
 % % (precompute filter)
 % % fsamp = 1/R.IntP.dt;
 % % nyq = fsamp/2;
@@ -76,10 +76,10 @@ R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.D','.B
 R.SimAn.pOptBound = [-12 12];
 R.SimAn.pOptRange = R.SimAn.pOptBound(1):.1:R.SimAn.pOptBound(2);
 R.SimAn.searchMax = 200;
-R.SimAn.convIt.dEps = 1e-3;
+R.SimAn.convIt.dEps = 7.5e-3;
 R.SimAn.convIt.eqN = 5;
 R.analysis.modEvi.N  = 500;
-R.SimAn.scoreweight = [1 1/1e6];
+R.SimAn.scoreweight = [1 1/1e7];
 R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
 R.SimAn.jitter = 1; % Global precision

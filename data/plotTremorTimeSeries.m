@@ -1,7 +1,7 @@
 function plotTremorTimeSeries(data,fsample,legname,condname)
 i = 0;
 step = 6;
-
+clf
 for cond = 1:numel(condname)
     for rep = 1:2
         i = i+1;
@@ -15,7 +15,7 @@ for cond = 1:numel(condname)
             hold on
         end
         if rep ==2
-            xlim([35 40])
+            xlim([0 15])
         end
         xlabel('Time (s)')
         ylabel('Normalized Amplitude')

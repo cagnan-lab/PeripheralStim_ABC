@@ -34,16 +34,16 @@ for condsel = 1:numel(R.condnames)
     efferent(1,:) = [3 3 3 3];               % sources of Musc connections (spindle voltage)
     efferent(2,:) = [1 1 1 1];               % sources of spinCord connections
     efferent(3,:) = [3 3 6 7];               % ORIG sources of MMC connections
-    efferent(4,:) = [1 1 1 1];               % sources of THAL connections
-    efferent(5,:) = [1 1 1 1];               % sources of THAL connections
+    efferent(4,:) = [3 3 3 3];               % sources of THAL connections
+    efferent(5,:) = [9 9 9 9];               % sources of Cereb connections
     
     % scaling of afferent extrinsic connectivity (Hz)
     %--------------------------------------------------------------------------
-    E(1,:) = [.2 .2 -.2 -.2]*2000;             % Muscle connections
-    E(2,:) = [.2 .2 -.2 -.2]*2000;             % spinCord connections
+    E(1,:) = [.4 .4 -.4 -.4]*2000;             % Muscle connections
+    E(2,:) = [.6 .6 -.6 -.6]*2000;             % spinCord connections
     E(3,:) = [.2 .2 -.2 -.2]*8000;            % MMC connections
     E(4,:) = [.2 .2 -.2 -.2]*2000;  %500       % THAL connections    
-    E(5,:) = [.2 .2 -.2 -.2]*2000;  %500       % THAL connections    
+    E(5,:) = [.2 .2 -.2 -.2]*2000;  %500       % Cereb connections    
     
     % get the neural mass models {'ERP','CMC'}
     %--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ for condsel = 1:numel(R.condnames)
         disp(['Delay is bigger than buffer, increasing buffer to: ' num2str(R.IntP.buffer)])
     end
     if R.IntP.buffer > 1e3
-        disp('Delays are implausibly large!')
+        disp('Delays are implausibly large (>1s)!')
         wflag = 1;
         break
     end

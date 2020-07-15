@@ -9,31 +9,31 @@ switch R.nmsim_name{nm}
         m.Gint(nm) = 3;
         m.Tint(nm) = 2;
         m.Sint(nm) = 3;
-        m.outstates{nm} = [1 0 0 0];
+        m.outstates{nm} = [1 0 0 0]; % AMN voltage
     case 'THAL'
         m.x{nm} = [0 0 0 0];
         m.Gint(nm) = 3;
         m.Tint(nm) = 2;
         m.Sint(nm) = 3;
-        m.outstates{nm} = [0 0 1 0];
+        m.outstates{nm} = [0 0 1 0]; % relay cell voltage
     case 'Musc1'
         m.x{nm} = [0 0 0 0];
         m.Gint(nm) = 1;
         m.Tint(nm) = 2;
         m.Sint(nm) = 3;        
-        m.outstates{nm} = [0 0 1 0];
+        m.outstates{nm} = [0 0 1 0]; % spindle stretch
     case 'MMC'
         m.x{nm} = [0 0 0 0 0 0 0 0];
         m.Gint(nm) = 14;
         m.Tint(nm) = 4;
         m.Sint(nm) = 5;        
-        m.outstates{nm} = [0 0 1 0 0 0 0 0];
+        m.outstates{nm} = [0 0 1 0 0 0 0 0]; % Superficial layer voltage
     case 'Cereb'
         m.x{nm} = [0 0 0 0 0 0 0 0 0 0];
         m.Gint(nm) = 8;
         m.Tint(nm) = 5;
         m.Sint(nm) = 6;        
-        m.outstates{nm} = [0 0 0 0 0 0 1 0];
+        m.outstates{nm} = [0 0 0 0 0 0 1 0]; % Purkinje cell voltage
         
 end
 end

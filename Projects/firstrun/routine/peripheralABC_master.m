@@ -15,6 +15,7 @@ R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRu
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
 % often used when running through models/data within a tagged project.
 
+%%%%%%%%%%%%%%%%%%%%%%%%% SHENGHONG DATA
 %% First we parameterise models using a example data set including Thalamic LFP,
 % EMG, EEG, and Accelorometer from an Essential Tremor Patient
 R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
@@ -41,11 +42,17 @@ ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(
 
 
 analysis_ShengHongInactivation(R)
+
+%%%%%%%%%%%%%%%%%%%%%% PEDROSA DATA
 %% Now we use a larger (but more incomplete) data set from David Pedrosa
 R.out.tag = 'dptest_sub';
 R = ABCsetup_periphStim_pedrosa(R);
-ABC_periphModel_DPdata_fitting(R) % This will fit just the big full model
-R.out.tag = 'dpmod_test';
-ABC_periphModel_DPdata_fitting_Bvar(R) % This will fit variations of the full model with individual modulations
+fresh = 0;
+R = formatDPdata_Data4ABC(R,fresh);
+fresh = 1;
+ABC_periphModel_DPdata_fitting(R,fresh) % This will fit just the big full model
 
+% R.out.tag = 'dpmod_test';
+% ABC_periphModel_DPdata_fitting_Bvar(R) % This will fit variations of the full model with individual modulations
 
+ABC_periphModel_DPdata_inspectfits(R,0,1)

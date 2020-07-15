@@ -3,12 +3,12 @@ for i = 1:m.m
     switch m.dipfit.model(i).source
         case 'Musc1'
             % Muscle
-            pQ(i).G  = [2]*200;   % synaptic connection strengths (coupling from unit to spindle (mechanical))
-            pQ(i).T  = [12 12];       % synaptic time constants [motor unit,spindle]; (see: Rall 1957; McMahon 1984)
+            pQ(i).G  = [2]*400;   % synaptic connection strengths (coupling from unit to spindle (mechanical))
+            pQ(i).T  = [4 4];       % synaptic time constants [motor unit,spindle]; (see: Rall 1957; McMahon 1984)
             pQ(i).S  = [0 0 0];     % 1st extrinsic; remainder intrinsic(s)
         case 'SpinCrd'
             % Spinal Cord
-            pQ(i).G  = [2 2 2]*200;   % synaptic connection strengths; [IIN to AMN; AMN self inh; AMN to IIN];
+            pQ(i).G  = [4 2 2]*200;   % synaptic connection strengths; [IIN to AMN; AMN self inh; AMN to IIN];
             pQ(i).T  = [12 8];       % synaptic time constants [IIN; AMN];
             pQ(i).S  = [0 0 0];       % 1st extrinsic
         case 'MMC'

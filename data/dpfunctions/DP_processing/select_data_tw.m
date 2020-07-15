@@ -28,7 +28,7 @@ if~exist(save_directory, 'dir')                                             % th
 end
 
 iter_pat = 0;
-for np = [1 3 4 6 8 9 10 12]
+for np = [1]; % 3 4 6 8 9 10 12]
     %% Text to be displayed and the filenames are defined
     text = 'the subject actually being computed is subj %d\n';
     fprintf(text, np); iter_pat = iter_pat + 1;                             % displays the nuimber of the patient being processed and adds one number to iter_pat

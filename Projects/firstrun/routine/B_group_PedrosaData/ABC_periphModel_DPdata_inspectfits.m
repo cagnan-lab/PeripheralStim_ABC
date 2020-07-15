@@ -1,5 +1,6 @@
 function ABC_periphModel_DPdata_inspectfits(R,fresh,plotop)
 % Run through fits of DP data and plot
+D = []; %initialize regressors
 subsel = [1 6 8 11];
 R.plot.cmap_group = brewermap(12,'Set2');
 for cursub = subsel%1:numel(R.sublist)
@@ -14,13 +15,11 @@ for cursub = subsel%1:numel(R.sublist)
     tmp.path = R.path;
     tmp.plot = R.plot;
     R  = tmp;
-    
+    % Load Model Specs
+    load([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\' R.out.dag '\modelspec_' R.out.tag '_'  R.out.dag '.mat'])
+    m = varo;
     
     if fresh
-        % Load Model
-        load([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\' R.out.dag '\modelspec_' R.out.tag '_'  R.out.dag '.mat'])
-        m = varo;
-        
         % load modelfit
         load([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\' R.out.dag '\modelfit_' R.out.tag '_' R.out.dag '.mat'])
         mfit = varo;
@@ -52,6 +51,12 @@ for cursub = subsel%1:numel(R.sublist)
         load([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\' R.out.dag '\modeProbs_' R.out.tag '_' R.out.dag '.mat'],'varo')
         permMod = varo;
     end
+    
+    subdatafile = [R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular\dp_thalamomuscular_' R.sublist{cursub} '_pp.mat'];
+    load(subdatafile)
+    
+    D = getDPdata_regressors(R,cursub,D);
+    
     
     r2bank{cursub} = permMod.r2rep;
     dklbank{cursub} = permMod.DKL;
@@ -90,6 +95,27 @@ for cursub = subsel
    parpar(:,1,i) = parvec(pMuMap);
    parpar(:,2,i) = parvec(pSigMap);
 end
+
+parNames = getParFieldNames(permMod.MAP,m);
+
+%% Convert Regressors to Table
+i = 0;
+trempow = [];
+for cursub = subsel
+    i = i+1;
+    trempow(:,i) = D.trempow(1,1,cursub);
+    tremSEM(:,i) = D.tremfrq(1,1,cursub);
+    tremDiff(:,i) = D.condpow(1,cursub);
+end
+
+
+[dum id] = intersect(pMuMap,spm_vec(pMu.B))
+tab = array2table([tremDiff; squeeze(parpar(id,1,:))]','VariableNames',['Dep',parNames(spm_vec(pMu.B))]);
+mdl1 = stepwiselm(tab,'constant','ResponseVar','Dep');
+
+[idx,scores] = fsrftest(tab,'Dep')
+
+X = tab(:,{'Dep','int THAL G2'});    
 
 
 %% Plots of Fitting Details
