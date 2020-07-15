@@ -1,5 +1,7 @@
 clear; close all; 
-addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
+
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %
 % %
@@ -9,7 +11,9 @@ addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 % (2) Change output folder to be within the project folder!
 %   %   %   %   %   %   %   %   %
 % Get Paths
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
@@ -22,10 +26,11 @@ R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular in
 R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
 
 % First do single condition
-fresh = 0;
+fresh = 1;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
 R.modelspec = 'periphStim_MSET1';
-ABC_periphModel_ModComp_fitting(R,1) % Does the individual model fits
+fresh = 1;
+ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
 fresh = 1;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
