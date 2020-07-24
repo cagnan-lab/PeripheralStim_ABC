@@ -29,7 +29,7 @@ if~exist(save_directory, 'dir')                                            % thi
 end
 cd(file_directory);
 
-for np = 1; %[9 10 12] %[1 3 4 6 8 
+for np = [1 3 4 6 8]; %[9 10 12] %[
     %% Text to be displayed and the filenames are defined
     text = 'the subject actually being computed is subj %d\n';
     fprintf(text, np);                                                      % displays the nuimber of the patient being processed and adds one number to iter_pat
@@ -132,12 +132,12 @@ for np = 1; %[9 10 12] %[1 3 4 6 8
         
         
 %         % Apply HC's BUA function
-%         data_micro_temp = arrayfun(@(q) makemua_hayriye3_tw(data_micro_temp{q},0.001,0.003,data_micro.fsample,data_micro.fsample,3), ...        % HC's BUA
-%             1:numel(data_micro_temp),  'UniformOutput',false);
+        data_micro_temp = arrayfun(@(q) makemua_hayriye3_tw(data_micro_temp{q},0.001,0.003,data_micro.fsample,data_micro.fsample,3), ...        % HC's BUA
+            1:numel(data_micro_temp),  'UniformOutput',false);
         
         % Apply TW's BUA function
-        data_micro_temp = arrayfun(@(q) makemua_dpmeth(data_micro_temp{q},data_micro.fsample), ...        % HC's BUA
-            1:numel(data_micro_temp),  'UniformOutput',false);
+%         data_micro_temp = arrayfun(@(q) makemua_dpmeth(data_micro_temp{q},data_micro.fsample), ...        % HC's BUA
+%             1:numel(data_micro_temp),  'UniformOutput',false);
         
         
         data_micro_preproc.trial = data_micro_temp;
