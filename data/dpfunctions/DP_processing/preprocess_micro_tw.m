@@ -1,8 +1,8 @@
 %function preprocess_micro(subj, wdir) %#ok<INUSL>
 clear 
-wdir = 'C:\DATA\DP_Tremor_ThalamoMuscularBUA\wrk_data\';
-outdir = 'C:\DATA\DP_Tremor_ThalamoMuscular\';
-addpath('C:\Users\Tim West\Documents\MATLAB ADDONS\FilterM')
+wdir = 'D:\Data\DP_Tremor_ThalamoMuscular\';
+outdir = 'D:\Data\DP_Tremor_ThalamoMuscular\';
+addpath('C:\Users\timot\Documents\Work\MATLAB ADDONS\FilterM')
 %   This function preprocesses all microelectrode recordings.
 %   Steps:
 %   1.) Notch filter of microelectrode recordings;
@@ -29,7 +29,7 @@ if~exist(save_directory, 'dir')                                            % thi
 end
 cd(file_directory);
 
-for np = 1; %[9 10 12] %[1 3 4 6 8 
+for np = [ 9 10 12 13 14] %1 3 4 6 8
     %% Text to be displayed and the filenames are defined
     text = 'the subject actually being computed is subj %d\n';
     fprintf(text, np);                                                      % displays the nuimber of the patient being processed and adds one number to iter_pat
@@ -132,7 +132,7 @@ for np = 1; %[9 10 12] %[1 3 4 6 8
         
         
 %         % Apply HC's BUA function
-        data_micro_temp = arrayfun(@(q) makemua_hayriye3_tw(data_micro_temp{q},0.001,0.003,data_micro.fsample,data_micro.fsample,3), ...        % HC's BUA
+        data_micro_temp = arrayfun(@(q) makemua_hayriye3_tw(data_micro_temp{q},0.0005,0.0005,data_micro.fsample,data_micro.fsample,4), ...        % HC's BUA
             1:numel(data_micro_temp),  'UniformOutput',false);
         
         % Apply TW's BUA function

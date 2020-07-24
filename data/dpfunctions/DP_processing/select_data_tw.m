@@ -1,8 +1,8 @@
 
 %function dpfx_select_data(subj, wdir) %#ok<INUSL>
 % subj = 'subj10';
-exdir = 'C:\DATA\DP_Tremor_ThalamoMuscularBUA\wrk_data\'; %Output Directory for selected data
-wdir = 'C:\Users\Tim West\OneDrive - Nexus365\DP_BUA_thalamomuscular\wrk_data\'; %Input Directory for Raw Data
+exdir = 'D:\Data\DP_Tremor_ThalamoMuscular\'; %Output Directory for selected data
+wdir = 'D:\OneDrive\OneDrive - Nexus365\DP_BUA_thalamomuscular\wrk_data\'; %Input Directory for Raw Data
 %   This function selects data so that only sites without wrong recordings/
 %   wo/ stimulation are selected. Besides the coding is enhanced in order to
 %   produce the same structure for all subjects. Finally,there is the opportunity
@@ -28,7 +28,7 @@ if~exist(save_directory, 'dir')                                             % th
 end
 
 iter_pat = 0;
-for np = [1]; % 3 4 6 8 9 10 12]
+for np = [1 3 4 6 8 9 10 12 13 14]
     %% Text to be displayed and the filenames are defined
     text = 'the subject actually being computed is subj %d\n';
     fprintf(text, np); iter_pat = iter_pat + 1;                             % displays the nuimber of the patient being processed and adds one number to iter_pat

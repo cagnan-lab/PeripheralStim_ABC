@@ -1,7 +1,7 @@
 % function getDP_thalamomuscular_data(R)
 clear
 sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10r','subj12l','subj13l','subj14r'}; %,'subj10l','subj12l','subj13l','subj14r'};
-datapath = 'C:\DATA\DP_Tremor_ThalamoMuscular\';
+datapath = 'D:\Data\DP_Tremor_ThalamoMuscular\';
 close all
 %% QUESTIONS FOR DP
 % (1) Are the micro trials_nospike derived from trials? doesnt look like
@@ -9,11 +9,11 @@ close all
 % (2) Why is macrodata one sample less than micro in length?
 % (3) How were EMG and MUA synced? Same amplifier?
 % thalsrc = 'LFP';
-thalsrc = 'LFP';
+thalsrc = 'BUA';
 
 for sub =1:numel(sublist)
 %     load([datapath sublist{sub} '_micro_mua.mat']);
-%     load([datapath sublist{sub} '_preproc_micro.mat']);
+    load([datapath sublist{sub} '_preproc_micro.mat']);
     load([datapath sublist{sub} '_preproc_macro.mat']);
     
     microlist = {'central' 'anterior' 'medial' 'posterior' 'lateral'};

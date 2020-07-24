@@ -22,12 +22,6 @@ for cursub = 1:numel(R.sublist)
     %         clear data dataOut
     
     % Setup data transform
-    R.obs.trans.norm = 0;
-    R.obs.trans.zerobase = 1;
-    R.obs.trans.normcat = 1;
-    R.obs.trans.logdetrend = 0;
-    R.obs.trans.gauss3 = 0;
-    R.obs.trans.interptype = 'linear'; %'pchip';
     R.obs.trans.gausSm = 5; % 10 hz smooth window
     R.obs.SimOrd = 11;
     [R.data.feat_xscale, R.data.feat_emp] = R.obs.transFx(dataStore,R.datinds,fs_emp,R.obs.SimOrd,R);

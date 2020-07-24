@@ -1,6 +1,6 @@
 function [mua] = makemua_hayriye3_tw(hpsig,msback,msfoward,muasr,rssr,uthresh)
 mua = [];
-plotop = 1;
+plotop = 0;
 for ch = 1:size(hpsig,2)
     X = hpsig(:,ch);
 % hpsig = wideband signal

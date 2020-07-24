@@ -1,6 +1,7 @@
 clear; close all; 
 % addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
+% addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
+addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %
@@ -12,7 +13,8 @@ addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
 %   %   %   %   %   %   %   %   %
 % Get Paths
 % R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
@@ -52,7 +54,7 @@ analysis_ShengHongInactivation(R)
 %% Now we use a larger (but more incomplete) data set from David Pedrosa
 R.out.tag = 'dptest_sub';
 R = ABCsetup_periphStim_pedrosa(R);
-fresh = 0;
+fresh = 1;
 R = formatDPdata_Data4ABC(R,fresh);
 fresh = 1;
 ABC_periphModel_DPdata_fitting(R,fresh) % This will fit just the big full model
