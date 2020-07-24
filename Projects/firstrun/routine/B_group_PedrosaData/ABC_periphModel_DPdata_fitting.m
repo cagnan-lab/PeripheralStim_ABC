@@ -6,14 +6,14 @@ try
     load([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\WorkingModList'])
     disp('Loaded Mod List!!')
 catch
-    WML = [];
+    WML = fresh;
     mkdir([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag ]);
     save([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\WorkingModList'],'WML')
     disp('Making Mod List!!')
 end
 
 % Pretend the current sub is 1
-for cursub = 1:numel(R.sublist)
+for cursub = 3:numel(R.sublist)
     load([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\WorkingModList'],'WML')
     if ~any(intersect(WML,cursub))
         WML = [WML cursub];

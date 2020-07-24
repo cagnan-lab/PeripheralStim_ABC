@@ -10,7 +10,7 @@ R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
 R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
-R.chloc_name = {'amn','Thal'}; % observed channels
+R.chdat_name = {'amn','Thal'}; % observed channels
 R.datinds = 1:2;
 R.chsim_name = {'amn','Thal','EP','ctx',}; % simulated channel names (names must match between these two!)
 R.siminds = 1:4; 
@@ -63,10 +63,14 @@ R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation function
 % fx to construct data features
 R.obs.transFx = @constructGenCrossMatrix;
 % These are options for transformation (NPD)
+ R.obs.trans.zerobase = 1;
 R.obs.trans.logdetrend =0;
-R.obs.trans.norm = 1;
+R.obs.trans.norm = 0;
 R.obs.logscale = 0;
-R.obs.trans.gauss = 0;
+R.obs.trans.gauss3 = 0;
+R.obs.trans.gausSm = 5;
+R.obs.trans.normcat = 1;
+R.obs.trans.interptype = 'linear';
 %% OBJECTIVE FUNCTION
 R.objfx.feattype = 'complex'; %%'ForRev'; %
 R.objfx.specspec = 'cross'; %%'auto'; % which part of spectra to fit

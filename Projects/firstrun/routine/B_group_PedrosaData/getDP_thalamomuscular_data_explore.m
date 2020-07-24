@@ -1,7 +1,7 @@
 % function getDP_thalamomuscular_data(R)
 clear
-sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l'}; %,'subj9r','subj10r','subj12l','subj13l','subj14r'}; %,'subj10l','subj12l','subj13l','subj14r'};
-datapath = 'C:\DATA\DP_Tremor_ThalamoMuscular\';
+sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10r','subj12l','subj13l','subj14r'}; %,'subj10l','subj12l','subj13l','subj14r'};
+datapath = 'D:\Data\DP_Tremor_ThalamoMuscular\';
 close all
 %% QUESTIONS FOR DP
 % (1) Are the micro trials_nospike derived from trials? doesnt look like
@@ -15,59 +15,59 @@ for sub =1:numel(sublist)
 %     load([datapath sublist{sub} '_micro_mua.mat']);
     load([datapath sublist{sub} '_preproc_micro.mat']);
     load([datapath sublist{sub} '_preproc_macro.mat']);
-    
+
     microlist = {'central' 'anterior' 'medial' 'posterior' 'lateral'};
     %     micro_ind = find(strncmp(data_macro.label,'lateral',4));
     switch thalsrc
         case 'LFP'
             thaldat = data_macro;
             thaldat.label = intersect(thaldat.label,microlist); %data_micro.label);
-            
+
         % ensure format is ch x N
         if size(thaldat.trial{1},1)>size(thaldat.trial{1},2)
          thaldat.trial = arrayfun(@(q) thaldat.trial{q}.',1:numel(thaldat.trial),  'UniformOutput',false); %transpose
         end
-        
+
         if size(thaldat.time{1},1)>size(thaldat.time{1},2)
          thaldat.time = arrayfun(@(q) thaldat.time{q}',1:numel(thaldat.trial),  'UniformOutput',false); %transpose
         end
-                    
-            
+
+
         case 'BUA'
             thaldat = data_micro;
             thaldat.trial = data_micro.trial;
     end
-        
+
     emgnames = {'EDC','FDL','FDI'};
     treminf = [12 22];
     restinf = [11 21];
-    
+
     EMGind = find(strncmp(data_macro.label,'EDC',3) | strncmp(data_macro.label,'FDL',3) | strncmp(data_macro.label,'FDI',3));
-    
+
     % Get sample rate
     fsamp = data_macro.fsample;
-    
+
     % Concat EMG data
     datacat = vertcat(data_macro.trial{:});
     trempow = [];
     for i = EMGind
         X = datacat(:,i);
         X = (X-mean(X,1))./std(X,[],1);
-        
+
         [fz hz] = pwelch(X,fsamp,[],fsamp,fsamp);
         trempow(i) = max(fz((hz>=2 & hz <=15)));
     end
-    
+
     % Use EMG with maximum tremor amplitude
     [dum emgsel] = max(trempow)
-    
+
     for cond = 1:2
         % Now search the depths by computing coherence
-        
+
         if cond == 1
             heightlist = find(abs(data_macro.height)<=2); % find heights that are less than 2mm from target
             heightlist = heightlist((data_macro.trialinfo(heightlist)==treminf(1)) | (data_macro.trialinfo(heightlist)==treminf(2))); % then select only the tremor data
-            
+
             tremcoh = []; Xs = []; Ys = []; cz = []; chz = [];
             for i = 1:numel(heightlist)
                 X = data_macro.trial{heightlist(i)}(:,emgsel);
@@ -89,7 +89,7 @@ for sub =1:numel(sublist)
                     tremcoh(i,j) = max(cz((hz>=2 & hz <=15),i,j));
                 end
             end
-            
+
             [dum ind] =max(tremcoh(:));
             [isel jsel] = ind2sub(size(tremcoh),ind);
             postheight = data_macro.height(heightlist(isel));
@@ -99,10 +99,10 @@ for sub =1:numel(sublist)
             % find overlap with rest trials
             heightlist = heightlist((data_macro.trialinfo(heightlist)==restinf(1)) | (data_macro.trialinfo(heightlist)==restinf(2))); % then select only the tremor data
             isel = 1; % only one should exist
-            
+
             % clear the banks
             tremcoh = []; Xs = []; Ys = []; cz = []; chz = [];
-            
+
             % Get the EMG data + spectra
             X = data_macro.trial{heightlist(isel)}(:,emgsel);
             X = (X-mean(X));%./std(X,[],1); % standardize
@@ -110,7 +110,7 @@ for sub =1:numel(sublist)
             [fz hz] = pwelch(X,fsamp,[],fsamp,fsamp);
             Xs{isel} = [data_macro.time{heightlist(isel)}; X'];
             Xfs{isel} = [hz';fz'];
-            
+
             % Get the thalamic MUA + spectra
             Y = thaldat.trial{heightlist(isel)}(j,:);
 %             Y = makemua_hayriye3(Y,1/1000,3/1000,fsamp,fsamp,4);
@@ -123,9 +123,9 @@ for sub =1:numel(sublist)
             % Get the coherence
             [cz(:,isel,jsel) chz(:,isel,jsel)] = mscohere(X(1:ds),Y(1,1:ds),fsamp,[],fsamp,fsamp);
         end
-        
-        
-        
+
+
+
         figure(sub)
         subplot(3,2,1)
         plot(Xs{isel}(1,:),Xs{isel}(2,:)); hold on
@@ -144,9 +144,9 @@ for sub =1:numel(sublist)
         plot(squeeze(chz(:,isel,jsel)),squeeze(cz(:,isel,jsel))); hold on
         xlabel('Hz'); ylabel('Coherence'); xlim([0 40]); %ylim([0 0.1])
         legend({'Posture','Rest'})
-        
+
         codes{sub,cond} = {data_macro.label{emgsel} data_macro.label{jsel} data_macro.height(heightlist(isel)) data_macro.trialinfo(heightlist)}
-        
+
     end
     %
     %     % 1st EMG choose best tremor by power
@@ -200,8 +200,5 @@ for sub =1:numel(sublist)
     %     data = ft_rejectvisual(cfg,data);
     %     mkdir([R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular'])
     %     save([R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular\dp_thalamomuscular_' sublist{sub} '_pp.mat'],'data')
-    
+
 end
-
-
-
