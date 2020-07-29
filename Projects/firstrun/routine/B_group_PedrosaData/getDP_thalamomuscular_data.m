@@ -6,10 +6,10 @@ function dataOut = getDP_thalamomuscular_data(R,subsel)
 % (2) Why is macrodata one sample less than micro in length?
 % (3) How were EMG and MUA synced? Same amplifier?
 % thalsrc = 'BUA';
-thalsrc = 'LFP';
-% load([datapath subsel '_preproc_micro.mat']);
+thalsrc = 'BUA';
+load([R.path.datapath_pedrosa subsel '_preproc_micro.mat']);
 load([R.path.datapath_pedrosa subsel '_preproc_macro.mat']);
-    microlist = {'central' 'anterior' 'medial' 'posterior' 'lateral'};
+microlist = {'central' 'anterior' 'medial' 'posterior' 'lateral'};
 
 %     micro_ind = find(strncmp(data_macro.label,'lateral',4));
 switch thalsrc
@@ -19,6 +19,9 @@ switch thalsrc
     case 'BUA'
         thaldat = data_micro;
         thaldat.trial = data_micro.trial;
+        for i = 1:numel( thaldat.trial);
+            thaldat.trial{i} =  thaldat.trial{i}'
+        end
 end
 
 
@@ -61,15 +64,16 @@ for cond = 1:2
         tremcoh = []; Xs = []; Ys = []; cz = []; chz = [];
         for i = 1:numel(heightlist)
             X = data_macro.trial{heightlist(i)}(:,emgsel);
-%             X = (X-mean(X,1))./std(X,[],1); % standardize
+            %             X = (X-mean(X,1))./std(X,[],1); % standardize
             %         X = abs(X); % rectify
             [fz hz] = pwelch(X,fsamp,[],fsamp,fsamp);
             Xs{i} = [data_macro.time{heightlist(i)}; X'];
             Xfs{i} = [hz';fz'];
             for j = 1:numel(thaldat.label)
                 Y = thaldat.trial{heightlist(i)}(:,j);
-%                 Y = makemua_hayriye3(Y,1/1000,3/1000,fsamp,fsamp,4);
-%                 Y = (Y-mean(Y,1))./std(Y,[],1); % standardize
+                
+                %                 Y = makemua_hayriye3(Y,1/1000,3/1000,fsamp,fsamp,4);
+                %                 Y = (Y-mean(Y,1))./std(Y,[],1); % standardize
                 [fz hz] = pwelch(Y,fsamp,[],fsamp,fsamp);
                 Yfs{i,j} = [hz';fz'];
                 Ys{i,j} = [thaldat.time{heightlist(i)}; Y'];
@@ -90,14 +94,14 @@ for cond = 1:2
         
         tremcoh = []; Xs = []; Ys = []; cz = []; chz = [];
         X = data_macro.trial{heightlist(isel)}(:,emgsel);
-%         X = (X-mean(X,1))./std(X,[],1); % standardize
+        %         X = (X-mean(X,1))./std(X,[],1); % standardize
         %         X = abs(X); % rectify
         [fz hz] = pwelch(X,fsamp,[],fsamp,fsamp);
         Xs{isel} = [data_macro.time{heightlist(isel)}; X'];
         Xfs{isel} = [hz';fz'];
         Y = thaldat.trial{heightlist(isel)}(:,j);
-%         Y = makemua_hayriye3(Y,1/1000,3/1000,fsamp,fsamp,4);
-%         Y = (Y-mean(Y,1))./std(Y,[],1); % standardize
+        %         Y = makemua_hayriye3(Y,1/1000,3/1000,fsamp,fsamp,4);
+        %         Y = (Y-mean(Y,1))./std(Y,[],1); % standardize
         [fz hz] = pwelch(Y,fsamp,[],fsamp,fsamp);
         Yfs{isel,jsel} = [hz';fz'];
         Ys{isel,jsel} = [thaldat.time{heightlist(isel)}; Y'];
@@ -136,18 +140,18 @@ for cond = 1:2
     cfg.demean      = 'yes';
     data= ft_preprocessing(cfg,data);
     
-%     % Visual Artefact Rejection
-%     cfg = [];
-%     data = ft_rejectvisual(cfg,data);
-%     
-%     
-%     for tr = 1:numel(data.trial)
-%         data.trial{tr} = data.trial{tr}.*hanning(size(data.trial{tr},2))';
-%     end
-
+    %     % Visual Artefact Rejection
+    %     cfg = [];
+    %     data = ft_rejectvisual(cfg,data);
+    %
+    %
+    %     for tr = 1:numel(data.trial)
+    %         data.trial{tr} = data.trial{tr}.*hanning(size(data.trial{tr},2))';
+    %     end
+    
     dataOut(cond) = data;
     codes{cond} = {data_macro.label{emgsel} data_macro.label{jsel} data_macro.height(heightlist(isel)) data_macro.trialinfo(heightlist)}
-
+    
 end
 
 

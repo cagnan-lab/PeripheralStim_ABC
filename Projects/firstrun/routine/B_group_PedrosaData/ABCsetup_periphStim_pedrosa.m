@@ -1,7 +1,7 @@
     function R = ABCsetup_periphStim_pedrosa(R)
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
-R.data.datatype = 'CSD'; %%'NPD'
+R.data.datatype{1} = 'CSD'; %%'NPD'
 R.sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10l','subj10r','subj12l','subj13l','subj14r'};
 
 R.frqz = [2:.2:32];

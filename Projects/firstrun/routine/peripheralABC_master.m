@@ -52,12 +52,15 @@ analysis_ShengHongInactivation(R)
 
 %%%%%%%%%%%%%%%%%%%%%% PEDROSA DATA
 %% Now we use a larger (but more incomplete) data set from David Pedrosa
-R.out.tag = 'dptest_sub';
+R.out.tag = 'dptest_sub_bua';
 R = ABCsetup_periphStim_pedrosa(R);
 fresh = 1;
 R = formatDPdata_Data4ABC(R,fresh);
 fresh = 1;
 ABC_periphModel_DPdata_fitting(R,fresh) % This will fit just the big full model
+
+fresh = 0;
+ABC_periphModel_DPdata_fitting_bua(R,fresh) % This will fit just the big full model
 
 % R.out.tag = 'dpmod_test';
 % ABC_periphModel_DPdata_fitting_Bvar(R) % This will fit variations of the full model with individual modulations
