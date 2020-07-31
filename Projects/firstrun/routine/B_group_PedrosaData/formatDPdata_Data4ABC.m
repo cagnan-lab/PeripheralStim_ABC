@@ -1,5 +1,5 @@
 function R = formatDPdata_Data4ABC(R,fresh)
-for cursub = 1:numel(R.sublist)
+for cursub = 1; %:numel(R.sublist)
     
     % This function converts ShengHongs data to format required for ABC
     mkdir([R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular'])
@@ -45,6 +45,6 @@ for cursub = 1:numel(R.sublist)
     
     % Save the data only (precomputed and reloaded within fitting)
     Rdat = R.data;
-    subABCdatafile = [R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular\dp_thalamomuscular_' R.sublist{cursub} '_ABC.mat'];
+    subABCdatafile = [R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular\dp_thalamomuscular_' R.sublist{cursub} '_BUA_ABC.mat'];
     save(subABCdatafile,'Rdat')
 end

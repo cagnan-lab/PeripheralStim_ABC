@@ -47,7 +47,7 @@ ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
 fresh = 0;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
-%% Do modulation with new delays 
+%% Do modulation with new delays
 R.out.tag = 'periphModel_SH_bmod_newdelay'; % This tags the files for this particular instance
 R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
 R.modelspec = 'periphStim_BMOD_MSET2';
@@ -93,6 +93,9 @@ fresh = 1;
 R = formatDPdata_Data4ABC(R,fresh);
 fresh = 1;
 ABC_periphModel_DPdata_fitting(R,fresh) % This will fit just the big full model
+
+fresh = 0;
+ABC_periphModel_DPdata_fitting_bua(R,fresh) % This will fit just the big full model
 
 % R.out.tag = 'dpmod_test';
 % ABC_periphModel_DPdata_fitting_Bvar(R) % This will fit variations of the full model with individual modulations
