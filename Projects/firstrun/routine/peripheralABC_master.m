@@ -9,9 +9,9 @@ clear; close all;
 
 %   %   %   %   %   %   %   %   %
 % Get Paths
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
 % R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
@@ -28,7 +28,6 @@ R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitti
 fresh = 0;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
 R.modelspec = 'periphStim_MSET1';
-R.IntP.intFx = @spm_fx_compile_periphStim_delayupdate;
 
 fresh = 1;
  R.modcomp.modlist = 1:3;
@@ -45,20 +44,6 @@ R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor +
 
 R.modcomp.modlist = 1;
 fresh = 0;
-R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-fresh = 1;
-ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
-fresh = 0;
-ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
-
-%% Do modulation with new delays
-R.out.tag = 'periphModel_SH_bmod_newdelay'; % This tags the files for this particular instance
-R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
-R.modelspec = 'periphStim_BMOD_MSET2';
-R.modcomp.modlist = 1; % Only test the full model
-R.condnames = {'Tremor','Rest'};
-R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
-fresh = 1;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
 fresh = 1;
 ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
