@@ -9,8 +9,8 @@ clear; close all;
 
 %   %   %   %   %   %   %   %   %
 % Get Paths
-% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
 % R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 % Note on file structure:
@@ -76,16 +76,11 @@ R.chdat_name = {'Cereb'};
 R.siminds = 1;
 R.SimAn.convIt.dEps = 1e-4;
 R.SimAn.scoreweight = [1 1/1e8];
+R.frqz = [2:.2:24];
 R = formatShengHongData4ABC(R,0); % Loads in raw data, preprocess and format for ABC
 R.modcomp.modlist = 1;
 R.modelspec = 'periphStim_cereb';
-R.frqz = [2:.2:24];
 ABC_periphModel_ModComp_fitting(R,1) % Does the individual model fits
-
-
-
-
-
 
 analysis_ShengHongInactivation(R)
 

@@ -2,7 +2,7 @@
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
 R.data.datatype{1} = 'CSD'; %%'NPD'
-R.sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10l','subj10r','subj12l','subj13l','subj14r'};
+R.sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10l','subj10r','subj12l','subj13l','subj14r'}; %
 
 R.frqz = [2:.2:32];
 R.frqz(R.frqz>47 & R.frqz<53) = NaN;
@@ -10,7 +10,7 @@ R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
 R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
-R.chdat_name = {'amn','Thal','acc'}; % observed channels
+R.chdat_name = {'amn','Thal','EP'}; % observed channels (must match names in chsim!
 R.datinds = 1:3;
 R.chsim_name = {'amn','Thal','EP','ctx',}; % simulated channel names (names must match between these two!)
 R.siminds = 1:4; 

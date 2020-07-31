@@ -6,8 +6,8 @@ function dataOut = getDP_thalamomuscular_data(R,subsel)
 % (2) Why is macrodata one sample less than micro in length?
 % (3) How were EMG and MUA synced? Same amplifier?
 % thalsrc = 'BUA';
-thalsrc = 'BUA';
-load([R.path.datapath_pedrosa subsel '_preproc_micro.mat']);
+thalsrc = 'LFP';
+% load([R.path.datapath_pedrosa subsel '_preproc_micro.mat']);
 load([R.path.datapath_pedrosa subsel '_preproc_macro.mat']);
 microlist = {'central' 'anterior' 'medial' 'posterior' 'lateral'};
 

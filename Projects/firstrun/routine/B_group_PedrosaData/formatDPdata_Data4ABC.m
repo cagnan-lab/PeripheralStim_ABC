@@ -1,5 +1,5 @@
 function R = formatDPdata_Data4ABC(R,fresh)
-for cursub = 1; %:numel(R.sublist)
+for cursub = 1:numel(R.sublist)
     
     % This function converts ShengHongs data to format required for ABC
     mkdir([R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular'])
