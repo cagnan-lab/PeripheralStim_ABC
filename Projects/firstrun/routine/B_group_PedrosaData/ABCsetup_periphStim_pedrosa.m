@@ -10,8 +10,8 @@ R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
 R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
-R.chdat_name = {'amn','Thal'}; % observed channels
-R.datinds = 1:2;
+R.chdat_name = {'amn','Thal','acc'}; % observed channels
+R.datinds = 1:3;
 R.chsim_name = {'amn','Thal','EP','ctx',}; % simulated channel names (names must match between these two!)
 R.siminds = 1:4; 
 R.condnames = {'Tremor','Rest'};
@@ -23,7 +23,7 @@ R.obs.csd.reps = 32; %96;
 
 %% INTEGRATION
 % Main dynamics function
-R.IntP.intFx = @spm_fx_compile_periphStim; %@spm_fx_compile_120319;
+R.IntP.intFx = @spm_fx_compile_periphStim_delayupdate; %@spm_fx_compile_120319;
 R.IntP.compFx= @compareData_180520;
 
 R.IntP.dt = .001;

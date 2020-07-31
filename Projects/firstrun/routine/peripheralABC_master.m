@@ -50,7 +50,7 @@ ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
 fresh = 0;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
-%% Do modulation with new delays 
+%% Do modulation with new delays
 R.out.tag = 'periphModel_SH_bmod_newdelay'; % This tags the files for this particular instance
 R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
 R.modelspec = 'periphStim_BMOD_MSET2';
@@ -90,7 +90,7 @@ analysis_ShengHongInactivation(R)
 
 %%%%%%%%%%%%%%%%%%%%%% PEDROSA DATA
 %% Now we use a larger (but more incomplete) data set from David Pedrosa
-R.out.tag = 'dptest_sub_bua';
+R.out.tag = 'dpcohort_V1';
 R = ABCsetup_periphStim_pedrosa(R);
 fresh = 1;
 R = formatDPdata_Data4ABC(R,fresh);
