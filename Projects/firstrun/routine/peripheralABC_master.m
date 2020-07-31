@@ -11,7 +11,7 @@ clear; close all;
 % Get Paths
 % R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
 % R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this

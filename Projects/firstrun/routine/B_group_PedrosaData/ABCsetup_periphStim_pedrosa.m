@@ -23,7 +23,7 @@ R.obs.csd.reps = 32; %96;
 
 %% INTEGRATION
 % Main dynamics function
-R.IntP.intFx = @spm_fx_compile_periphStim_delayupdate; %@spm_fx_compile_120319;
+R.IntP.intFx = @spm_fx_compile_periphStim; %@spm_fx_compile_120319;
 R.IntP.compFx= @compareData_180520;
 
 R.IntP.dt = .001;

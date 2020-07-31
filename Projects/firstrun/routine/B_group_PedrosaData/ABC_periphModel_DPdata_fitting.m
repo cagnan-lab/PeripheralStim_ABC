@@ -6,7 +6,7 @@ try
     load([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\WorkingModList'])
     disp('Loaded Mod List!!')
 catch
-    WML = fresh;
+    WML = [];
     mkdir([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag ]);
     save([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\WorkingModList'],'WML')
     disp('Making Mod List!!')
