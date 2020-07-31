@@ -13,7 +13,7 @@ catch
 end
 
 % Pretend the current sub is 1
-for cursub = 3:numel(R.sublist)
+for cursub = 1:numel(R.sublist)
     load([R.path.rootn '\outputs\' R.path.projectn '\'  R.out.tag '\WorkingModList'],'WML')
     if ~any(intersect(WML,cursub))
         WML = [WML cursub];

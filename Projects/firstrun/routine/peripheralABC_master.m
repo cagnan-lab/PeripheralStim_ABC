@@ -10,8 +10,8 @@ clear; close all;
 %   %   %   %   %   %   %   %   %
 % Get Paths
 % R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
@@ -28,7 +28,6 @@ R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitti
 fresh = 0;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
 R.modelspec = 'periphStim_MSET1';
-R.IntP.intFx = @spm_fx_compile_periphStim_delayupdate;
 
 fresh = 1;
  R.modcomp.modlist = 1:3;
@@ -51,20 +50,6 @@ ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
 fresh = 0;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
-%% Do modulation with new delays
-R.out.tag = 'periphModel_SH_bmod_newdelay'; % This tags the files for this particular instance
-R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
-R.modelspec = 'periphStim_BMOD_MSET2';
-R.modcomp.modlist = 1; % Only test the full model
-R.condnames = {'Tremor','Rest'};
-R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
-fresh = 1;
-R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-fresh = 1;
-ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
-fresh = 0;
-ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
-
 %% Fit the cerebellar model to tremor
 R.out.tag = 'periphModel_SH_cereb_only'; % This tags the files for this particular instance
 R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
@@ -76,10 +61,10 @@ R.chdat_name = {'Cereb'};
 R.siminds = 1;
 R.SimAn.convIt.dEps = 1e-4;
 R.SimAn.scoreweight = [1 1/1e8];
+R.frqz = [2:.2:24];
 R = formatShengHongData4ABC(R,0); % Loads in raw data, preprocess and format for ABC
 R.modcomp.modlist = 1;
 R.modelspec = 'periphStim_cereb';
-R.frqz = [2:.2:24];
 ABC_periphModel_ModComp_fitting(R,1) % Does the individual model fits
 
 
