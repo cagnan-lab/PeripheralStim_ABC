@@ -1,7 +1,7 @@
 clear; close all;
 % addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 % addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
-addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %
@@ -13,8 +13,8 @@ addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 %   %   %   %   %   %   %   %   %
 % Get Paths
 % R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
@@ -40,7 +40,7 @@ ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(
 R.modelspec = 'periphStim_BMOD_MSET2';
 R.condnames = {'Tremor','Rest'};
 R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
-fresh = 0;
+fresh =1;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
 fresh = 1;
 ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
