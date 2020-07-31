@@ -1,7 +1,7 @@
 clear; close all;
-addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 % addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
-% addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %
@@ -9,9 +9,9 @@ addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 
 %   %   %   %   %   %   %   %   %
 % Get Paths
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
 % R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
@@ -25,21 +25,24 @@ R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular in
 R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
 
 % First do single condition
-fresh = 1;
+fresh = 0;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
 R.modelspec = 'periphStim_MSET1';
+R.IntP.intFx = @spm_fx_compile_periphStim_delayupdate;
+
 fresh = 1;
- R.modcomp.modlist = 8;
+ R.modcomp.modlist = 1:3;
 ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
 fresh = 0;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
 %% Now look at modulation condition
 R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
-
+R.IntP.intFx = @spm_fx_compile_periphStim_delayupdate;
 R.modelspec = 'periphStim_BMOD_MSET2';
 R.condnames = {'Tremor','Rest'};
 R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
+R.modcomp.modlist = 1;
 fresh = 0;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
 fresh = 1;

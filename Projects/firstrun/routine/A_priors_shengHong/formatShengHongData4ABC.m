@@ -20,7 +20,7 @@ for C = 1:2
     %     data{C} = (data{C}-mean(data{C}))./std(data{C});
     dataStore{C} = data{C}';
 end
-if numel(R.chsim_name)>1
+if numel(R.chdat_name)>1
     R.datinds = [3 4 1 2]; % maps from data inds to that of the order of simulated modules specified in R.chsim_name 
 else
     R.datinds = 4;
