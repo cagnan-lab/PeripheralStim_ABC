@@ -144,6 +144,18 @@ for cond = 1:2
 %     for tr = 1:numel(data.trial)
 %         data.trial{tr} = data.trial{tr}.*hanning(size(data.trial{tr},2))';
 %     end
+cfg = [];
+cfg.channel = 'EMG';
+datarep = ft_selectdata(cfg,data);
+
+cfg = [];
+cfg.lpfilter = 'yes';
+cfg.lpfreq = 10;
+datarep = ft_preprocessing(cfg,datarep);
+
+datarep.label{1} = 'fakeACC';
+
+data = ft_appenddata([],data,datarep);
 
     dataOut(cond) = data;
     codes{cond} = {data_macro.label{emgsel} data_macro.label{jsel} data_macro.height(heightlist(isel)) data_macro.trialinfo(heightlist)}

@@ -87,7 +87,7 @@ analysis_ShengHongInactivation(R)
 
 %%%%%%%%%%%%%%%%%%%%%% PEDROSA DATA
 %% Now we use a larger (but more incomplete) data set from David Pedrosa
-R.out.tag = 'dptest_sub';
+R.out.tag = 'dpcohort_V1';
 R = ABCsetup_periphStim_pedrosa(R);
 fresh = 1;
 R = formatDPdata_Data4ABC(R,fresh);

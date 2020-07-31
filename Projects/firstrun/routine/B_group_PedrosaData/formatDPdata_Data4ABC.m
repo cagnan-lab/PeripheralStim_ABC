@@ -25,6 +25,18 @@ for cursub = 1:numel(R.sublist)
     R.obs.trans.gausSm = 5; % 10 hz smooth window
     R.obs.SimOrd = 11;
     [R.data.feat_xscale, R.data.feat_emp] = R.obs.transFx(dataStore,R.datinds,fs_emp,R.obs.SimOrd,R);
+    
+    warning('Remember the ACC is fake!')
+    for i = 1:4
+        for j = 1:4
+            if (i~=j) && (i == 3 || j ==3)
+                R.data.feat_emp{1}(:,i,j,:,:) = nan(2,4,size(R.data.feat_emp{1},5));
+            end
+        end
+    end
+    
+    
+    
     R.plot.outFeatFx({R.data.feat_emp},[],R.data.feat_xscale,R,[],[]);
     clear data dat
     % Revert back for simulated data
