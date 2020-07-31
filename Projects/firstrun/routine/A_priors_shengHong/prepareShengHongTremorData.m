@@ -28,12 +28,12 @@ for C = 1:2
     ftdata_pp.label(end+1:end+2) = {'ACCL','ACCR'};
     
     
-    cfg = [];
-    cfg.length  = 1;
-    ftdata_pp = ft_redefinetrial(cfg,ftdata_pp);
+%     cfg = [];
+%     cfg.length  = 1;
+%     ftdata_pp = ft_redefinetrial(cfg,ftdata_pp);
     
-    cfg = [];
-    ftdata_pp = ft_rejectvisual(cfg,ftdata_pp);
+%     cfg = [];
+%     ftdata_pp = ft_rejectvisual(cfg,ftdata_pp);
     
     %% Basic Common Filtering for all channels
     cfg = [];
@@ -54,12 +54,16 @@ for C = 1:2
     
     cfg = [];
     cfg.channel         = ftdata_pp.label(emgSel);
-    % Low Pass Filter at 4 Hz:
-    %     cfg.hpfilter    = 'yes';
-    %     cfg.hpfreq      = 2.5;
-    % Remove line noise frequencies (is this meant to do now or later?):
     cfg.rectify = 'yes';
     emgfix = ft_preprocessing(cfg,ftdata_pp);
+    
+    cfg = [];
+    cfg.channel         = ftdata_pp.label(emgSel);
+    % Low Pass Filter at 4 Hz:
+    cfg.hpfilter    = 'yes';
+    cfg.hpfreq      = 1;
+    emgfix = ft_preprocessing(cfg,emgfix);
+    
     
     cfg = [];
     cfg.channel  = ftdata_pp.label(~emgSel);

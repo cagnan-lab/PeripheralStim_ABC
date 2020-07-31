@@ -2,14 +2,14 @@ function R = ABCsetup_periphStim_shenghong(R)
 
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
-R.data.datatype = 'CSD'; %%'NPD'
-R.frqz = [2:.2:32];
-R.frqz(R.frqz>47 & R.frqz<53) = NaN;
+R.data.datatype{1} = 'CSD'; %%'NPD'
+R.frqz = [2:.2:35];
+% R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
 R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC','Cereb'}; %modules (fx) to use. These must match those listed in the fx_compile function
-R.chloc_name = {'amn','Thal','EP','ctx'}; % observed channels (redundant)
+R.chdat_name = {'amn','Thal','EP','ctx'}; % observed channels (redundant)
 % R.datinds = 1:4; % Specify this when you deal with the data - ensure its not the wrong order!
 R.chsim_name = {'amn','Thal','EP','ctx','Cereb'}; % simulated channel names
 R.siminds = 1:5; % Maps from simulation to data
@@ -73,10 +73,10 @@ R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.D','.o
 R.SimAn.pOptBound = [-12 12];
 R.SimAn.pOptRange = R.SimAn.pOptBound(1):.1:R.SimAn.pOptBound(2);
 R.SimAn.searchMax = 200;
-R.SimAn.convIt.dEps = 7.5e-3;
+R.SimAn.convIt.dEps = 5e-4;
 R.SimAn.convIt.eqN = 5;
 R.analysis.modEvi.N  = 500;
-R.SimAn.scoreweight = [1 1/1e7];
+R.SimAn.scoreweight = [1 1/1e6];
 R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
 R.SimAn.jitter = 1; % Global precision

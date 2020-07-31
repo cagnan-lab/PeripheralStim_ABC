@@ -39,8 +39,8 @@ end
 end
 
 R.obs.outstates = find([m.outstates{:}]);
-for i=1:numel(R.chloc_name)
-    R.obs.obsstates(i) = find(strcmp(R.chloc_name{i},R.chsim_name));
+for i=1:numel(R.chdat_name)
+    R.obs.obsstates(i) = find(strcmp(R.chdat_name{i},R.chsim_name));
 end
 m.n =  size([m.x{:}],2); % Number of states
 

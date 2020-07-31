@@ -1,5 +1,5 @@
 function R = formatDPdata_Data4ABC(R,fresh)
-for cursub = 1:numel(R.sublist)
+for cursub = 1; %:numel(R.sublist)
     
     % This function converts ShengHongs data to format required for ABC
     mkdir([R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular'])
@@ -25,6 +25,18 @@ for cursub = 1:numel(R.sublist)
     R.obs.trans.gausSm = 5; % 10 hz smooth window
     R.obs.SimOrd = 11;
     [R.data.feat_xscale, R.data.feat_emp] = R.obs.transFx(dataStore,R.datinds,fs_emp,R.obs.SimOrd,R);
+    
+    warning('Remember the ACC is fake!')
+    for i = 1:4
+        for j = 1:4
+            if (i~=j) && (i == 3 || j ==3)
+                R.data.feat_emp{1}(:,i,j,:,:) = nan(2,4,size(R.data.feat_emp{1},5));
+            end
+        end
+    end
+    
+    
+    
     R.plot.outFeatFx({R.data.feat_emp},[],R.data.feat_xscale,R,[],[]);
     clear data dat
     % Revert back for simulated data
@@ -33,6 +45,6 @@ for cursub = 1:numel(R.sublist)
     
     % Save the data only (precomputed and reloaded within fitting)
     Rdat = R.data;
-    subABCdatafile = [R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular\dp_thalamomuscular_' R.sublist{cursub} '_ABC.mat'];
+    subABCdatafile = [R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular\dp_thalamomuscular_' R.sublist{cursub} '_BUA_ABC.mat'];
     save(subABCdatafile,'Rdat')
 end

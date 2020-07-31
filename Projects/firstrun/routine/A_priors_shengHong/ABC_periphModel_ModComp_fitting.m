@@ -5,20 +5,22 @@ closeMessageBoxes
 % WML is a remote accessible for coordinating parallel sessions
 try
     if fresh; error('Starting Fresh'); end
-    load([R.path.rootn '\outputs\' R.out.tag '\WorkingModList'])
+    if nargin<3
+    load([R.path.rootn '\outputs\' R.path.projectn '\' R.out.tag '\WorkingModList'])
     disp('Loaded Mod List!!')
+    end
 catch
     WML = [];
-    mkdir([R.path.rootn '\outputs\' R.out.tag ]);
-    save([R.path.rootn '\outputs\' R.out.tag '\WorkingModList'],'WML')
+    mkdir([R.path.rootn '\outputs\' R.path.projectn '\' R.out.tag]);
+    save([R.path.rootn '\outputs\' R.path.projectn '\' R.out.tag '\WorkingModList'],'WML')
     disp('Making Mod List!!')
 end
 
 %% This is the main loop
-for modID = 1; %:7
+for modID = R.modcomp.modlist
     switch R.modelspec
         case 'periphStim_MSET1'
-            if modID == 7
+            if modID >=7
                 R.obs.Cnoise =[1 1 1 1 1]*1e-8;
                 R.obs.LF = [1 1 1 1 1]*10; % Fit visually and for normalised data
                 R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC','Cereb'}; %modules (fx) to use.
@@ -38,10 +40,10 @@ for modID = 1; %:7
                 R.chsim_name = {'amn','Thal','EP','ctx'}; % simulated channel names (names must match between these two!)
                 R.siminds = 1:4;            
     end
-load([R.path.rootn '\outputs\' R.out.tag '\WorkingModList'],'WML')
+load([R.path.rootn '\outputs\' R.path.projectn '\' R.out.tag '\WorkingModList'],'WML')
 if ~any(intersect(WML,modID))
     WML = [WML modID];
-    save([R.path.rootn '\outputs\' R.out.tag '\WorkingModList'],'WML')
+    save([R.path.rootn '\outputs\' R.path.projectn '\' R.out.tag '\WorkingModList'],'WML')
     disp('Writing to Mod List!!')
     fprintf('Now Fitting Model %.0f',modID)
     f = msgbox(sprintf('Fitting Model %.0f',modID));
