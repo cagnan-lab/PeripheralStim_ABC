@@ -1,6 +1,6 @@
-function [R p m uc] = MS_periphStim_MSET1_M8(R)
-% Addition of cerebellum
-% FULL MODEL
+function [R p m uc] = MS_periphStim_BMOD_FullSet3_M6(R)
+% FULL MODEL with Cerebellum
+% Cerebro-cortical
 [R,m] = getStateDetails(R);
 
 % setup exogenous noise
@@ -24,6 +24,7 @@ p.A{1}(2,4) = 0; % MMC to Thal
 p.A{1}(5,4) = 0; % MMC to Cereb
 p.A{1}(3,1) = 0; % SC to Spin
 p.A{1}(4,2) = 0; % Thal to CTX
+p.A{1}(5,2) = 0; % Thal to Cereb
 
 p.A_s{1}(find(p.A{1}==0)) = 1/2;
 
@@ -31,14 +32,15 @@ p.A_s{1}(find(p.A{1}==0)) = 1/2;
 p.B{1} =  repmat(-32,m.m,m.m);
 p.B_s{1} = repmat(1/8,size(p.A_s{1})).*(p.B{1}==0);
 
-% Inhibtory
+% Inhibitory
 p.A{2} =  repmat(-32,m.m,m.m);
-p.A{1}(2,5) = 0; % Cereb to MMC
-p.A{1}(4,5) = 0; % Cereb to Thal
+p.A{2}(2,5) = 0; % Cereb to MMC
+p.A{2}(4,5) = 0; % Cereb to Thal
 
 p.A_s{2} = repmat(0,m.m,m.m);
 
 p.B{2} =  repmat(-32,m.m,m.m);
+p.B{2}(2,5) = 0; % Cereb to MMC
 p.B_s{2} = repmat(1/8,size(p.A_s{2})).*(p.B{2}==0);
 
 % Input strengths

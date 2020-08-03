@@ -1,6 +1,7 @@
 clear; close all;
-% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
+
+addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
 % addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
@@ -37,7 +38,9 @@ ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(
 
 %% Now look at modulation condition
 R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
-R.modelspec = 'periphStim_BMOD_MSET2';
+
+R.IntP.intFx = @spm_fx_compile_periphStim_delayupdate;
+R.modelspec = 'periphStim_BMOD_FullSet3';
 R.condnames = {'Tremor','Rest'};
 R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
 

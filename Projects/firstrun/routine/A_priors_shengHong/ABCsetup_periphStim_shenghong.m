@@ -13,7 +13,7 @@ R.chdat_name = {'amn','Thal','EP','ctx'}; % observed channels (redundant)
 % R.datinds = 1:4; % Specify this when you deal with the data - ensure its not the wrong order!
 R.chsim_name = {'amn','Thal','EP','ctx','Cereb'}; % simulated channel names
 R.siminds = 1:5; % Maps from simulation to data
-R.condnames = {'Tremor'}; %,'Rest'};
+R.condnames = {'Tremor','Rest'};
 % Spectral characteristics
 R.obs.csd.df = 0.5;
 R.obs.csd.reps = 32; %96;
@@ -62,7 +62,7 @@ R.obs.trans.normcat = 1;
 R.obs.trans.logdetrend = 0;
 R.obs.trans.gauss3 = 0;
 R.obs.trans.gausSm = 0; % This is off but is switched on to 1 Hz at data processing stage
-R.obs.trans.interptype = 'pchip';
+R.obs.trans.interptype = 'linear';
 
 %% OBJECTIVE FUNCTION
 R.objfx.feattype = 'complex'; %%'ForRev'; %
@@ -76,7 +76,7 @@ R.SimAn.searchMax = 200;
 R.SimAn.convIt.dEps = 5e-4;
 R.SimAn.convIt.eqN = 5;
 R.analysis.modEvi.N  = 500;
-R.SimAn.scoreweight = [1 1/1e6];
+R.SimAn.scoreweight = [1 1/1e5];
 R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
 R.SimAn.jitter = 1; % Global precision
