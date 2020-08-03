@@ -45,6 +45,6 @@ for cursub = 1:numel(R.sublist)
     
     % Save the data only (precomputed and reloaded within fitting)
     Rdat = R.data;
-    subABCdatafile = [R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular\dp_thalamomuscular_' R.sublist{cursub} '_BUA_ABC.mat'];
+    subABCdatafile = [R.path.rootn '\outputs\' R.path.projectn '\data\DP\thalamomuscular\dp_thalamomuscular_' R.sublist{cursub} '_ABC.mat'];
     save(subABCdatafile,'Rdat')
 end
