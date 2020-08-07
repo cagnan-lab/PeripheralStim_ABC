@@ -3,7 +3,7 @@ function R = ABCsetup_periphStim_shenghong(R)
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
 R.data.datatype{1} = 'CSD'; %%'NPD'
-R.frqz = [2:.2:35];
+R.frqz = [2:.2:24];
 % R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
@@ -73,10 +73,10 @@ R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.D','.o
 R.SimAn.pOptBound = [-12 12];
 R.SimAn.pOptRange = R.SimAn.pOptBound(1):.1:R.SimAn.pOptBound(2);
 R.SimAn.searchMax = 200;
-R.SimAn.convIt.dEps = 5e-4;
+R.SimAn.convIt.dEps = 1e-4;
 R.SimAn.convIt.eqN = 5;
 R.analysis.modEvi.N  = 500;
-R.SimAn.scoreweight = [1 1/1e5];
+R.SimAn.scoreweight = [1 1/1e6];
 R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
 R.SimAn.jitter = 1; % Global precision

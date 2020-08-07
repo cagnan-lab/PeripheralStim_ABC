@@ -36,20 +36,40 @@ ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
 fresh = 0;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
-%% Now look at modulation condition
-R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
+%% Get Prior for modulation condition
+R.out.tag = 'periphModel_MSET1_v1_empPrior'; % This tags the files for this particular instance
+R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
 
-R.IntP.intFx = @spm_fx_compile_periphStim_delayupdate;
 R.modelspec = 'periphStim_BMOD_FullSet3';
-R.condnames = {'Tremor','Rest'};
-R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
+R.condnames = {'Tremor'};
+R.Bcond = 0; % The second condition is the modulation i.e. parRest = parTremor + B;
 
 R.modcomp.modlist = 1;
 fresh = 0;
 R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
 fresh = 1;
 ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
+fresh = 1;
+ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
+
+
+
+
+%% Now look at modulation condition
+R.out.tag = 'periphModel_BMOD_TremPrior'; % This tags the files for this particular instance
+R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
+R.SimAn.convIt.dEps = 1e-4;
+R.SimAn.rep = 512; % This determines the number of iterations per ABC sequence
+R.modelspec = 'periphStim_BMOD_TremPrior';
+R.condnames = {'Tremor','Rest'};
+R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
+
+R.modcomp.modlist = 1:10;
 fresh = 0;
+R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
+fresh = 1;
+ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
+fresh = 1;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
 %% Fit the cerebellar model to tremor
