@@ -1,7 +1,7 @@
 clear; close all;
-addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 % addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
-% addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %
@@ -9,9 +9,9 @@ addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 
 %   %   %   %   %   %   %   %   %
 % Get Paths
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
 % R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
@@ -37,7 +37,6 @@ ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(
 
 %% Now look at modulation condition
 R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
-R.IntP.intFx = @spm_fx_compile_periphStim_delayupdate;
 R.modelspec = 'periphStim_BMOD_FullSet3';
 R.condnames = {'Tremor','Rest'};
 R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
@@ -84,7 +83,7 @@ ABC_periphModel_DPdata_fitting_bua(R,fresh) % This will fit just the big full mo
 % R.out.tag = 'dpmod_test';
 % ABC_periphModel_DPdata_fitting_Bvar(R) % This will fit variations of the full model with individual modulations
 
-R.out.tag = 'dptest_sub_bua';
+R.out.tag = 'dpfull_sub_bua';
 R.modelspec = 'periphStim_MSET1';
 R.sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10l','subj10r','subj12l','subj13l','subj14r'};
 R.subsel = [1 4 6 9 10 11]; % BUA
