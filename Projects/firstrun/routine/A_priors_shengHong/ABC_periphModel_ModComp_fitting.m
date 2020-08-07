@@ -55,7 +55,6 @@ if ~any(intersect(WML,modID))
     R.out.dag = sprintf([R.out.tag '_M%.0f'],modID); % 'All Cross'
     
     %% Run ABC Optimization
-    R.SimAn.rep = 256; % This determines the number of iterations per ABC sequence
     SimAn_ABC_250320(R,p,m);
     closeMessageBoxes
 end

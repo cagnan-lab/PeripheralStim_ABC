@@ -36,6 +36,8 @@ for cursub = 1:numel(R.sublist)
         load([R.path.rootn '\Projects\' R.path.projectn '\empirical_priors\shenghong_modelfit.mat'])
         
         p = varo.Pfit;
+        R.SimAn.jitter = 2.5;
+        
         % Modify so B matrix is available
         p.B{1}(4,1) = 0; % Spin to Thal
         p.B{1}(4,2) = 0; % MMC to Thal
@@ -47,7 +49,7 @@ for cursub = 1:numel(R.sublist)
         R.out.dag = sprintf([R.out.tag '_BMOD_MSET%.0f_' R.sublist{cursub}],modID); % 'All Cross'
         
         %% Run ABC Optimization
-        R = setSimTime(R,32);
+        R = setSimTime(R,28);
         R.Bcond = 2;
         R.SimAn.rep = 256;
         SimAn_ABC_250320(R,p,m);
