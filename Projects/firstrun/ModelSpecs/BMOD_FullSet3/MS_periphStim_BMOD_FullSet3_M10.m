@@ -84,4 +84,8 @@ load('shenghong_cerebellumFit2Thal.mat','Pfit')
 disp('Loading pre-fitted cerebellum priors')
 
 p.int{5} = Pfit.int{1};
+i = 5;
+p.int{i}.T_s = repmat(prec,size(p.int{i}.T));
+p.int{i}.G_s = repmat(prec/2,size(p.int{i}.G));
+p.int{i}.S_s = repmat(prec,size(p.int{i}.S));
 

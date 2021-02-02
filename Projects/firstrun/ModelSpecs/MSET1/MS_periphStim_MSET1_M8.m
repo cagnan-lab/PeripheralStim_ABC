@@ -21,9 +21,9 @@ p.A{1}(2,3) = 0; % Spin to Thal
 p.A{1}(5,3) = 0; % Spin to Cereb
 p.A{1}(1,4) = 0; % MMC to SC
 p.A{1}(2,4) = 0; % MMC to Thal
-p.A{1}(5,4) = 0; % MMC to Cereb
 p.A{1}(3,1) = 0; % SC to Spin
 p.A{1}(4,2) = 0; % Thal to CTX
+p.A{1}(5,2) = 0; % Thal to Cereb
 
 p.A_s{1}(find(p.A{1}==0)) = 1/2;
 
@@ -33,9 +33,7 @@ p.B_s{1} = repmat(1/8,size(p.A_s{1})).*(p.B{1}==0);
 
 % Inhibtory
 p.A{2} =  repmat(-32,m.m,m.m);
-p.A{1}(2,5) = 0; % Cereb to MMC
-p.A{1}(4,5) = 0; % Cereb to Thal
-
+p.A{1}(2,5) = 0; % Cereb to Thal
 p.A_s{2} = repmat(0,m.m,m.m);
 
 p.B{2} =  repmat(-32,m.m,m.m);

@@ -1,7 +1,4 @@
 function [xstore_cond,tvec,wflag,J,Es] = spm_fx_compile_periphStim(R,x,uc,pc,m)
-% To Do:
-% 1)Precompute the expectations of the within source parameters and take
-%   outside of the integration loop.
 % If you want to estimate the noise floor - then use 'decon' to deconnect
 % both intrinsic/extrinsic couplings.
 if isfield(R.IntP,'getNoise') && R.IntP.getNoise == 1
@@ -128,7 +125,7 @@ for condsel = 1:numel(R.condnames)
         if cs ~= R.Bcond
             A{i} = decon*exp(p.A{i});
         else
-            A{i} = decon*exp(p.A{i}+p.B{i}); % Add the second condition
+            A{i} = decon*(exp(p.A{i})+ exp(p.B{i})); % Add the second condition
         end
         %     A{alist(i,2)} = exp(p.A{i});
     end
