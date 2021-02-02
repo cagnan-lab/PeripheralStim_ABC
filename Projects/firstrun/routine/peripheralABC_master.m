@@ -28,8 +28,8 @@ R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format
 R.modelspec = 'periphStim_MSET1';
 
 fresh = 1;
-R.modcomp.modlist = 2:8;
-ABC_periphModel_ModComp_fitting(R,0) % Does the individual model fits
+R.modcomp.modlist = 1:8;
+ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
 fresh = 0;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 

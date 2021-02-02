@@ -33,7 +33,7 @@ switch R.nmsim_name{nm}
         m.Gint(nm) = 8;
         m.Tint(nm) = 5;
         m.Sint(nm) = 6;        
-        m.outstates{nm} = [0 0 0 0 0 0 1 0]; % Purkinje cell voltage
+        m.outstates{nm} = [0 0 0 0 0 0 0 0 1 0]; % Purkinje cell voltage
         
 end
 end
