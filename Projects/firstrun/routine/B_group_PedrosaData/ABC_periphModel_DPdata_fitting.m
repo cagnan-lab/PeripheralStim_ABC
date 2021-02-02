@@ -30,20 +30,17 @@ for cursub = 1:numel(R.sublist)
 
         %% Prepare Model
         modID = 1;
-        modelspec = eval(['@MS_periphStim_BMOD_MSET2_M' num2str(modID)]);
-        [R dum m uc] = modelspec(R); % M! intrinsics shrunk"
+        modelspec = eval(['@MS_periphStim_BMOD_complete_M' num2str(modID)]);
+        [R p m uc] = modelspec(R); % M! intrinsics shrunk"
         
-        load([R.path.rootn '\Projects\' R.path.projectn '\empirical_priors\shenghong_modelfit.mat'])
+        R.SimAn.jitter = 1;
         
-        p = varo.Pfit;
-        R.SimAn.jitter = 2.5;
-        
-        % Modify so B matrix is available
-        p.B{1}(4,1) = 0; % Spin to Thal
-        p.B{1}(4,2) = 0; % MMC to Thal
-        p.B{1}(2,4) = 0; % Thal to CTX
-        p.B{1}(3,1) = 0; % Spin to AMN
-        p.B_s{1} = repmat(1/2,size(p.A_s{1})).*(p.B{1}==0);
+%         % Modify so B matrix is available
+%         p.B{1}(4,1) = 0; % Spin to Thal
+%         p.B{1}(4,2) = 0; % MMC to Thal
+%         p.B{1}(2,4) = 0; % Thal to CTX
+%         p.B{1}(3,1) = 0; % Spin to AMN
+%         p.B_s{1} = repmat(1/2,size(p.A_s{1})).*(p.B{1}==0);
         
         pause(1)
         R.out.dag = sprintf([R.out.tag '_BMOD_MSET%.0f_' R.sublist{cursub}],modID); % 'All Cross'

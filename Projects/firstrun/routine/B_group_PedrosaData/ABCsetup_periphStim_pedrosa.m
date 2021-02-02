@@ -9,10 +9,10 @@ R.frqz(R.frqz>47 & R.frqz<53) = NaN;
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
-R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
+R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC','Cereb'}; %modules (fx) to use.
 R.chdat_name = {'amn','Thal','EP'}; % observed channels (must match names in chsim!
 R.datinds = 1:3;
-R.chsim_name = {'amn','Thal','EP','ctx',}; % simulated channel names (names must match between these two!)
+R.chsim_name = {'amn','Thal','EP','ctx','cereb'}; % simulated channel names (names must match between these two!)
 R.siminds = 1:4; 
 R.condnames = {'Tremor','Rest'};
 R.Bcond = 2; % 2Which condition is the modulating?
@@ -50,9 +50,9 @@ R.obs.gainmeth{2} = 'boring';
 R.obs.glist =0; %linspace(-5,5,12);  % gain sweep optimization range [min max listn] (log scaling)
 R.obs.brn =2; % 2; % burn in time
 R.obs.condchecker = 0; %1;
-LF = [1 1 1 1]*10; % Fit visually and for normalised data
+LF = [1 1 1 1 ]*10; % Fit visually and for normalised data
 R.obs.LF = LF;
-R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation function
+R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation function
 % % (precompute filter)
 % % fsamp = 1/R.IntP.dt;
 % % nyq = fsamp/2;

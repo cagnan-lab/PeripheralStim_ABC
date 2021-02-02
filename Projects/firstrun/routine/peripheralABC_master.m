@@ -1,19 +1,16 @@
 clear; close all;
 
-addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
 % addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
-addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
-%
-% %
-
 %   %   %   %   %   %   %   %   %
 % Get Paths
 % R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
-
+% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = periphABCAddPaths(R);
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
@@ -31,8 +28,8 @@ R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format
 R.modelspec = 'periphStim_MSET1';
 
 fresh = 1;
- R.modcomp.modlist = 1:3;
-ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
+R.modcomp.modlist = 2:8;
+ABC_periphModel_ModComp_fitting(R,0) % Does the individual model fits
 fresh = 0;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
@@ -95,9 +92,9 @@ analysis_ShengHongInactivation(R)
 %% Now we use a larger (but more incomplete) data set from David Pedrosa
 R.out.tag = 'dpcohort_V1';
 R = ABCsetup_periphStim_pedrosa(R);
-fresh = 1;
-R = formatDPdata_Data4ABC(R,fresh);
 fresh = 0;
+R = formatDPdata_Data4ABC(R,fresh);
+fresh = 1;
 ABC_periphModel_DPdata_fitting(R,fresh) % This will fit just the big full model
 
 fresh = 0;

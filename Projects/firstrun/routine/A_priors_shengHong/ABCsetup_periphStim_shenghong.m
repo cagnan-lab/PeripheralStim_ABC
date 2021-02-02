@@ -13,7 +13,7 @@ R.chdat_name = {'amn','Thal','EP','ctx'}; % observed channels (redundant)
 % R.datinds = 1:4; % Specify this when you deal with the data - ensure its not the wrong order!
 R.chsim_name = {'amn','Thal','EP','ctx','Cereb'}; % simulated channel names
 R.siminds = 1:5; % Maps from simulation to data
-R.condnames = {'Tremor','Rest'};
+R.condnames = {'Tremor'}; %,'Rest'};
 % Spectral characteristics
 R.obs.csd.df = 0.5;
 R.obs.csd.reps = 32; %96;
@@ -34,7 +34,7 @@ R.obs.SimOrd = 9;
 R.IntP.tend = (N*(2^(R.obs.SimOrd)))/fsamp;
 R.IntP.nt = R.IntP.tend/R.IntP.dt;
 R.IntP.tvec = linspace(0,R.IntP.tend,R.IntP.nt);
-R.Bcond = 2;
+R.Bcond = 0;
 dfact = fsamp/(2*2^(R.obs.SimOrd));
 disp(sprintf('The target simulation df is %.2f Hz',R.obs.csd.df));
 disp(sprintf('The actual simulation df is %.2f Hz',dfact));
@@ -43,7 +43,7 @@ disp(sprintf('The actual simulation df is %.2f Hz',dfact));
 % observation function
 R.obs.obsFx = @observe_data;
 R.obs.gainmeth{1} = 'obsnoise';
-R.obs.gainmeth{2} = 'boring';
+% R.obs.gainmeth{2} = 'boring';
 R.obs.glist =0; %linspace(-5,5,12);  % gain sweep optimization range [min max listn] (log scaling)
 R.obs.condchecker = 0; %1; % This is in the observation function and checks if there is a big difference between conditions- 0 is OFF
 R.obs.brn =2; % 2; % burn in time
