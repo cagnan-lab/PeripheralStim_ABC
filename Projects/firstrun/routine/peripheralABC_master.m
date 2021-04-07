@@ -1,15 +1,13 @@
 clear; close all;
 
-% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-% addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
-addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
+% addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
+addpath('D:\GITHUB\ABCNeuralModellingToolbox')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %   %   %   %   %   %   %   %   %
 % Get Paths
-% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 R = periphABCAddPaths(R);
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
