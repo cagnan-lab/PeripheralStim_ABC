@@ -1,6 +1,6 @@
 function ABC_periphModel_ModComp_fitting(R,fresh)
 closeMessageBoxes
-
+% Load in M4
 %% Start Loop (for parallel sessions)
 % WML is a remote accessible for coordinating parallel sessions
 if fresh
@@ -38,10 +38,12 @@ for modID = R.modcomp.modlist
         %% Prepare Model
         modelspec = eval(['@MS_' R.modelspec '_M' num2str(modID)]);
         [R p m uc] = modelspec(R); % M! intrinsics shrunk"
-        pause(5)
+        pause(0.5)
         R.out.dag = sprintf([R.out.tag '_M%.0f'],modID); % 'All Cross'
         
         %% Run ABC Optimization
+         R = setSimTime(R,32);
+         R.obs.SimOrd = 10.5;
         SimAn_ABC_201120(R,p,m);
         spreadSession(R,0);
     end

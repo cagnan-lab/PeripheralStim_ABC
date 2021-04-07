@@ -15,24 +15,43 @@ R = periphABCAddPaths(R);
 % File structure [system repo project tag dag]; all outputs follow this
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
 % often used when running through models/data within a tagged project.
-
+stepcontrol = [2];
 %%%%%%%%%%%%%%%%%%%%%%%%% SHENGHONG DATA
-%% First we parameterise models using a example data set including Thalamic LFP,
-% EMG, EEG, and Accelorometer from an Essential Tremor Patient
-R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
-R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
-
-% First do single condition
-fresh = 0;
-R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-R.modelspec = 'periphStim_MSET1';
-
-fresh = 0;
-R.modcomp.modlist = 1:8;
-ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
-fresh = 0;
-ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
-
+if ismember(1,stepcontrol)
+    %% Get the cerebellar prior - assume it generates tremor rhythms
+    R.out.tag = 'periphModel_SH_cereb_only'; % This tags the files for this particular instance
+    R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
+    R.obs.Cnoise = R.obs.Cnoise(1);
+    R.obs.LF = R.obs.LF(1); % Fit visually and for normalised data
+    R.nmsim_name = {'Cereb'}; %modules (fx) to use.
+    R.chsim_name = {'Cereb'}; % simulated channel names (names must match between these two!)
+    R.chdat_name = {'Cereb'};
+    R.siminds = 1;
+    R.SimAn.convIt.dEps = 1e-3;
+    R.SimAn.scoreweight = [1 1/1e8];
+    R.frqz = [2:.2:24];
+    R = formatShengHongData4ABC(R,0); % Loads in raw data, preprocess and format for ABC
+    R.modcomp.modlist = 1;
+    R.modelspec = 'periphStim_cereb';
+    ABC_periphModel_ModComp_fitting(R,1) % Does the individual model fits
+end
+if ismember(2,stepcontrol)
+    %% First we parameterise models using a example data set including Thalamic LFP,
+    % EMG, EEG, and Accelorometer from an Essential Tremor Patient
+    R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
+    R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
+    
+    % First do single condition
+    fresh = 0;
+    R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
+    R.modelspec = 'periphStim_MSET1';
+    
+    fresh = 1;
+    R.modcomp.modlist = 8; %1:8;
+    ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits % LOAD 8
+    fresh = 0;
+    ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
+end
 %% Get Prior for modulation condition
 R.out.tag = 'periphModel_MSET1_v1_empPrior'; % This tags the files for this particular instance
 R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
@@ -69,22 +88,6 @@ ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
 fresh = 1;
 ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 
-%% Fit the cerebellar model to tremor
-R.out.tag = 'periphModel_SH_cereb_only'; % This tags the files for this particular instance
-R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
-R.obs.Cnoise = R.obs.Cnoise(1);
-R.obs.LF = R.obs.LF(1); % Fit visually and for normalised data
-R.nmsim_name = {'Cereb'}; %modules (fx) to use.
-R.chsim_name = {'Cereb'}; % simulated channel names (names must match between these two!)
-R.chdat_name = {'Cereb'};
-R.siminds = 1;
-R.SimAn.convIt.dEps = 1e-4;
-R.SimAn.scoreweight = [1 1/1e8];
-R.frqz = [2:.2:24];
-R = formatShengHongData4ABC(R,0); % Loads in raw data, preprocess and format for ABC
-R.modcomp.modlist = 1;
-R.modelspec = 'periphStim_cereb';
-ABC_periphModel_ModComp_fitting(R,1) % Does the individual model fits
 
 analysis_ShengHongInactivation(R)
 

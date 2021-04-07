@@ -61,39 +61,25 @@ for condsel = 1:numel(R.condnames)
     end
     
     %% Pre-integration extrinsic connection parameters
-    
     % Compute value of delays from lognormal mean
-    D = zeros(m.m);
-    D(p.D>-30) = 4/1000; % set all delay priors to 4ms.
-    % The indices are in same 
-    D(3,1) = 15/1000;  % cord to MotorUnit (efferent)
-    D(4,2) = 3/1000;   % Thal to M1 (Lumer, Edelman, Tononi; 1997)
-    D(1,3) = 15/1000;   % spindle to cord (afferent)
-    D(2,3) = 30/1000;  % spindle to Thal (afferent)
-    D(2,4) = 8/1000;   % M1 to Thal (Lumer, Edelman, Tononi; 1997)
-    D(1,4) = 30/1000;   % M1 to cord 
-    D(5,3) = 30/1000;  % spindle to Cereb (afferent)
+    DExt = recallExtDelayTable(R,p,nmm);
     
-    D = D(1:m.m,1:m.m);
-    D = ceil(D.*exp(p.D).*(1/R.IntP.dt)); % As expectation of priors and convert units to steps
-    D(D<((1e-3)/R.IntP.dt)&D>0) = floor((2e-3)/R.IntP.dt); % Minimum 1ms
-    
-    if (R.IntP.buffer-max(max(D)))<=0
-        R.IntP.buffer = max(max(D)) + 2;
-        disp(['Delay is bigger than buffer, increasing buffer to: ' num2str(R.IntP.buffer)])
+    if (R.IntP.bufferExt-max(max(DExt)))<=0
+        R.IntP.bufferExt = max(max(DExt)) + 2;
+        disp(['Delay is bigger than buffer, increasing buffer to: ' num2str(R.IntP.bufferExt)])
     end
-    if R.IntP.buffer > 1e3
-        disp('Delays are implausibly large (>1s)!')
+    if R.IntP.bufferExt > 1e3
+        disp('Delays are implausibly large!')
         wflag = 1;
         break
     end
     
-    Ds = zeros(size(D));Dt = zeros(size(D));
+    Ds = zeros(size(DExt));
     % Now find indices of inputs
     % Currently no seperation between inh and excitatory
     for i = 1:length(nmm) % target
-        for j = 1:length(D(i,:)) % source
-            if D(i,j)>0
+        for j = 1:length(DExt(i,:)) % source
+            if DExt(i,j)>0
                 Ds(i,j) = efferent(nmm(j),1); % input sources
                 Ds(i,j) = (m.xinds(j,1)-1)+Ds(i,j);
             end
@@ -163,14 +149,14 @@ for condsel = 1:numel(R.condnames)
     %% TIME INTEGRATION STARTS HERE ===========================================
     f = zeros(xinds(end),1); dt = R.IntP.dt;
     if iscell(x)
-        xstore= full(repmat(spm_vec(x),1,R.IntP.buffer));
+        xstore= full(repmat(spm_vec(x),1,R.IntP.bufferExt));
     else
         xstore = x;
     end
     
     xint = zeros(m.n,1);
     TOL = exp(-4);
-    for tstep = R.IntP.buffer:R.IntP.nt
+    for tstep = R.IntP.bufferExt:R.IntP.nt
         % assemble flow
         %==========================================================================
         N     = m;
@@ -181,7 +167,7 @@ for condsel = 1:numel(R.condnames)
             for j = 1:n % sources
                 for k = 1:numel(p.A) % connection type
                     if abs(A{k}(i,j)) > TOL
-                        xD = xstore(Ds(i,j),tstep-D(i,j));
+                        xD = xstore(Ds(i,j),tstep-DExt(i,j));
                         fA = [fA  A{k}(i,j)*sigmoidin(xD,Rz(j),B)]; % 1st Rz is slope!
                     end
                 end
@@ -197,7 +183,7 @@ for condsel = 1:numel(R.condnames)
         xint = xint + (f.*dt);
         xstore = [xstore xint]; % This is done for speed reasons! Faster than indexing (!!)
 
-        if tstep >R.IntP.buffer*10
+        if tstep >R.IntP.bufferExt*10
             if any(xint>1e4) || any(isnan(xint))
                 wflag= 1;
                 break
@@ -213,7 +199,7 @@ for condsel = 1:numel(R.condnames)
     
     
     if nargout>3
-        [J{condsel},Es{condsel}] = findJacobian(R,xstore(:,end-R.IntP.buffer:end),uc,p,m);
+        [J{condsel},Es{condsel}] = findJacobian(R,xstore(:,end-R.IntP.bufferExt:end),uc,p,m);
     end 
 end
 

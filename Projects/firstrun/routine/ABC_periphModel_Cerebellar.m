@@ -1,11 +1,11 @@
 clear; close all
-addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-% addpath('C:\Users\timot\Documents\GitHub\ABC_Inference_Neural_Paper')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
+addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
 
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 
-R = simannealsetup_periphStim(R);
+R = ABCsetup_periphStim_shenghong(R);
 
 % Bi condition Settings!
 R.condnames = {'Tremor'}; %,'Rest'};

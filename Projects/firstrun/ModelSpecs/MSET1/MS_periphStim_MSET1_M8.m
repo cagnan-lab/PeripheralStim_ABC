@@ -54,8 +54,8 @@ p.obs.mixing = [1]; %zeros(size(R.obs.mixing));
 p.obs.mixing_s = repmat(0,size(p.obs.mixing));
 
 % Delays
-p.D = repmat(-32,size(p.A{1})).*~((p.A{1}>-32) | (p.A{2}>-32)) ;
-p.D_s = repmat(1/8,size(p.D));
+p.DExt = repmat(-32,size(p.A{1})).*~((p.A{1}>-32) | (p.A{2}>-32)) ;
+p.DExt_s = repmat(1/8,size(p.DExt));
 
 % Sigmoid transfer for connections
 % p.S = [0 0];

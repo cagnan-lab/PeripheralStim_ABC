@@ -21,11 +21,12 @@ R.obs.csd.reps = 32; %96;
 %% INTEGRATION
 % Main dynamics function
 R.IntP.intFx = @spm_fx_compile_periphStim; %@spm_fx_compile_120319;
-R.IntP.compFx= @compareData_180520;
-
+R.objfx.compFx= @compareData_180520;
+R.objfx.errorFx = @fxPooledR2;
 R.IntP.dt = .001;
 R.IntP.Utype = 'white_covar'; % DCM_Str_Innov
-R.IntP.buffer = ceil(0.050*(1/R.IntP.dt)); % buffer for delays
+R.IntP.bufferExt = ceil(0.050*(1/R.IntP.dt)); % buffer for extrinsic delays
+
 R.IntP.getNoise = 0;
 N = R.obs.csd.reps; % Number of epochs of desired frequency res
 fsamp = 1/R.IntP.dt;
@@ -69,14 +70,14 @@ R.objfx.feattype = 'complex'; %%'ForRev'; %
 R.objfx.specspec = 'cross'; %%'auto'; % which part of spectra to fit
 
 %% OPTIMISATION
-R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.D','.obs.Cnoise','.B'}; %
+R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.DExt','.obs.Cnoise','.B'}; %
 R.SimAn.pOptBound = [-12 12];
 R.SimAn.pOptRange = R.SimAn.pOptBound(1):.1:R.SimAn.pOptBound(2);
 R.SimAn.searchMax = 200;
-R.SimAn.convIt.dEps = 1e-4;
+R.SimAn.convIt.dEps = 3e-2;
 R.SimAn.convIt.eqN = 5;
 R.analysis.modEvi.N  = 500;
-R.SimAn.scoreweight = [1 1/1e6];
+R.SimAn.scoreweight = [1 1/1e8];
 R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
 R.SimAn.jitter = 1; % Global precision
