@@ -1,21 +1,19 @@
 clear; close all;
 
-% addpath('C:\Users\Tim West\Documents\GitHub\ABC_Inference_Neural_Paper')
-% addpath('D:\GITHUB\ABC_Inference_Neural_Paper')
-addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
+addpath('D:\GITHUB\ABCNeuralModellingToolbox')
+% addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %   %   %   %   %   %   %   %   %
 % Get Paths
-% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 R = periphABCAddPaths(R);
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
 % often used when running through models/data within a tagged project.
-stepcontrol = [2];
+stepcontrol = [4];
 %%%%%%%%%%%%%%%%%%%%%%%%% SHENGHONG DATA
 if ismember(1,stepcontrol)
     %% Get the cerebellar prior - assume it generates tremor rhythms
@@ -47,68 +45,69 @@ if ismember(2,stepcontrol)
     R.modelspec = 'periphStim_MSET1';
     
     fresh = 1;
-    R.modcomp.modlist = 8; %1:8;
+    R.modcomp.modlist = 1:8;
     ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits % LOAD 8
     fresh = 0;
     ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 end
-%% Get Prior for modulation condition
-R.out.tag = 'periphModel_MSET1_v1_empPrior'; % This tags the files for this particular instance
-R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
-
-R.modelspec = 'periphStim_BMOD_FullSet3';
-R.condnames = {'Tremor'};
-R.Bcond = 0; % The second condition is the modulation i.e. parRest = parTremor + B;
-
-R.modcomp.modlist = 1;
-fresh = 0;
-R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-fresh = 1;
-ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
-fresh = 1;
-ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
-
-
-
-
-%% Now look at modulation condition
-R.out.tag = 'periphModel_BMOD_TremPrior'; % This tags the files for this particular instance
-R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
-R.SimAn.convIt.dEps = 1e-4;
-R.SimAn.rep = 512; % This determines the number of iterations per ABC sequence
-R.modelspec = 'periphStim_BMOD_TremPrior';
-R.condnames = {'Tremor','Rest'};
-R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
-
-R.modcomp.modlist = 1:10;
-fresh = 0;
-R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-fresh = 1;
-ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
-fresh = 1;
-ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
-
-
-analysis_ShengHongInactivation(R)
-
-%%%%%%%%%%%%%%%%%%%%%% PEDROSA DATA
-%% Now we use a larger (but more incomplete) data set from David Pedrosa
-R.out.tag = 'dpcohort_V1';
-R = ABCsetup_periphStim_pedrosa(R);
-fresh = 0;
-R = formatDPdata_Data4ABC(R,fresh);
-fresh = 1;
-ABC_periphModel_DPdata_fitting(R,fresh) % This will fit just the big full model
-
-fresh = 0;
-ABC_periphModel_DPdata_fitting_bua(R,fresh) % This will fit just the big full model
-
-% R.out.tag = 'dpmod_test';
-% ABC_periphModel_DPdata_fitting_Bvar(R) % This will fit variations of the full model with individual modulations
-
-R.out.tag = 'dpfull_sub_bua';
-R.modelspec = 'periphStim_MSET1';
-R.sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10l','subj10r','subj12l','subj13l','subj14r'};
-R.subsel = [1 4 6 9 10 11]; % BUA
-R.subsel = 1:numel(R.sublist);
-ABC_periphModel_DPdata_inspectfits(R,0,1)
+if ismember(3,stepcontrol)
+    %% Get Prior for modulation condition
+    R.out.tag = 'periphModel_MSET1_v1_empPrior'; % This tags the files for this particular instance
+    R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
+    
+    R.modelspec = 'periphStim_BMOD_FullSet3';
+    R.condnames = {'Tremor'};
+    R.Bcond = 0; % The second condition is the modulation i.e. parRest = parTremor + B;
+    
+    R.modcomp.modlist = 1; % Do full model only
+    fresh = 0;
+    R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
+    fresh = 1;
+    ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
+    fresh = 1;
+    ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
+end
+if ismember(4,stepcontrol)
+    %% Now look at modulation condition
+    R.out.tag = 'periphModel_BMOD_TremPrior'; % This tags the files for this particular instance
+    R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
+    R.SimAn.convIt.dEps = 1e-3;
+    R.SimAn.rep = 512; % This determines the number of iterations per ABC sequence
+    R.modelspec = 'periphStim_BMOD_TremPrior';
+    R.condnames = {'Tremor','Rest'};
+    R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
+    
+    R.modcomp.modlist = 1:10;
+    fresh = 0;
+    R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
+    fresh = 0;
+    ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
+    fresh = 1;
+    ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
+    
+    analysis_ShengHongInactivation(R)
+end
+if ismember(5,stepcontrol)
+    
+    %%%%%%%%%%%%%%%%%%%%%% PEDROSA DATA
+    %% Now we use a larger (but more incomplete) data set from David Pedrosa
+    R.out.tag = 'dpcohort_V1';
+    R = ABCsetup_periphStim_pedrosa(R);
+    fresh = 0;
+    R = formatDPdata_Data4ABC(R,fresh);
+    fresh = 1;
+    ABC_periphModel_DPdata_fitting(R,fresh) % This will fit just the big full model
+    
+    fresh = 0;
+    ABC_periphModel_DPdata_fitting_bua(R,fresh) % This will fit just the big full model
+    
+    % R.out.tag = 'dpmod_test';
+    % ABC_periphModel_DPdata_fitting_Bvar(R) % This will fit variations of the full model with individual modulations
+    
+    R.out.tag = 'dpfull_sub_bua';
+    R.modelspec = 'periphStim_MSET1';
+    R.sublist = {'subj1r','subj3l','subj4l','subj6l','subj6r','subj8l','subj9r','subj10l','subj10r','subj12l','subj13l','subj14r'};
+    R.subsel = [1 4 6 9 10 11]; % BUA
+    R.subsel = 1:numel(R.sublist);
+    ABC_periphModel_DPdata_inspectfits(R,0,1)
+end

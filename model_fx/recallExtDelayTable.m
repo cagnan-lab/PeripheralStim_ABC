@@ -1,4 +1,4 @@
-function Dext = recallExtDelayTable(R,p,nmm)
+function DExt = recallExtDelayTable(R,p,nmm)
 %% Converts from fx order (in compile function) to whatever arbitrary node sequence is specified in the configuration
 % Starts off with canonical table based upon order of list in fx functions
 %     fx{1} = @ABC_fx_periphStim_Musc;                                    % Muscle
@@ -18,12 +18,11 @@ function Dext = recallExtDelayTable(R,p,nmm)
     Dv(2,3) = 30/1000;   % M1 to cord 
     Dv(5,1) = 30/1000;  % spindle to Cereb (afferent)
     
-      Dv = Dv2D(Dv,R.IntP.dt,p.DExt);
-    Dext = zeros(numel(nmm));
+    DExt = zeros(numel(nmm));
     for i = 1:numel(nmm)
         for j = 1:numel(nmm)
             if i~=j
-            Dext(j,i) = Dv(nmm(j),nmm(i));   
+             DExt(j,i) = Dv2D(Dv(nmm(j),nmm(i)),R.IntP.dt,p.DExt(j,i));   
             end
         end
     end

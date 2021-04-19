@@ -199,7 +199,9 @@ for condsel = 1:numel(R.condnames)
     
     
     if nargout>3
-        [J{condsel},Es{condsel}] = findJacobian(R,xstore(:,end-R.IntP.bufferExt:end),uc,p,m);
+%         [J{condsel},Es{condsel}] = findJacobian(R,xstore(:,end-R.IntP.bufferExt:end),uc,p,m);
+        J{condsel} = nan;
+        Es{condsel} = nan;
     end 
 end
 

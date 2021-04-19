@@ -11,7 +11,7 @@ uc = innovate_timeseries(R,m);
 
 %% Prepare Priors
 % R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
-load('shenhong_TremPrior_withCereb','Pfit')
+load('shenhong_TremPrior_withCerebV2','Pfit')
 p = Pfit;
 
 % Modulatory
