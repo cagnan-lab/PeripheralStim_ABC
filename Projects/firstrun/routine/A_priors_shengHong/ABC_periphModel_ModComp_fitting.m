@@ -1,14 +1,10 @@
 function ABC_periphModel_ModComp_fitting(R,fresh)
-closeMessageBoxes
-% Load in M4
-%% Start Loop (for parallel sessions)
-% WML is a remote accessible for coordinating parallel sessions
-if fresh
-    spreadSession(R,[]); % Fresh
-else
-    spreadSession(R,0)
+if nargin<2
+    fresh = 0;
 end
 
+closeMessageBoxes
+spreadSession(R,fresh)
 
 %% This is the main loop
 for modID = R.modcomp.modlist
@@ -42,8 +38,8 @@ for modID = R.modcomp.modlist
         R.out.dag = sprintf([R.out.tag '_M%.0f'],modID); % 'All Cross'
         
         %% Run ABC Optimization
-         R = setSimTime(R,32);
-         R.obs.SimOrd = 10.5;
+        R = setSimTime(R,32);
+        R.obs.SimOrd = 10.5;
         SimAn_ABC_201120(R,p,m);
         spreadSession(R,0);
     end

@@ -8,6 +8,6 @@ switch getenv('computername')
     case 'DESKTOP-4VATHIO'
         R.path.datapath_shenghong = 'D:\DATA\Shenghong_Tremor';
         R.path.datapath_pedrosa_ThalMusc = 'D:\DATA\DP_Tremor_ThalamoMuscular\';
-
+    spmpath = 'C:\Users\timot\Documents\GitHub\spm12';
 end
 

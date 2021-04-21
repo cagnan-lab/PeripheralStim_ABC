@@ -1,13 +1,13 @@
 clear; close all;
 
-addpath('D:\GITHUB\ABCNeuralModellingToolbox')
-% addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
+% addpath('D:\GITHUB\ABCNeuralModellingToolbox')
+addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %   %   %   %   %   %   %   %   %
 % Get Paths
-R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 R = periphABCAddPaths(R);
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
@@ -72,16 +72,15 @@ if ismember(4,stepcontrol)
     R.out.tag = 'periphModel_BMOD_TremPrior'; % This tags the files for this particular instance
     R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
     R.SimAn.convIt.dEps = 1e-3;
-    R.SimAn.rep = 512; % This determines the number of iterations per ABC sequence
+    R.SimAn.rep = 128; % This determines the number of iterations per ABC sequence
     R.modelspec = 'periphStim_BMOD_TremPrior';
     R.condnames = {'Tremor','Rest'};
     R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
     
     R.modcomp.modlist = 1:10;
-    fresh = 0;
+    fresh = 1;
     R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-    fresh = 0;
-    ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
+    ABC_periphModel_ModComp_fitting(R,1:2) % Does the individual model fits
     fresh = 1;
     ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
     

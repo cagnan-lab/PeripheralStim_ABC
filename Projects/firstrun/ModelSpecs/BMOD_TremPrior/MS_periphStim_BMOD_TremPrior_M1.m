@@ -13,6 +13,12 @@ uc = innovate_timeseries(R,m);
 % R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
 load('shenhong_TremPrior_withCerebV2','Pfit')
 p = Pfit;
+% Rescale precisions
+for i = 1:m.m
+    p.int{i}.T_s =  p.int{i}.T_s.*1.5;
+    p.int{i}.G_s = p.int{i}.G_s.*1.5;
+    p.int{i}.S_s = p.int{i}.S_s.*1.5;
+end
 
 % Modulatory
 p.B{1} =  repmat(-32,m.m,m.m);

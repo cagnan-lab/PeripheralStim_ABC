@@ -13,12 +13,17 @@ uc = innovate_timeseries(R,m);
 % R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
 load('shenhong_TremPrior_withCerebV2','Pfit')
 p = Pfit;
-
+% Rescale precisions
+for i = 1:m.m
+    p.int{i}.T_s =  p.int{i}.T_s.*1.5;
+    p.int{i}.G_s = p.int{i}.G_s.*1.5;
+    p.int{i}.S_s = p.int{i}.S_s.*1.5;
+end
 % Modulatory
 p.B{1} =  repmat(-32,m.m,m.m);
-p.B_s{1} = repmat(1/8,size(p.A_s{1})).*(p.B{1}==0);
+p.B_s{1} = repmat(1/4,size(p.A_s{1})).*(p.B{1}==0);
 
 p.B{2} =  repmat(-32,m.m,m.m);
 p.B{2}(2,5) = 0; % Cereb to MMC
-p.B_s{2} = repmat(1/8,size(p.A_s{2})).*(p.B{2}==0);
+p.B_s{2} = repmat(1/4,size(p.A_s{2})).*(p.B{2}==0);
 
