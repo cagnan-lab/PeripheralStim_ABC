@@ -56,7 +56,7 @@ R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation funct
 % fx to construct data features
 R.obs.transFx = @constructGenCrossMatrix;
 % These are options for transformation (NPD)
-R.obs.logscale = 0;
+R.obs.trans.logscale = 0;
 R.obs.trans.zerobase = 1;
 R.obs.trans.norm = 0;
 R.obs.trans.normcat = 1;
