@@ -1,19 +1,19 @@
 clear; close all;
 
-% addpath('D:\GITHUB\ABCNeuralModellingToolbox')
-addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
+addpath('D:\GITHUB\ABCNeuralModellingToolbox')
+% addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %   %   %   %   %   %   %   %   %
 % Get Paths
-% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 R = periphABCAddPaths(R);
 % Note on file structure:
 % File structure [system repo project tag dag]; all outputs follow this
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
 % often used when running through models/data within a tagged project.
-stepcontrol = [4];
+stepcontrol = [1];
 %%%%%%%%%%%%%%%%%%%%%%%%% SHENGHONG DATA
 if ismember(1,stepcontrol)
     %% Get the cerebellar prior - assume it generates tremor rhythms
@@ -26,12 +26,11 @@ if ismember(1,stepcontrol)
     R.chdat_name = {'Cereb'};
     R.siminds = 1;
     R.SimAn.convIt.dEps = 1e-3;
-    R.SimAn.scoreweight = [1 1/1e8];
     R.frqz = [2:.2:24];
-    R = formatShengHongData4ABC(R,0); % Loads in raw data, preprocess and format for ABC
+    R = formatShengHongData4ABC(R,1); % Loads in raw data, preprocess and format for ABC
     R.modcomp.modlist = 1;
     R.modelspec = 'periphStim_cereb';
-    ABC_periphModel_ModComp_fitting(R,1) % Does the individual model fits
+    ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits
 end
 if ismember(2,stepcontrol)
     %% First we parameterise models using a example data set including Thalamic LFP,
@@ -67,6 +66,7 @@ if ismember(3,stepcontrol)
     fresh = 1;
     ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 end
+
 if ismember(4,stepcontrol)
     %% Now look at modulation condition
     R.out.tag = 'periphModel_BMOD_TremPrior'; % This tags the files for this particular instance

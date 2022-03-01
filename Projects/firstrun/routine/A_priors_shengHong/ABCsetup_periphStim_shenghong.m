@@ -56,7 +56,7 @@ R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation funct
 % fx to construct data features
 R.obs.transFx = @constructGenCrossMatrix;
 % These are options for transformation (NPD)
-R.obs.logscale = 0;
+R.obs.trans.logscale = 0;
 R.obs.trans.zerobase = 1;
 R.obs.trans.norm = 0;
 R.obs.trans.normcat = 1;
@@ -77,7 +77,7 @@ R.SimAn.searchMax = 200;
 R.SimAn.convIt.dEps = 1e-3;
 R.SimAn.convIt.eqN = 5;
 R.analysis.modEvi.N  = 500;
-R.SimAn.scoreweight = [1 0];
+    R.SimAn.scoreweight = [1 1/1e8];
 R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
 R.SimAn.jitter = 1; % Global precision
