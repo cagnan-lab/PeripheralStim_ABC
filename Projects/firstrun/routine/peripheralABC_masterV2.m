@@ -9,7 +9,6 @@ addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %   %   %   %   %   %   %   %   %
 % Get Paths
-
 % R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
 % R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
 R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','firstRun');
@@ -35,7 +34,7 @@ if ismember(1,stepcontrol)
     R.siminds = 1;
     R.SimAn.convIt.dEps = 1e-3;
     R.frqz = [2:.2:24];
-    R = formatShengHongData4ABC(R,1); % Loads in raw data, preprocess and format for ABC
+    R = formatShengHongData4ABC(R,0); % Loads in raw data, preprocess and format for ABC
     R.modcomp.modlist = 1;
     R.modelspec = 'periphStim_cereb';
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits
@@ -53,7 +52,7 @@ if ismember(2,stepcontrol)
     
     fresh = 1;
     R.modcomp.modlist = 1:8;
-    ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits % LOAD 8
+    ABC_periphModel_ModComp_fitting(R,1:5) % Does the individual model fits % LOAD 8
     fresh = 0;
     ABC_periphModel_ModComp_comparison(R,[]) % Compares the models' performances(Exceedence probability)
 end
