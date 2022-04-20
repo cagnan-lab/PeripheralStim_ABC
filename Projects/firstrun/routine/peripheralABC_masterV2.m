@@ -1,17 +1,17 @@
 clear; close all;
 
 
-% addpath('D:\GITHUB\ABCNeuralModellingToolbox')
+addpath('D:\GITHUB\ABCNeuralModellingToolbox')
 % addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
-addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
+% addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
 
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %   %   %   %   %   %   %   %   %
 % Get Paths
-% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','firstRun');
+R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','V2');
 % R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','firstRun');
+% R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
 
 
 R = periphABCAddPaths(R);
@@ -20,10 +20,10 @@ R = periphABCAddPaths(R);
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
 % often used when running through models/data within a tagged project.
 
-stepcontrol = [1 2];
+stepcontrol = 1:2 
 %%%%%%%%%%%%%%%%%%%%%%%%% SHENGHONG DATA
+%% STEP 1: This creates a prior for the cerebellum in which the cerebellu
 if ismember(1,stepcontrol)
-    %% Get the cerebellar prior - assume it generates tremor rhythms
     R.out.tag = 'periphModel_SH_cereb_only'; % This tags the files for this particular instance
     R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
     R.obs.Cnoise = R.obs.Cnoise(1);
@@ -49,15 +49,16 @@ if ismember(2,stepcontrol)
     fresh = 0;
     R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
     R.modelspec = 'periphStim_MSET1';
-    
+    R.SimAn.convIt.dEps = 5e-3;
     fresh = 1;
     R.modcomp.modlist = 1:8;
-    ABC_periphModel_ModComp_fitting(R,1:5) % Does the individual model fits % LOAD 8
+    ABC_periphModel_ModComp_fitting(R,[0 1]) % Does the individual model fits % LOAD 8
     fresh = 0;
-    ABC_periphModel_ModComp_comparison(R,[]) % Compares the models' performances(Exceedence probability)
+    ABC_periphModel_ModComp_comparison(R,1:8,0) % Compares the models' performances(Exceedence probability)
 end
+%% STEP 3: Run fitting on just the tremor data to get a prior you can use to fit the next steps
 if ismember(3,stepcontrol)
-    %% Get Prior for modulation condition
+    %% Get Prior on the Tremor only conditions for modulation experiment (Step 4)
     R.out.tag = 'periphModel_MSET1_v1_empPrior'; % This tags the files for this particular instance
     R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
     
@@ -73,7 +74,7 @@ if ismember(3,stepcontrol)
     fresh = 1;
     ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
 end
-
+%% STEP 4: Now model both conditions at once using prior from step 3
 if ismember(4,stepcontrol)
     %% Now look at modulation condition
     R.out.tag = 'periphModel_BMOD_TremPrior'; % This tags the files for this particular instance
@@ -93,9 +94,8 @@ if ismember(4,stepcontrol)
     
     analysis_ShengHongInactivation(R)
 end
+%% STEP5: Expand to larger DP cohort 
 if ismember(5,stepcontrol)
-    
-    %%%%%%%%%%%%%%%%%%%%%% PEDROSA DATA
     %% Now we use a larger (but more incomplete) data set from David Pedrosa
     R.out.tag = 'dpcohort_V1';
     R = ABCsetup_periphStim_pedrosa(R);

@@ -1,12 +1,12 @@
-function ABC_periphModel_ModComp_comparison(R,fresh)
+function ABC_periphModel_ModComp_comparison(R,pSel,fresh)
 close all
 if fresh
 R.comptype = 1;
  R.plot.flag = 1; 
-modelCompMaster_160620(R,1:10,[]);
+modelCompMaster_160620(R,R.modcomp.modlist,[]);
 end
-R.modcomp.modN = [1:10];
-R.modcompplot.NPDsel = [10];% [8 5 1]; %[1:8]; %[6 9 10];
+R.modcomp.modN =  R.modcomp.modlist;
+R.modcompplot.NPDsel = pSel;
 R.plot.confint = 'yes';
 R.plot.cmplx = 1;
 cmap = linspecer(numel(R.modcomp.modN));

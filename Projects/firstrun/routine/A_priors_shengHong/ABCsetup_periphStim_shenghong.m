@@ -42,7 +42,7 @@ disp(sprintf('The actual simulation df is %.2f Hz',dfact));
 
 %% OBSERVATION
 % observation function
-R.obs.obsFx = @observe_data;
+R.obs.obsFx = @observe_dataTremor;
 R.obs.gainmeth{1} = 'obsnoise';
 R.obs.gainmeth{2} = 'boring';
 R.obs.glist =0; %linspace(-5,5,12);  % gain sweep optimization range [min max listn] (log scaling)
@@ -77,7 +77,7 @@ R.SimAn.searchMax = 200;
 R.SimAn.convIt.dEps = 1e-3;
 R.SimAn.convIt.eqN = 5;
 R.analysis.modEvi.N  = 500;
-    R.SimAn.scoreweight = [1 1/1e8];
+    R.SimAn.scoreweight = [1 5e-7];
 R.SimAn.rep = 512; %512; % Repeats per temperature
 % R.SimAn.saveout = 'xobs1';
 R.SimAn.jitter = 1; % Global precision
