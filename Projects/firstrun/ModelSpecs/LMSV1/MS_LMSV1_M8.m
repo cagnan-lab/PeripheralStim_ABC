@@ -1,6 +1,6 @@
-function [R p m uc] = MS_LMSV1_M1(R)
+function [R p m uc] = MS_LMSV1_M7(R)
 %% “Lesion Model Space V1” %%
-% Model 1
+% Model 8
 
 % FULL MODEL
 [R,m] = getStateDetails(R);
@@ -77,7 +77,7 @@ for i = 1:m.m
 end
 
 
-% load('shenghong_cerebellumFit2Thal.mat','Pfit')
-% disp('Loading pre-fitted cerebellum priors')
-% p.int{5} = Pfit.int{1};
+load('shenghong_cerebellumFit2Thal.mat','Pfit')
+disp('Loading pre-fitted cerebellum priors')
+p.int{5} = Pfit.int{1};
 

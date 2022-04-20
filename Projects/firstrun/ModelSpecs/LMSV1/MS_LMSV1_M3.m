@@ -1,6 +1,6 @@
-function [R p m uc] = MS_LMSV1_M1(R)
+function [R p m uc] = MS_LMSV1_M3(R)
 %% “Lesion Model Space V1” %%
-% Model 1
+% Model 3
 
 % FULL MODEL
 [R,m] = getStateDetails(R);
@@ -19,7 +19,7 @@ p.A{1} =  repmat(-32,m.m,m.m);
 p.A_s{1} = repmat(0,m.m,m.m);
 
 p.A{1}(3,1) = 0; % SC to EP
-p.A{1}(4,2) = 0; % THAL to MMC
+% % p.A{1}(4,2) = 0; % THAL to MMC
 p.A{1}(1,3) = 0; % EP to SC (spinal reflex)
 p.A{1}(2,3) = 0; % EP to THAL
 p.A{1}(1,4) = 0; % MMC to SC
