@@ -25,7 +25,7 @@ p.A{1}(2,3) = 0; % EP to THAL
 p.A{1}(1,4) = 0; % MMC to SC
 p.A{1}(2,4) = 0; % MMC to THAL
 p.A{1}(5,4) = 0; % MMC to CER
-% % p.A{1}(2,5) = 0; % CER to THAL
+p.A{1}(2,5) = 0; % CER to THAL
 
 p.A_s{1}(find(p.A{1}==0)) = 1/2;
 
@@ -77,7 +77,7 @@ for i = 1:m.m
 end
 
 
-% load('shenghong_cerebellumFit2Thal.mat','Pfit')
-% disp('Loading pre-fitted cerebellum priors')
-% p.int{5} = Pfit.int{1};
+load('shenghong_cerebellumFit2Thal.mat','Pfit')
+disp('Loading pre-fitted cerebellum priors')
+p.int{5} = Pfit.int{1};
 
