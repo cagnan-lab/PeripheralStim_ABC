@@ -39,9 +39,8 @@ if ismember(1,stepcontrol)
     R.modelspec = 'periphStim_cereb';
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits
 end
+%% STEP 2: Model whole system for just tremor condition
 if ismember(2,stepcontrol)
-    %% First we parameterise models using a example data set including Thalamic LFP,
-    % EMG, EEG, and Accelorometer from an Essential Tremor Patient
     R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
     R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
     
