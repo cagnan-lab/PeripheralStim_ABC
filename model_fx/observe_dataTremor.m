@@ -108,7 +108,11 @@ for condsel = 1:numel(R.condnames)
                     % Subsample
                     Env = Env(1:100:end);
                     [tau pc] = corr((1:size(Env,2))',Env','type','Kendall');
-                    montoncheck(j) = pc<0.05;
+                    if tau > 0
+                        montoncheck(j) = pc<0.01;
+                    else
+                        montoncheck(j) = 0;
+                    end
                     %                     Xstab(i) = std(diff(abs(hilbert(xsims(i,:)))))<0.005;
                 end
 

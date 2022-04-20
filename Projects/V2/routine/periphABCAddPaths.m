@@ -20,5 +20,3 @@ switch getenv('computername')
     
 end
 
-addpath(spmpath)
-spm eeg;
