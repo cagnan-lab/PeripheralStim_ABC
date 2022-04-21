@@ -1,6 +1,6 @@
-function [R p m uc] = MS_periphStim_MSET1_M8(R)
-% Addition of cerebellum
-% FULL MODEL
+function [R p m uc] = MS_periphStim_BMOD_FullSet3_M5(R)
+% FULL MODEL with Cerebellum
+% Thalamocerebellar
 [R,m] = getStateDetails(R);
 
 % setup exogenous noise
@@ -21,6 +21,7 @@ p.A{1}(2,3) = 0; % Spin to Thal
 p.A{1}(5,3) = 0; % Spin to Cereb
 p.A{1}(1,4) = 0; % MMC to SC
 p.A{1}(2,4) = 0; % MMC to Thal
+p.A{1}(5,4) = 0; % MMC to Cereb
 p.A{1}(3,1) = 0; % SC to Spin
 p.A{1}(4,2) = 0; % Thal to CTX
 p.A{1}(5,2) = 0; % Thal to Cereb
@@ -29,11 +30,14 @@ p.A_s{1}(find(p.A{1}==0)) = 1/2;
 
 % Modulatory
 p.B{1} =  repmat(-32,m.m,m.m);
+p.B{1}(5,2) = 0; % Thal to Cereb
 p.B_s{1} = repmat(1/8,size(p.A_s{1})).*(p.B{1}==0);
 
 % Inhibtory
 p.A{2} =  repmat(-32,m.m,m.m);
-p.A{2}(2,5) = 0; % Cereb to Thal
+p.A{2}(2,5) = 0; % Cereb to MMC
+p.A{2}(4,5) = 0; % Cereb to Thal
+
 p.A_s{2} = repmat(0,m.m,m.m);
 
 p.B{2} =  repmat(-32,m.m,m.m);
@@ -80,4 +84,8 @@ load('shenghong_cerebellumFit2Thal.mat','Pfit')
 disp('Loading pre-fitted cerebellum priors')
 
 p.int{5} = Pfit.int{1};
+i = 5;
+p.int{i}.T_s = repmat(prec,size(p.int{i}.T));
+p.int{i}.G_s = repmat(prec/2,size(p.int{i}.G));
+p.int{i}.S_s = repmat(prec,size(p.int{i}.S));
 

@@ -1,5 +1,7 @@
-function [R p m uc] = MS_periphStim_MSET1_M8(R)
-% Addition of cerebellum
+function [R p m uc] = MS_LMSV1_M3(R)
+%% “Lesion Model Space V1” %%
+% Model 3
+
 % FULL MODEL
 [R,m] = getStateDetails(R);
 
@@ -10,20 +12,20 @@ m.uset.p.scale = 1e-3; %.*R.InstP.dt;
 uc = innovate_timeseries(R,m);
 
 %% Prepare Priors
-% R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC'}; %modules (fx) to use.
+% R.nmsim_name = {'SC','Thal','EP','MMC','CER'}; %modules (fx) to use.
 
 % Excitatory connections
 p.A{1} =  repmat(-32,m.m,m.m);
 p.A_s{1} = repmat(0,m.m,m.m);
 
-p.A{1}(1,3) = 0; % Spin to SC (spinal reflex)
-p.A{1}(2,3) = 0; % Spin to Thal
-p.A{1}(5,3) = 0; % Spin to Cereb
+p.A{1}(3,1) = 0; % SC to EP
+% % p.A{1}(4,2) = 0; % THAL to MMC
+p.A{1}(1,3) = 0; % EP to SC (spinal reflex)
+p.A{1}(2,3) = 0; % EP to THAL
 p.A{1}(1,4) = 0; % MMC to SC
-p.A{1}(2,4) = 0; % MMC to Thal
-p.A{1}(3,1) = 0; % SC to Spin
-p.A{1}(4,2) = 0; % Thal to CTX
-p.A{1}(5,2) = 0; % Thal to Cereb
+p.A{1}(2,4) = 0; % MMC to THAL
+p.A{1}(5,4) = 0; % MMC to CER
+p.A{1}(2,5) = 0; % CER to THAL
 
 p.A_s{1}(find(p.A{1}==0)) = 1/2;
 
@@ -33,7 +35,6 @@ p.B_s{1} = repmat(1/8,size(p.A_s{1})).*(p.B{1}==0);
 
 % Inhibtory
 p.A{2} =  repmat(-32,m.m,m.m);
-p.A{2}(2,5) = 0; % Cereb to Thal
 p.A_s{2} = repmat(0,m.m,m.m);
 
 p.B{2} =  repmat(-32,m.m,m.m);
@@ -62,7 +63,7 @@ p.DExt_s = repmat(1/8,size(p.DExt));
 % p.S_s = [1/8 1/8];
 % time constants and gains
 for i = 1:m.m
-    prec = 1/4;
+    prec = 1/8;
     p.int{i}.T = zeros(1,m.Tint(i));
     p.int{i}.T_s = repmat(prec,size(p.int{i}.T));
     p.int{i}.G = zeros(1,m.Gint(i));
@@ -75,9 +76,8 @@ for i = 1:m.m
     %     p.int{i}.BT_s = repmat(prec,size(p.int{i}.T));
 end
 
-%
-load('shenghong_cerebellumFit2Thal.mat','Pfit')
-disp('Loading pre-fitted cerebellum priors')
 
-p.int{5} = Pfit.int{1};
+% load('shenghong_cerebellumFit2Thal.mat','Pfit')
+% disp('Loading pre-fitted cerebellum priors')
+% p.int{5} = Pfit.int{1};
 

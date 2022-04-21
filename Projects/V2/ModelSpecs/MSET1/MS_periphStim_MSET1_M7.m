@@ -1,4 +1,4 @@
-function [R p m uc] = MS_periphStim_MSET1_M8(R)
+function [R p m uc] = MS_periphStim_MSET1_M7(R)
 % Addition of cerebellum
 % FULL MODEL
 [R,m] = getStateDetails(R);
@@ -18,12 +18,10 @@ p.A_s{1} = repmat(0,m.m,m.m);
 
 p.A{1}(1,3) = 0; % Spin to SC (spinal reflex)
 p.A{1}(2,3) = 0; % Spin to Thal
-p.A{1}(5,3) = 0; % Spin to Cereb
 p.A{1}(1,4) = 0; % MMC to SC
 p.A{1}(2,4) = 0; % MMC to Thal
 p.A{1}(3,1) = 0; % SC to Spin
 p.A{1}(4,2) = 0; % Thal to CTX
-p.A{1}(5,2) = 0; % Thal to Cereb
 
 p.A_s{1}(find(p.A{1}==0)) = 1/2;
 
@@ -74,10 +72,4 @@ for i = 1:m.m
     %     p.int{i}.BT = zeros(1,m.Tint(i));
     %     p.int{i}.BT_s = repmat(prec,size(p.int{i}.T));
 end
-
-%
-load('shenghong_cerebellumFit2Thal.mat','Pfit')
-disp('Loading pre-fitted cerebellum priors')
-
-p.int{5} = Pfit.int{1};
 

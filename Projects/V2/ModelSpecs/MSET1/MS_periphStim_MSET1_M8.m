@@ -33,7 +33,7 @@ p.B_s{1} = repmat(1/8,size(p.A_s{1})).*(p.B{1}==0);
 
 % Inhibtory
 p.A{2} =  repmat(-32,m.m,m.m);
-p.A{2}(2,5) = 0; % Cereb to Thal
+p.A{1}(2,5) = 0; % Cereb to Thal
 p.A_s{2} = repmat(0,m.m,m.m);
 
 p.B{2} =  repmat(-32,m.m,m.m);
