@@ -1,9 +1,10 @@
 clear; close all;
 
 
-addpath('D:\GITHUB\ABCNeuralModellingToolbox')
+% addpath('D:\GITHUB\ABCNeuralModellingToolbox')
 % addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
-addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
+% addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
+addpath('C:\Users\Tim West\Documents\GitHub\ABCNeuralModellingToolbox')
 
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
@@ -11,7 +12,8 @@ addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
 % Get Paths
 % R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','V2');
 % R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
+% R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
+R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','V2');
 
 
 R = periphABCAddPaths(R);
@@ -53,9 +55,9 @@ if ismember(2,stepcontrol)
     fresh = 1;
     R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.obs.Cnoise'}; %,'.B','.DExt'
 
+    R.modcomp.modlist = 1:16;
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits % LOAD 8
     fresh = 0;
-    R.modcomp.modlist = 1:6;
     ABC_periphModel_ModComp_comparison(R,6,1:6,0) % Compares the models' performances(Exceedence probability)
 end
 %% STEP 3: Run fitting on just the tremor data to get a prior you can use to fit the next steps

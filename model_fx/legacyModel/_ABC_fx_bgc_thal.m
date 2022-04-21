@@ -1,48 +1,51 @@
-function [f] = ABC_fx_periphStim_Musc(x,ui,ue,P)
-% state equations for a neural mass model of the motor endplate
+function f = ABC_fx_bgc_thal(x,ui,ue,P)
+% state equations for a neural mass model of the basal ganglia circuit
+% models the circuit between striatum, gpe, stn, gpi, and thalamus as a
+% single source (no extrinsic connections)
 %
 % order           cells     states
-% 1 = stn       - pyr       x(1,1:2)
+% 1 = thalamus  - pyr       x(1,1:4)
 
-% G(1,1) = gpe -> stn (-ve ext)
+% G(1,9) = RET Self -ve
+% G(2,9) = REL -> RET +ve
+% G(3,9) = RET -> REL -ve
 
-% [default] fixed parameters
+% pre-synaptic inputs: s(V)
 %--------------------------------------------------------------------------
 R    = P.Rz(2:end);              % gain of activation function (1st is extrinsic- so remove)
 S = sigmoidin(x(1:2:end),R,0);
 S = S';
-% G  = [2]*200;   % synaptic connection strengths
-% T  = [4];               % synaptic time constants [str,gpe,stn,gpi,tha];
-% R  = 2/3;                       % slope of sigmoid activation function
-% NB for more pronounced state dependent transfer functions use R  = 3/2;
+
+% R    = R.*exp(P.S);              % gain of activation function
+% F    = 1./(1 + exp(-R*x + 0));   % firing rate
+% S    = F - 1/(1 + exp(0));       % deviation from baseline firing (0)
 
 % input
 %==========================================================================
-% Ui = ui;
-% Ue = ue;
+% U = u;
+
 % time constants and intrinsic connections
-%==========================================================================
 T = P.T;
 
 % intrinsic/extrinsic connections to be optimised
 %--------------------------------------------------------------------------
-G = P.G; % FOR SELF CONNECTIONS 
+G = P.G;
 
 % Motion of states: f(x)
 %--------------------------------------------------------------------------
-% MEP:
-
-% Motor Endplate
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1 - Thalamus: inhibitory reticular cells - recieve input
 %--------------------------------------------------------------------------
-u      =  ui;
-% u      =  u; 
+u      =  ue + ui(2) + ui(3); 
+u      =  -G(:,1)*S(:,1) + G(:,2)*S(:,2) +  u; % Self inh + Rel + noise
 f(:,2) =  (u - 2*x(:,2) - x(:,1)./T(1,1))./T(1,1);
 
-% Muscle Spindle
+% 2 - Thalamus: excitatory relay cells - send output
 %--------------------------------------------------------------------------
-u      =  0;
-u      =  G(:,1)*S(:,1) + u;
+u      =  ui(1) + ui(3); 
+u      =  -G(:,3)*S(:,1) + u; % RET inh + endogenous input
 f(:,4) =  (u - 2*x(:,4) - x(:,3)./T(1,2))./T(1,2);
+
 
 % Voltage
 %==========================================================================

@@ -14,8 +14,8 @@ function f = ABC_fx_bgc_cerebellum(x,ui,ue,P)
 %   x(:,6) - conductance (inferior olive cells)
 %   x(:,7) - voltage     (granule cells)
 %   x(:,8) - conductance (granule cells)
-%   x(:,9) - voltage     (purkinje cells)
-%   x(:,10) - conductance (purkinje cells)
+%   x(:,9) - voltage     (granule cells)
+%   x(:,10) - conductance (granule cells)
 %
 % f        - dx(t)/dt  = f(x(t))
 %
@@ -79,7 +79,7 @@ f(:,2) =  (u - 2*x(:,2) - x(:,1)./T(:,1))./T(:,1);
  
 % Pontine Nuclei
 %--------------------------------------------------------------------------
-u      = ue(1); % Receives input 1 
+u      = ui(2); %ue(1); % Receives input 1 
 f(:,4) =  (u - 2*x(:,4) - x(:,3)./T(:,2))./T(:,2);
  
 % Inferior Olive

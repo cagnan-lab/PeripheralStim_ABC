@@ -1,7 +1,4 @@
 function [xstore_cond,tvec,wflag,J,Es] = spm_fx_compile_periphStim(R,x,uc,pc,m)
-% To Do:
-% 1)Precompute the expectations of the within source parameters and take
-%   outside of the integration loop.
 % If you want to estimate the noise floor - then use 'decon' to deconnect
 % both intrinsic/extrinsic couplings.
 if isfield(R.IntP,'getNoise') && R.IntP.getNoise == 1
@@ -37,13 +34,14 @@ for condsel = 1:numel(R.condnames)
     efferent(4,:) = [3 3 3 3];               % sources of THAL connections
     efferent(5,:) = [9 9 9 9];               % sources of Cereb connections
     
-    % scaling of afferent extrinsic connectivity (Hz)
+    % scaling of afferent extrinsic connectivity (Hz) Up to four secondary
+    % connections
     %--------------------------------------------------------------------------
-    E(1,:) = [.4 .4 -.4 -.4]*2000;             % Muscle connections
+    E(1,:) = [.4 .4 .1 .2]*2000;             % Muscle connections (Hacked such that inhibitory output goes somewhere else
     E(2,:) = [.6 .6 -.6 -.6]*2000;             % spinCord connections
-    E(3,:) = [.2 .2 -.2 -.2]*8000;            % MMC connections
-    E(4,:) = [.2 .2 -.2 -.2]*2000;  %500       % THAL connections    
-    E(5,:) = [.2 .2 -.2 -.2]*2000;  %500       % Cereb connections    
+    E(3,:) = [.2 .2  .2 -.2]*8000;            % MMC connections
+    E(4,:) = [.2 .2 -.2 -.2]*2000;  %500       % THAL connections
+    E(5,:) = [.2 .2 -.2 -.2]*2000;  %500       % Cereb connections
     
     % get the neural mass models {'ERP','CMC'}
     %--------------------------------------------------------------------------
@@ -64,32 +62,31 @@ for condsel = 1:numel(R.condnames)
     end
     
     %% Pre-integration extrinsic connection parameters
-    
     % Compute value of delays from lognormal mean
-    D = recallDelayTable(R,p,nmm);
+    DExt = recallExtDelayTable(R,p,nmm);
     
-    if (R.IntP.bufferExt-max(max(D)))<=0
-        R.IntP.bufferExt = max(max(D)) + 2;
+    if (R.IntP.bufferExt-max(max(DExt)))<=0
+        R.IntP.bufferExt = max(max(DExt)) + 2;
         disp(['Delay is bigger than buffer, increasing buffer to: ' num2str(R.IntP.bufferExt)])
     end
     if R.IntP.bufferExt > 1e3
-        disp('Delays are implausibly large (>1s)!')
+        disp('Delays are implausibly large!')
         wflag = 1;
         break
     end
     
-    Ds = zeros(size(D));Dt = zeros(size(D));
+    Ds = zeros(size(DExt));
     % Now find indices of inputs
     % Currently no seperation between inh and excitatory
     for i = 1:length(nmm) % target
-        for j = 1:length(D(i,:)) % source
-            if D(i,j)>0
+        for j = 1:length(DExt(i,:)) % source
+            if DExt(i,j)>0
                 Ds(i,j) = efferent(nmm(j),1); % input sources
                 Ds(i,j) = (m.xinds(j,1)-1)+Ds(i,j);
             end
         end
     end
-       
+    
     % Condition Dependent Modulation of Synaptic gains
     %-----------------------------------------
     for i = 1:m.m
@@ -115,11 +112,11 @@ for condsel = 1:numel(R.condnames)
         if cs ~= R.Bcond
             A{i} = decon*exp(p.A{i});
         else
-            A{i} = decon*exp(p.A{i}+p.B{i}); % Add the second condition
+            A{i} = decon*(exp(p.A{i})+ exp(p.B{i})); % Add the second condition
         end
         %     A{alist(i,2)} = exp(p.A{i});
     end
-        
+    
     % and scale of extrinsic connectivity (Hz)
     %--------------------------------------------------------------------------
     for j = 1:n
@@ -132,7 +129,7 @@ for condsel = 1:numel(R.condnames)
     
     % synaptic activation function priors
     %--------------------------------------------------------------------------
-    Rz_base     = 2/3;                      % gain of sigmoid activation function   
+    Rz_base     = 2/3;                      % gain of sigmoid activation function
     B = 0;
     %% Precompute parameter expectations
     % Parameter Priors
@@ -171,7 +168,7 @@ for condsel = 1:numel(R.condnames)
             for j = 1:n % sources
                 for k = 1:numel(p.A) % connection type
                     if abs(A{k}(i,j)) > TOL
-                        xD = xstore(Ds(i,j),tstep-D(i,j));
+                        xD = xstore(Ds(i,j),tstep-DExt(i,j));
                         fA = [fA  A{k}(i,j)*sigmoidin(xD,Rz(j),B)]; % 1st Rz is slope!
                     end
                 end
@@ -179,14 +176,13 @@ for condsel = 1:numel(R.condnames)
             % intrinsic flow at target
             %----------------------------------------------------------------------
             ue   = us(tstep,i); % exogenous input (noise or structured inputs)
-            ui = sum(fA); % within model connectivity
+            ui = (fA); % within model connectivity
             xi = xstore(m.xinds(i,1):m.xinds(i,2),tstep)';
             f(m.xinds(i,1):m.xinds(i,2)) = fx{nmm(i)}(xi,ui,ue,qbank{i});
-            %             f(Dt(1,i))  = f(Dt(1,i)) + sum(fA) ;
         end
         xint = xint + (f.*dt);
         xstore = [xstore xint]; % This is done for speed reasons! Faster than indexing (!!)
-
+        
         if tstep >R.IntP.bufferExt*10
             if any(xint>1e4) || any(isnan(xint))
                 wflag= 1;
@@ -203,7 +199,8 @@ for condsel = 1:numel(R.condnames)
     
     
     if nargout>3
-        [J{condsel},Es{condsel}] = findJacobian(R,xstore(:,end-R.IntP.bufferExt:end),uc,p,m,condsel);
-    end 
+        %         [J{condsel},Es{condsel}] = findJacobian(R,xstore(:,end-R.IntP.bufferExt:end),uc,p,m);
+        J{condsel} = nan;
+        Es{condsel} = nan;
+    end
 end
-
