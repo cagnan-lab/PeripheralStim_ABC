@@ -48,13 +48,15 @@ if ismember(2,stepcontrol)
     % First do single condition
     fresh = 0;
     R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-    R.modelspec = 'periphStim_MSET1';
+    R.modelspec = 'LMSV1';
     R.SimAn.convIt.dEps = 5e-3;
     fresh = 1;
-    R.modcomp.modlist = 1:8;
+    R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.obs.Cnoise'}; %,'.B','.DExt'
+
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits % LOAD 8
     fresh = 0;
-    ABC_periphModel_ModComp_comparison(R,1:8,0) % Compares the models' performances(Exceedence probability)
+    R.modcomp.modlist = 1:6;
+    ABC_periphModel_ModComp_comparison(R,6,1:6,0) % Compares the models' performances(Exceedence probability)
 end
 %% STEP 3: Run fitting on just the tremor data to get a prior you can use to fit the next steps
 if ismember(3,stepcontrol)

@@ -1,5 +1,9 @@
 function R = ABCsetup_periphStim_shenghong(R)
 
+%% PLOTTING
+R.plot.feat(1).axtit = {'Frq','amplitude'};
+R.plot.feat(1).axlim = [4 48 0 5];
+
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
 R.data.datatype{1} = 'CSD'; %%'NPD'
@@ -70,7 +74,7 @@ R.objfx.feattype = 'complex'; %%'ForRev'; %
 R.objfx.specspec = 'cross'; %%'auto'; % which part of spectra to fit
 
 %% OPTIMISATION
-R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.DExt','.obs.Cnoise','.B'}; %
+R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.DExt','.obs.Cnoise','.B'}; %this is edited!
 R.SimAn.pOptBound = [-12 12];
 R.SimAn.pOptRange = R.SimAn.pOptBound(1):.1:R.SimAn.pOptBound(2);
 R.SimAn.searchMax = 200;

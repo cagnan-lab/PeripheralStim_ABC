@@ -1,9 +1,9 @@
-function ABC_periphModel_ModComp_comparison(R,pSel,fresh)
+function ABC_periphModel_ModComp_comparison(R,mSel,pSel,fresh)
 close all
 if fresh
 R.comptype = 1;
  R.plot.flag = 1; 
-modelCompMaster_160620(R,R.modcomp.modlist,[]);
+modelCompMaster_160620(R,mSel,[]);
 end
 R.modcomp.modN =  R.modcomp.modlist;
 R.modcompplot.NPDsel = pSel;
