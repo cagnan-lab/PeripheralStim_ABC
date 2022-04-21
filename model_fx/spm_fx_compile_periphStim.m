@@ -34,11 +34,12 @@ for condsel = 1:numel(R.condnames)
     efferent(4,:) = [3 3 3 3];               % sources of THAL connections
     efferent(5,:) = [9 9 9 9];               % sources of Cereb connections
     
-    % scaling of afferent extrinsic connectivity (Hz)
+    % scaling of afferent extrinsic connectivity (Hz) Up to four secondary
+    % connections
     %--------------------------------------------------------------------------
-    E(1,:) = [.4 .4 -.4 -.4]*2000;             % Muscle connections
+    E(1,:) = [.4 .4 .1 .2]*2000;             % Muscle connections (Hacked such that inhibitory output goes somewhere else
     E(2,:) = [.6 .6 -.6 -.6]*2000;             % spinCord connections
-    E(3,:) = [.2 .2 -.2 -.2]*8000;            % MMC connections
+    E(3,:) = [.2 .2  .2 -.2]*8000;            % MMC connections
     E(4,:) = [.2 .2 -.2 -.2]*2000;  %500       % THAL connections    
     E(5,:) = [.2 .2 -.2 -.2]*2000;  %500       % Cereb connections    
     
@@ -63,20 +64,8 @@ for condsel = 1:numel(R.condnames)
     %% Pre-integration extrinsic connection parameters
     
     % Compute value of delays from lognormal mean
-    D = zeros(m.m);
-    D(p.D>-30) = 4/1000; % set all delay priors to 4ms.
-    % The indices are in same 
-    D(3,1) = 15/1000;  % cord to MotorUnit (efferent)
-    D(4,2) = 3/1000;   % Thal to M1 (Lumer, Edelman, Tononi; 1997)
-    D(1,3) = 15/1000;   % spindle to cord (afferent)
-    D(2,3) = 30/1000;  % spindle to Thal (afferent)
-    D(2,4) = 8/1000;   % M1 to Thal (Lumer, Edelman, Tononi; 1997)
-    D(1,4) = 30/1000;   % M1 to cord 
-    D(5,3) = 30/1000;  % spindle to Cereb (afferent)
-    
-    D = D(1:m.m,1:m.m);
-    D = ceil(D.*exp(p.D).*(1/R.IntP.dt)); % As expectation of priors and convert units to steps
-    D(D<((1e-3)/R.IntP.dt)&D>0) = floor((2e-3)/R.IntP.dt); % Minimum 1ms
+    D = recallDelayTable(R,p,nmm);
+
     
     if (R.IntP.buffer-max(max(D)))<=0
         R.IntP.buffer = max(max(D)) + 2;
@@ -94,7 +83,7 @@ for condsel = 1:numel(R.condnames)
     for i = 1:length(nmm) % target
         for j = 1:length(D(i,:)) % source
             if D(i,j)>0
-                Ds(i,j) = efferent(nmm(j),1); % input sources
+                Ds(i,j) = efferent(nmm(j),1); % sources of projections
                 Ds(i,j) = (m.xinds(j,1)-1)+Ds(i,j);
             end
         end
@@ -175,21 +164,23 @@ for condsel = 1:numel(R.condnames)
         %==========================================================================
         N     = m;
         for i = 1:n % targets
-            fA = [];
             % extrinsic flow
             %----------------------------------------------------------------------
-            for j = 1:n % sources
-                for k = 1:numel(p.A) % connection type
+            fAK = [0 0];
+            for k = 1:numel(p.A) % connection type
+                            fA = 0; 
+                for j = 1:n % sources
                     if abs(A{k}(i,j)) > TOL
                         xD = xstore(Ds(i,j),tstep-D(i,j));
-                        fA = [fA  A{k}(i,j)*sigmoidin(xD,Rz(j),B)]; % 1st Rz is slope!
+                        fA = fA + A{k}(i,j)*sigmoidin(xD,Rz(j),B); % 1st Rz is slope!
                     end
                 end
+                ui(k) = fA;
             end
+
             % intrinsic flow at target
             %----------------------------------------------------------------------
             ue   = us(tstep,i); % exogenous input (noise or structured inputs)
-            ui = sum(fA); % within model connectivity
             xi = xstore(m.xinds(i,1):m.xinds(i,2),tstep)';
             f(m.xinds(i,1):m.xinds(i,2)) = fx{nmm(i)}(xi,ui,ue,qbank{i});
             %             f(Dt(1,i))  = f(Dt(1,i)) + sum(fA) ;

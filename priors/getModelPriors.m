@@ -18,7 +18,7 @@ for i = 1:m.m
             pQ(i).S  = [0 0 0 0 0];     % 1st extrinsic; 2nd intrinsic(s)
         case 'THAL'
             % Thalamus
-            pQ(i).G  = [2 2 2]*200;   % synaptic connection strengths [RET self; Rel to RET; RET to REL
+            pQ(i).G  = [2 2 4]*200;   % synaptic connection strengths [RET self; Rel to RET; RET to REL
             pQ(i).T  = [8 12];               % synaptic time constants [RET,REL];
             pQ(i).S  = [0 0 0];     % 1st extrinsic; 2nd intrinsic(s)   
         case 'Cereb'

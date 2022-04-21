@@ -1,4 +1,4 @@
-function R = ABCsetup_periphStim_shenghong(R)
+function R = ABCsetup_AntagonistTest(R)
 
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
@@ -8,12 +8,12 @@ R.frqz = [2:.2:24];
 R.frqz(R.frqz==0) = NaN;
 R.frqzfull = [1:.2:120]; % used for filters/detrending
 % R.chloc_name = {'Musc1'};
-R.nmsim_name = {'SpinCrd','THAL','Musc1','MMC','Cereb'}; %modules (fx) to use. Names must match those listed in the fx_compile function
-R.chdat_name = {'amn','Thal','EP','ctx'}; % the order of the actual data (as in format fx) 
-R.chsim_name = {'amn','Thal','EP','ctx','Cereb'}; % simulated channel names (must line up with nmsimname)
+R.nmsim_name = {'MMC','THAL','SpinCrd','Musc1','SpinCrd','Musc1'}; %modules (fx) to use.
+R.chsim_name = {'ctx','Thal','SpinAgo','MuscAgo','SpinAnt','MuscAnt'}; % simulated channel names (names must match between these two!)
+R.chdat_name = {'SpinAgo','ctx','MuscAgo','Thal'}; % observed channel order (must line up with the actual function!
 L = cellfun(@(x) find(contains(R.chdat_name,x)),R.chsim_name,'UniformOutput',0);
-R.chdat = [L{:}];
-R.siminds = 1:5; % Maps from simulation to data
+R.datinds = [L{:}];
+R.siminds = 1:6;
 R.condnames = {'Tremor'}; %,'Rest'};
 % Spectral characteristics
 R.obs.csd.df = 0.5;
@@ -48,9 +48,9 @@ R.obs.gainmeth{2} = 'boring';
 R.obs.glist =0; %linspace(-5,5,12);  % gain sweep optimization range [min max listn] (log scaling)
 R.obs.condchecker = 0; %1; % This is in the observation function and checks if there is a big difference between conditions- 0 is OFF
 R.obs.brn =2; % 2; % burn in time
-LF = [1 1 1 1 1]*10; % Fit visually and for normalised data
+LF = [1 1 1 1 1 1 1]*10; % Fit visually and for normalised data
 R.obs.LF = LF;
-R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation function
+R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation function
 
 % Data Features
 % fx to construct data features
