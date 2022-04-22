@@ -3,8 +3,8 @@ clear; close all;
 
 % addpath('D:\GITHUB\ABCNeuralModellingToolbox')
 % addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
-% addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
-addpath('C:\Users\Tim West\Documents\GitHub\ABCNeuralModellingToolbox')
+addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABCNeuralModellingToolbox')
 
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
@@ -12,8 +12,8 @@ addpath('C:\Users\Tim West\Documents\GitHub\ABCNeuralModellingToolbox')
 % Get Paths
 % R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','V2');
 % R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','V2');
+R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
+% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','V2');
 
 
 R = periphABCAddPaths(R);
@@ -53,7 +53,7 @@ if ismember(2,stepcontrol)
     R.modelspec = 'LMSV1';
     R.SimAn.convIt.dEps = 5e-3;
     fresh = 1;
-    R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.int{src}.S','.C','.A','.obs.Cnoise'}; %,'.B','.DExt'
+    R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.C','.A','.obs.Cnoise','.DExt'}; %,'.B','.DExt',,'.int{src}.S'
 
     R.modcomp.modlist = 1:16;
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits % LOAD 8

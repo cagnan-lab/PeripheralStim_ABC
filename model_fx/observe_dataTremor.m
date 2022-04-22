@@ -117,11 +117,11 @@ for condsel = 1:numel(R.condnames)
                 end
 
                 if any(acfEnvcheck(:)) || any(acf2Envcheck(:))
-                    disp('SimFx is perfectly periodic!!')
-                    wflag = 1;
+%                     disp('SimFx is perfectly periodic!!')
+%                     wflag = 1;
                 elseif sum(montoncheck(:))>2 %any(acfcheck) ||
-                    disp('SimFx seems unstable!')
-                    wflag = 1;
+%                     disp('SimFx seems unstable!')
+%                     wflag = 1;
                 end
                 if wflag == 0
                     a = 1;

@@ -38,7 +38,7 @@ for modID = R.modcomp.modlist
         R.out.dag = sprintf([R.out.tag '_M%.0f'],modID); % 'All Cross'
         
         %% Run ABC Optimization
-        R = setSimTime(R,32);
+        R = setSimTime(R,24);
         R.obs.SimOrd = 10.5;
         SimAn_ABC_201120(R,p,m);
         spreadSession(R,0);
