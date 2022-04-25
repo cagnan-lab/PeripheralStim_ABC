@@ -24,6 +24,8 @@ modGroups = {
     [6 10 13 15 16],... % No CerT
     };
 
+pMD = FitStats.pModDist;
+
 
 for G = 1:numel(modGroups)
     % calculate combined probabilities

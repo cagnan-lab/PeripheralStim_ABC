@@ -20,7 +20,7 @@ R = periphABCAddPaths(R);
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
 % often used when running through models/data within a tagged project.
 
-stepcontrol = 4
+stepcontrol = 3
 %%%%%%%%%%%%%%%%%%%%%%%%% SHENGHONG DATA
 %% STEP 1: This creates a prior for the cerebellum in which the cerebellu
 if ismember(1,stepcontrol)
@@ -66,14 +66,13 @@ if ismember(3,stepcontrol)
     R.SimAn.convIt.dEps = 1e-3;
     R.SimAn.rep = 128; % This determines the number of iterations per ABC sequence
     
-    R.modelspec = 'LMSV1';
+    R.modelspec = 'MMSV1';
     R.SimAn.convIt.dEps = 5e-3;
     R.SimAn.pOptList = {'.C','.A','.B','.BC'}; %,'.obs.Cnoise','.DExt''.int{src}.T','.int{src}.G',,'.DExt',,'.int{src}.S'
     R.condnames = {'Tremor','Rest'};
-    R.modelSpecOpt.fresh = 0; % this sets up the modelSpec to call the previous model
     R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
     
-    R.modcomp.modlist = 1:10;
+    R.modcomp.modlist = 1:16;
     fresh = 0;
     R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits
@@ -91,8 +90,7 @@ if ismember(4,stepcontrol)
     fresh = 0;
     formatDPdata_Data4ABC(R,fresh,'LFP');
     fresh = 1;
-    R.modelspec = 'LMSV1';
-    R.modelSpecOpt.fresh = 0; % this sets up the modelSpec to call the previous model
+    R.modelspec = 'MMSV1';
     R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.C','.A','.obs.Cnoise','.DExt','.B'}; %,'.B','.DExt',,'.int{src}.S'
     ABC_periphModel_DPdata_fitting(R,fresh) % This will fit just the big full model
     
