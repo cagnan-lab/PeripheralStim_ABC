@@ -1,5 +1,5 @@
 function [R p m uc] = MS_LMSV1_M1(R)
-%% “Lesion Model Space V1” %%
+%% “Lesion Model Space V1�? %%
 % Model 1
 if ~isfield(R,'modelSpecOpt')
     R.modelSpecOpt.fresh = 1;
