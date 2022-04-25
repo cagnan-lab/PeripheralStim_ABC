@@ -2,7 +2,8 @@ function R = ABCsetup_periphStim_shenghong(R)
 
 %% PLOTTING
 R.plot.feat(1).axtit = {'Frq','amplitude'};
-R.plot.feat(1).axlim = [4 48 0 5];
+R.plot.feat(1).axlim{1} = [2 20 0 3.5];
+R.plot.feat(1).axlim{2} = [2 20 -3.5 3.5];
 
 %% DATA SPECIFICATION
 R.filepathn = [R.path.rootn 'data\storage'];
