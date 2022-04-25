@@ -57,7 +57,7 @@ if ismember(2,stepcontrol)
     fresh = 0;
     ABC_periphModel_ModComp_comparison(R,1,0,1) % Compares the models' performances(Exceedence probability)
 end
-
+a = 1;
 %% STEP 3: Now model both conditions at once using prior from step 3
 if ismember(3,stepcontrol)
     %% Now look at modulation condition
