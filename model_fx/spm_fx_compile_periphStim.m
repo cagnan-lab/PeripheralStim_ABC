@@ -102,7 +102,11 @@ for condsel = 1:numel(R.condnames)
     
     % Rescale background Input
     for i = 1:m.m
-        C    = exp(p.C(i));
+        if cs ~= R.Bcond
+            C    = exp(p.C(i));
+        else
+            C    = exp(p.C(i) + p.BC(i));
+        end
         us(:,i) = C*us(:,i); %*0.01;
     end
     
@@ -203,7 +207,9 @@ for condsel = 1:numel(R.condnames)
     
     
     if nargout>3
-        [J{condsel},Es{condsel}] = findJacobian(R,xstore(:,end-R.IntP.bufferExt:end),uc,p,m,condsel);
+% %         [J{condsel},Es{condsel}] = findJacobian(R,xstore(:,end-R.IntP.bufferExt:end),uc,p,m,condsel);
+        J{condsel} = nan;
+        Es{condsel} = nan;
     end 
 end
 

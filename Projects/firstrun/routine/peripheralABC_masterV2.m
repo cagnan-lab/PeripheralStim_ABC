@@ -20,7 +20,7 @@ R = periphABCAddPaths(R);
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
 % often used when running through models/data within a tagged project.
 
-stepcontrol = 1:2 
+stepcontrol = 4
 %%%%%%%%%%%%%%%%%%%%%%%%% SHENGHONG DATA
 %% STEP 1: This creates a prior for the cerebellum in which the cerebellu
 if ismember(1,stepcontrol)
@@ -39,7 +39,8 @@ if ismember(1,stepcontrol)
     R.modelspec = 'periphStim_cereb';
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits
 end
-%% STEP 2: Model whole system for just tremor condition
+
+%% STEP 2: Perform Model Comparison for whole system for just tremor condition
 if ismember(2,stepcontrol)
     R.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
     R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
@@ -47,60 +48,52 @@ if ismember(2,stepcontrol)
     % First do single condition
     fresh = 0;
     R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-    R.modelspec = 'periphStim_MSET1';
+    R.modelspec = 'LMSV1';
     R.SimAn.convIt.dEps = 5e-3;
-    fresh = 1;
+    R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.C','.A','.obs.Cnoise','.DExt'}; %,'.B','.DExt',,'.int{src}.S'
+
     R.modcomp.modlist = 1:8;
     ABC_periphModel_ModComp_fitting(R,[0 1]) % Does the individual model fits % LOAD 8
     fresh = 0;
-    ABC_periphModel_ModComp_comparison(R,1:8,0) % Compares the models' performances(Exceedence probability)
+    ABC_periphModel_ModComp_comparison(R,1,0,1) % Compares the models' performances(Exceedence probability)
 end
-%% STEP 3: Run fitting on just the tremor data to get a prior you can use to fit the next steps
+
+%% STEP 3: Now model both conditions at once using prior from step 3
 if ismember(3,stepcontrol)
-    %% Get Prior on the Tremor only conditions for modulation experiment (Step 4)
-    R.out.tag = 'periphModel_MSET1_v1_empPrior'; % This tags the files for this particular instance
-    R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
-    
-    R.modelspec = 'periphStim_BMOD_FullSet3';
-    R.condnames = {'Tremor'};
-    R.Bcond = 0; % The second condition is the modulation i.e. parRest = parTremor + B;
-    
-    R.modcomp.modlist = 1; % Do full model only
-    fresh = 0;
-    R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-    fresh = 1;
-    ABC_periphModel_ModComp_fitting(R,fresh) % Does the individual model fits
-    fresh = 1;
-    ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
-end
-%% STEP 4: Now model both conditions at once using prior from step 3
-if ismember(4,stepcontrol)
     %% Now look at modulation condition
     R.out.tag = 'periphModel_BMOD_TremPrior'; % This tags the files for this particular instance
     R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
     R.SimAn.convIt.dEps = 1e-3;
     R.SimAn.rep = 128; % This determines the number of iterations per ABC sequence
-    R.modelspec = 'periphStim_BMOD_TremPrior';
+    
+    R.modelspec = 'LMSV1';
+    R.SimAn.convIt.dEps = 5e-3;
+    R.SimAn.pOptList = {'.C','.A','.B','.BC'}; %,'.obs.Cnoise','.DExt''.int{src}.T','.int{src}.G',,'.DExt',,'.int{src}.S'
     R.condnames = {'Tremor','Rest'};
+    R.modelSpecOpt.fresh = 0; % this sets up the modelSpec to call the previous model
     R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
     
     R.modcomp.modlist = 1:10;
-    fresh = 1;
+    fresh = 0;
     R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
-    ABC_periphModel_ModComp_fitting(R,1:2) % Does the individual model fits
+    ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits
     fresh = 1;
     ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
     
     analysis_ShengHongInactivation(R)
 end
-%% STEP5: Expand to larger DP cohort 
-if ismember(5,stepcontrol)
+
+%% STEP4: Expand to larger DP cohort 
+if ismember(4,stepcontrol)
     %% Now we use a larger (but more incomplete) data set from David Pedrosa
     R.out.tag = 'dpcohort_V1';
     R = ABCsetup_periphStim_pedrosa(R);
     fresh = 0;
-    R = formatDPdata_Data4ABC(R,fresh);
+    formatDPdata_Data4ABC(R,fresh,'LFP');
     fresh = 1;
+    R.modelspec = 'LMSV1';
+    R.modelSpecOpt.fresh = 0; % this sets up the modelSpec to call the previous model
+    R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.C','.A','.obs.Cnoise','.DExt','.B'}; %,'.B','.DExt',,'.int{src}.S'
     ABC_periphModel_DPdata_fitting(R,fresh) % This will fit just the big full model
     
     fresh = 0;

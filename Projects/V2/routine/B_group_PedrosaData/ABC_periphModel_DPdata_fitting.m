@@ -30,17 +30,9 @@ for cursub = 1:numel(R.sublist)
 
         %% Prepare Model
         modID = 1;
-        modelspec = eval(['@MS_periphStim_BMOD_complete_M' num2str(modID)]);
+        modelspec = eval(['@MS_' R.modelspec '_M' num2str(modID)]);
         [R p m uc] = modelspec(R); % M! intrinsics shrunk"
-        
         R.SimAn.jitter = 1;
-        
-%         % Modify so B matrix is available
-%         p.B{1}(4,1) = 0; % Spin to Thal
-%         p.B{1}(4,2) = 0; % MMC to Thal
-%         p.B{1}(2,4) = 0; % Thal to CTX
-%         p.B{1}(3,1) = 0; % Spin to AMN
-%         p.B_s{1} = repmat(1/2,size(p.A_s{1})).*(p.B{1}==0);
         
         pause(1)
         R.out.dag = sprintf([R.out.tag '_BMOD_MSET%.0f_' R.sublist{cursub}],modID); % 'All Cross'
@@ -49,7 +41,7 @@ for cursub = 1:numel(R.sublist)
         R = setSimTime(R,28);
         R.Bcond = 2;
         R.SimAn.rep = 256;
-        SimAn_ABC_250320(R,p,m);
+        SimAn_ABC_201120(R,p,m);
         closeMessageBoxes
     end
 end

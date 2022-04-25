@@ -24,11 +24,11 @@ R.obs.csd.reps = 32; %96;
 %% INTEGRATION
 % Main dynamics function
 R.IntP.intFx = @spm_fx_compile_periphStim; %@spm_fx_compile_120319;
-R.IntP.compFx= @compareData_180520;
+R.objfx.compFx= @compareData_180520;
 
 R.IntP.dt = .001;
 R.IntP.Utype = 'white_covar'; % DCM_Str_Innov
-R.IntP.buffer = ceil(0.050*(1/R.IntP.dt)); % buffer for delays
+R.IntP.bufferExt = ceil(0.050*(1/R.IntP.dt)); % buffer for extrinsic delays
 R.IntP.getNoise = 0;
 N = R.obs.csd.reps; % Number of epochs of desired frequency res
 fsamp = 1/R.IntP.dt;
@@ -44,7 +44,8 @@ disp(sprintf('The actual simulation df is %.2f Hz',dfact));
 
 %% OBSERVATION
 % observation function
-R.obs.obsFx = @observe_data;
+R.obs.obsFx = @observe_dataTremor;
+R.objfx.errorFx = @fxPooledR2;
 R.obs.gainmeth{1} = 'obsnoise';
 R.obs.gainmeth{2} = 'boring';
 R.obs.glist =0; %linspace(-5,5,12);  % gain sweep optimization range [min max listn] (log scaling)
@@ -63,6 +64,7 @@ R.obs.Cnoise = [1e-8 1e-8 1e-8 1e-8 1e-8]; % Noise gain on the observation funct
 % fx to construct data features
 R.obs.transFx = @constructGenCrossMatrix;
 % These are options for transformation (NPD)
+R.obs.trans.logscale = 0;
  R.obs.trans.zerobase = 1;
 R.obs.trans.logdetrend =0;
 R.obs.trans.norm = 0;
