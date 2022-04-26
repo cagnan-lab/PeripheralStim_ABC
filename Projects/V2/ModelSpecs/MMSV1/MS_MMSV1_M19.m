@@ -1,6 +1,6 @@
-function [R p m uc] = MS_MMSV1_M1(R)
+function [R p m uc] = MS_MMSV1_M19(R)
 % Modulate Model Space V1 %
-% Model 1 (no mod)
+% Model 19 (Cereb Input)
 if ~isfield(R,'modelSpecOpt')
     R.modelSpecOpt.fresh = 1;
 end
@@ -27,5 +27,6 @@ p.B{2} =  repmat(-32,m.m,m.m);
 p.B_s{2} = repmat(1/2,size(p.A_s{2})).*(p.B{2}==0);
 
 p.BC = zeros(m.m,1);
-p.BC = [-32 0 -32 0 0]; 
+p.BC = [-32 -32 -32 -32 0]; 
 p.BC_s = repmat(1/2,size(p.BC)).*(p.BC==0);
+

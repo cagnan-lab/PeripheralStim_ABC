@@ -101,11 +101,12 @@ for condsel = 1:numel(R.condnames)
     end
     
     % Rescale background Input
+    p.BC(p.BC<-30) = 0;
     for i = 1:m.m
         if cs ~= R.Bcond
             C    = exp(p.C(i));
         else
-            C    = exp(p.C(i) + p.BC(i));
+            C    = exp(p.C(i)+p.BC(i));
         end
         us(:,i) = C*us(:,i); %*0.01;
     end
@@ -116,6 +117,7 @@ for condsel = 1:numel(R.condnames)
     % alist = [1 2; 3 4];
     alist = [1; 3]; A = [];
     for i = 1:numel(p.A)
+        p.B{i}(p.B{i}<-30) = 0;
         if cs ~= R.Bcond
             A{i} = decon*exp(p.A{i});
         else

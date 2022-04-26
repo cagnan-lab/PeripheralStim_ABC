@@ -3,8 +3,8 @@ clear; close all;
 
 % addpath('D:\GITHUB\ABCNeuralModellingToolbox')
 % addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
-% addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
-addpath('C:\Users\Tim West\Documents\GitHub\ABCNeuralModellingToolbox')
+addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
+% addpath('C:\Users\Tim West\Documents\GitHub\ABCNeuralModellingToolbox')
 
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
@@ -12,8 +12,8 @@ addpath('C:\Users\Tim West\Documents\GitHub\ABCNeuralModellingToolbox')
 % Get Paths
 % R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','V2');
 % R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
-R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','V2');
+R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
+% R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','V2');
 
 
 R = periphABCAddPaths(R);
@@ -22,7 +22,7 @@ R = periphABCAddPaths(R);
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
 % often used when running through models/data within a tagged project.
 
-stepcontrol = 2
+stepcontrol = 3
 %%%%%%%%%%%%%%%%%%%%%%%%% SHENGHONG DATA
 %% STEP 1: This creates a prior for the cerebellum in which the cerebellu
 if ismember(1,stepcontrol)

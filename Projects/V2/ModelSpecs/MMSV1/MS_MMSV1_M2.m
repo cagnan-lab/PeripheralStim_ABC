@@ -22,12 +22,13 @@ p = Mfit.MAP;
 % Modulatory
 p.B{1} =  repmat(-32,m.m,m.m);
 p.B{1}(2,3) = 0; % EP to THAL
-p.B_s{1} = repmat(1/2,size(p.A_s{1})).*(p.B{1}==0);
+
+p.B_s{1} = repmat(1,size(p.A_s{1})).*(p.B{1}==0);
 
 p.B{2} =  repmat(-32,m.m,m.m);
-p.B_s{2} = repmat(1/2,size(p.A_s{2})).*(p.B{2}==0);
+p.B_s{2} = repmat(1,size(p.A_s{2})).*(p.B{2}==0);
 
 p.BC = zeros(m.m,1);
 p.BC = [-32 0 -32 0 0]; 
-p.BC_s = repmat(1/2,size(p.BC)).*(p.BC==0);
+p.BC_s = repmat(1,size(p.BC)).*(p.BC==0);
 

@@ -1,9 +1,9 @@
 function ABC_periphModel_ModComp_comparison(R,mSel,pSel,fresh)
 close all
-if fresh
+if fresh~=0 || isempty(fresh)
     R.comptype = 1;
     R.plot.flag = 1;
-    modelCompMaster_160620(R,mSel,[]);
+    modelCompMaster_160620(R,mSel,fresh);
 end
 R.modcomp.modN =  R.modcomp.modlist;
 R.modcompplot.NPDsel = pSel;
@@ -11,17 +11,18 @@ R.plot.confint = 'yes';
 R.plot.cmplx = 1;
 cmap = linspecer(numel(R.modcomp.modN));
 cmap = cmap(end:-1:1,:);
-load tmpData
-% FitStats = plotModComp_310520(R,cmap)
+% load tmpData
+FitStats = plotModComp_310520(R,cmap)
 
 
 %% Plotting (put in seperate function)
 modGroups = {
-    [2  7  8  9 10],... % Deafferent
-    [3  2 11 12 13],... % No TC
-    [4  8 11 14 15],... % No CT
-    [5  9 12 14 16],... % No CCer
-    [6 10 13 15 16],... % No CerT
+    [ 2  7  8  9 10],... % Deafferent
+    [ 3  2 11 12 13],... % No TC
+    [ 4  8 11 14 15],... % No CT
+    [ 5  9 12 14 16],... % No CCer
+    [ 6 10 13 15 16],... % No CerT
+    [17 18 19]
     };
 
 pMD = FitStats.pModDist;

@@ -1,17 +1,17 @@
 clear; close all;
 
 
-addpath('D:\GITHUB\ABCNeuralModellingToolbox')
+% addpath('D:\GITHUB\ABCNeuralModellingToolbox')
 % addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
-% addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
+addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
 
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %   %   %   %   %   %   %   %   %
 % Get Paths
-R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','V2');
+% R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','V2');
 % R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
-% R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
+R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
 
 
 R = periphABCAddPaths(R);
@@ -55,29 +55,29 @@ if ismember(2,stepcontrol)
     R.modcomp.modlist = 1:8;
     ABC_periphModel_ModComp_fitting(R,[0 1]) % Does the individual model fits % LOAD 8
     fresh = 0;
-    ABC_periphModel_ModComp_comparison(R,1,0,1) % Compares the models' performances(Exceedence probability)
+    ABC_periphModel_ModComp_comparison(R,1,0,1:16) % Compares the models' performances(Exceedence probability)
 end
 a = 1;
 %% STEP 3: Now model both conditions at once using prior from step 3
 if ismember(3,stepcontrol)
     %% Now look at modulation condition
-    R.out.tag = 'periphModel_BMOD_TremPrior'; % This tags the files for this particular instance
+    R.out.tag = 'S3periphModel_BMOD_TremPrior'; % This tags the files for this particular instance
     R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
     R.SimAn.convIt.dEps = 1e-3;
-    R.SimAn.rep = 128; % This determines the number of iterations per ABC sequence
+    R.SimAn.rep = 256; % This determines the number of iterations per ABC sequence
     
     R.modelspec = 'MMSV1';
-    R.SimAn.convIt.dEps = 5e-3;
-    R.SimAn.pOptList = {'.C','.A','.B','.BC'}; %,'.obs.Cnoise','.DExt''.int{src}.T','.int{src}.G',,'.DExt',,'.int{src}.S'
+    R.SimAn.convIt.dEps = 1e-3;
+    R.SimAn.pOptList = {'.C','.A','.B','.BC'}; %,'.obs.Cnoise','.DExt''.int{src}.T','.int{src}.G',,'.DExt',,'.int{src}.S','.BC'
     R.condnames = {'Tremor','Rest'};
     R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
     
-    R.modcomp.modlist = 1:16;
+    R.modcomp.modlist = [3 19:-1:4 1:2];
     fresh = 0;
     R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits
     fresh = 1;
-    ABC_periphModel_ModComp_comparison(R,fresh) % Compares the models' performances(Exceedence probability)
+    ABC_periphModel_ModComp_comparison(R,1:19,1,0) % Compares the models' performances(Exceedence probability)
     
     analysis_ShengHongInactivation(R)
 end
