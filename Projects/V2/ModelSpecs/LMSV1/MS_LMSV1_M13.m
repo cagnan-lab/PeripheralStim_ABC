@@ -45,8 +45,9 @@ p.B{2} =  repmat(-32,m.m,m.m);
 p.B_s{2} = repmat(1/8,size(p.A_s{2})).*(p.B{2}==0);
 
 % Input strengths
-p.C = zeros(m.m,1);
-p.C_s = repmat(1,size(p.C));
+    p.C([1 3]) = -32;
+    p.C_s = repmat(1,size(p.C));
+    p.C_s([1 3]) = 0;
 
 % Leadfield
 p.obs.LF = [0 0];

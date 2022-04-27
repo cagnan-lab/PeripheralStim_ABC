@@ -49,8 +49,8 @@ if ismember(2,stepcontrol)
     fresh = 0;
     R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
     R.modelspec = 'LMSV1';
-    R.SimAn.convIt.dEps = 5e-3;
-    R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.C','.A','.obs.Cnoise','.DExt'}; %,'.B','.DExt',,'.int{src}.S'
+    R.SimAn.convIt.dEps = 1e-3;
+    R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.C','.A','.obs.Cnoise'}; %,'.B','.DExt',,'.int{src}.S'
 
     R.modcomp.modlist = 1:16;
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits % LOAD 8
@@ -65,14 +65,14 @@ if ismember(3,stepcontrol)
     R = ABCsetup_periphStim_shenghong(R); % Sets up parameters for model, data fitting etc
     R.SimAn.convIt.dEps = 1e-3;
     R.SimAn.rep = 256; % This determines the number of iterations per ABC sequence
-    
+     R.modelspecMPrior = '1';
     R.modelspec = 'MMSV1';
     R.SimAn.convIt.dEps = 1e-3;
     R.SimAn.pOptList = {'.C','.A','.B','.BC'}; %,'.obs.Cnoise','.DExt''.int{src}.T','.int{src}.G',,'.DExt',,'.int{src}.S','.BC'
     R.condnames = {'Tremor','Rest'};
     R.Bcond = 2; % The second condition is the modulation i.e. parRest = parTremor + B;
     
-    R.modcomp.modlist = [3 19:-1:4 1:2];
+    R.modcomp.modlist = [1:19];
     fresh = 0;
     R = formatShengHongData4ABC(R,fresh); % Loads in raw data, preprocess and format for ABC
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits

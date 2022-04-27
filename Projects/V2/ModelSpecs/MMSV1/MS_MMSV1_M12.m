@@ -15,7 +15,7 @@ uc = innovate_timeseries(R,m);
 
 Rtmp = R;
 Rtmp.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
-Rtmp.out.dag = 'periphModel_MSET1_v1_M1'; % This tags the files for this particular instance
+Rtmp.out.dag = ['periphModel_MSET1_v1_M' R.modelspecMPrior]; % This tags the files for this particular instance
 Mfit = loadABCGeneric(Rtmp,'modelfit');
 p = Mfit.MAP;
 

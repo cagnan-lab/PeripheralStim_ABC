@@ -15,12 +15,20 @@ uc = innovate_timeseries(R,m);
 
 Rtmp = R;
 Rtmp.out.tag = 'periphModel_MSET1_v1'; % This tags the files for this particular instance
-Rtmp.out.dag = 'periphModel_MSET1_v1_M1'; % This tags the files for this particular instance
+Rtmp.out.dag = ['periphModel_MSET1_v1_M' R.modelspecMPrior]; % This tags the files for this particular instance
 Mfit = loadABCGeneric(Rtmp,'modelfit');
 p = Mfit.MAP;
 
 % Modulatory
 p.B{1} =  repmat(-32,m.m,m.m);
+p.A{1}(3,1) = 0; % SC to EP
+p.A{1}(4,2) = 0; % THAL to MMC
+p.A{1}(1,3) = 0; % EP to SC (spinal reflex)
+p.A{1}(2,3) = 0; % EP to THAL
+p.A{1}(1,4) = 0; % MMC to SC
+p.A{1}(2,4) = 0; % MMC to THAL
+p.A{1}(5,4) = 0; % MMC to CER
+p.A{1}(2,5) = 0; % CER to THAL
 p.B_s{1} = repmat(1/2,size(p.A_s{1})).*(p.B{1}==0);
 
 p.B{2} =  repmat(-32,m.m,m.m);
