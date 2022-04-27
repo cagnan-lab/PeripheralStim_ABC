@@ -101,6 +101,9 @@ for condsel = 1:numel(R.condnames)
     end
     
     % Rescale background Input
+    if ~isfield(p,'BC')
+        p.BC = zeros(size(p.C));
+    end
     p.BC(p.BC<-30) = 0;
     for i = 1:m.m
         if cs ~= R.Bcond

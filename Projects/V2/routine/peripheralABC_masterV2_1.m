@@ -1,6 +1,6 @@
 clear; close all;
 
-
+peripheralStimABC_GraphicsDefaults
 % addpath('D:\GITHUB\ABCNeuralModellingToolbox')
 % addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
 addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
@@ -20,7 +20,7 @@ R = periphABCAddPaths(R);
 % structure. Use tag to name a particular setup/analysis pipeline. dag is
 % often used when running through models/data within a tagged project.
 
-stepcontrol = 3
+stepcontrol = 2
 %%%%%%%%%%%%%%%%%%%%%%%%% SHENGHONG DATA
 %% STEP 1: This creates a prior for the cerebellum in which the cerebellu
 if ismember(1,stepcontrol)
@@ -52,10 +52,10 @@ if ismember(2,stepcontrol)
     R.SimAn.convIt.dEps = 5e-3;
     R.SimAn.pOptList = {'.int{src}.T','.int{src}.G','.C','.A','.obs.Cnoise','.DExt'}; %,'.B','.DExt',,'.int{src}.S'
 
-    R.modcomp.modlist = 1:8;
-    ABC_periphModel_ModComp_fitting(R,[0 1]) % Does the individual model fits % LOAD 8
+    R.modcomp.modlist = 1:16;
+    ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits % LOAD 8
     fresh = 0;
-    ABC_periphModel_ModComp_comparison(R,1,0,1:16) % Compares the models' performances(Exceedence probability)
+    ABC_periphModel_ModComp_comparison(R,1:16,0,0) % Compares the models' performances(Exceedence probability)
 end
 a = 1;
 %% STEP 3: Now model both conditions at once using prior from step 3

@@ -1,6 +1,6 @@
 function ABC_periphModel_ModComp_comparison(R,mSel,pSel,fresh)
 close all
-if fresh~=0 || isempty(fresh)
+if any(fresh) | isempty(fresh)
     R.comptype = 1;
     R.plot.flag = 1;
     modelCompMaster_160620(R,mSel,fresh);
@@ -22,7 +22,6 @@ modGroups = {
     [ 4  8 11 14 15],... % No CT
     [ 5  9 12 14 16],... % No CCer
     [ 6 10 13 15 16],... % No CerT
-    [17 18 19]
     };
 
 pMD = FitStats.pModDist;
@@ -35,6 +34,24 @@ for G = 1:numel(modGroups)
     fACS(G) = sum(FitStats.ACS(modGroups{G}));
 end
 
+familyName = {'No Aff','No Thalamocortical','No CorticoThalamic','No Cereb. Cortico','No Cereb. Thalamic'}
+
+fP = fP./sum(fP);
+fACS = fACS./sum(fACS);
+figure
+subplot(2,2,3)
+bar((fP))
+    a = gca;
+    a.XTick = 1:numel(familyName);
+    a.XTickLabel = familyName;
+    a.XTickLabelRotation = 45;
+
+subplot(2,2,4)
+bar(fACS)
+    a = gca;
+    a.XTick = 1:numel(familyName);
+    a.XTickLabel = familyName;
+    a.XTickLabelRotation = 45;
 % Matrix Setup
 
 AG  = [2  0  0  0  1
@@ -48,14 +65,20 @@ for i = 1:5
         modInd = AG(i,j)
         if modInd ~= 0
         fPMat(i,j) = FitStats.pModDist(modInd);
+        fACSMat(i,j) = FitStats.ACS(modInd);
         else
         fPMat(i,j) = nan;
+         fACSMat(i,j) = nan;
         end
     end
 end
+subplot(2,2,1)
+imagesc((fPMat))
+axis square
 
-imagesc(fPMat)
-
+subplot(2,2,2)
+imagesc((fACSMat))
+axis square
 
 
 
