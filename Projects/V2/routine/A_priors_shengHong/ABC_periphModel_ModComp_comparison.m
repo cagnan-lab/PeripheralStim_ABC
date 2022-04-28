@@ -1,4 +1,4 @@
-function ABC_periphModel_ModComp_comparison(R,mSel,pSel,fresh)
+function FitStats = ABC_periphModel_ModComp_comparison(R,mSel,pSel,fresh);
 close all
 if any(fresh) | isempty(fresh)
     R.comptype = 1;
@@ -12,9 +12,13 @@ R.plot.cmplx = 1;
 cmap = linspecer(numel(R.modcomp.modN));
 cmap = cmap(end:-1:1,:);
 % load tmpData
-FitStats = plotModComp_310520(R,cmap)
+FitStats = plotModComp_310520(R,cmap);
+R.out.dag = [R.out.tag ' modelComp'];
+saveABCGeneric(R,{'FitStats'},{FitStats});
 
 
+FitStats = loadABCGeneric(R,{'FitStats'});
+subplot(2,2,4); ylim([-0.075 0.075])
 %% Plotting (put in seperate function)
 modGroups = {
     [ 2  7  8  9 10],... % Deafferent
@@ -34,7 +38,7 @@ for G = 1:numel(modGroups)
     fACS(G) = sum(FitStats.ACS(modGroups{G}));
 end
 
-familyName = {'No Aff','No Thalamocortical','No CorticoThalamic','No Cereb. Cortico','No Cereb. Thalamic'}
+familyName = {'No DA','No TC','No CT','No CCer','No CerC'};
 
 fP = fP./sum(fP);
 fACS = fACS./sum(fACS);
@@ -45,6 +49,7 @@ bar((fP))
     a.XTick = 1:numel(familyName);
     a.XTickLabel = familyName;
     a.XTickLabelRotation = 45;
+    ylabel('P(M|D)')
 
 subplot(2,2,4)
 bar(fACS)
@@ -52,6 +57,7 @@ bar(fACS)
     a.XTick = 1:numel(familyName);
     a.XTickLabel = familyName;
     a.XTickLabelRotation = 45;
+    ylabel('Acc. - Complexity')
 % Matrix Setup
 
 AG  = [2  0  0  0  1
@@ -75,11 +81,24 @@ end
 subplot(2,2,1)
 imagesc((fPMat))
 axis square
-
+    title('P(M|D)')
+    a = gca;
+    a.XTick = 1:numel(familyName);
+    a.XTickLabel = familyName;
+    a.XTickLabelRotation = 45;
+    a.YTick = 1:numel(familyName);
+    a.YTickLabel = familyName;
+    
 subplot(2,2,2)
 imagesc((fACSMat))
 axis square
-
+    title('Acc. - Complexity')
+    a = gca;
+    a.XTick = 1:numel(familyName);
+    a.XTickLabel = familyName;
+    a.XTickLabelRotation = 45;
+    a.YTick = 1:numel(familyName);
+    a.YTickLabel = familyName;
 
 
 

@@ -1,17 +1,18 @@
 clear; close all;
 
-peripheralStimABC_GraphicsDefaults
 % addpath('D:\GITHUB\ABCNeuralModellingToolbox')
+addpath('C:\Users\Tim West\Documents\GitHub\ABCNeuralModellingToolbox')
 % addpath('C:\Users\timot\Documents\GitHub\ABCNeuralModellingToolbox')
-addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
+% addpath('C:\Users\ndcn0903\Documents\GitHub\ABCNeuralModellingToolbox')
 
 
 % MASTER SCRIPT FOR PERIPHERAL ABC
 %   %   %   %   %   %   %   %   %
 % Get Paths
 % R = ABCAddPaths('D:\GITHUB\PeripheralStim_ABC','V2');
-% R = ABCAddPaths('C:\Users\timot\Documents\GitHub\PeripheralStim_ABC','firstRun');
-R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
+R = ABCAddPaths('C:\Users\Tim West\Documents\GitHub\PeripheralStim_ABC','V2');
+% R = ABCAddPaths('C:\Users\ndcn0903\Documents\GitHub\PeripheralStim_ABC','V2');
+peripheralStimABC_GraphicsDefaults
 
 
 R = periphABCAddPaths(R);
@@ -55,7 +56,12 @@ if ismember(2,stepcontrol)
     R.modcomp.modlist = 1:16;
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits % LOAD 8
     fresh = 0;
-    ABC_periphModel_ModComp_comparison(R,1:16,0,0) % Compares the models' performances(Exceedence probability)
+    ABC_periphModel_ModComp_comparison(R,1:16,14,0) % Compares the models' performances(Exceedence probability)
+    
+    R.out.dag = ['periphModel_MSET1_v1 modelComp'];
+
+    plotTremorConditionModelComparison(R)
+
 end
 a = 1;
 %% STEP 3: Now model both conditions at once using prior from step 3
@@ -78,7 +84,6 @@ if ismember(3,stepcontrol)
     ABC_periphModel_ModComp_fitting(R,[]) % Does the individual model fits
     fresh = 1;
     ABC_periphModel_ModComp_comparison(R,1:19,1,0) % Compares the models' performances(Exceedence probability)
-    
     analysis_ShengHongInactivation(R)
 end
 
